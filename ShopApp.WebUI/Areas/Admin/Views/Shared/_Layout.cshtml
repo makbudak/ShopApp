@@ -45,7 +45,7 @@
             </div>
         </div>
     </nav>
-    <div>
+    <div class="container-fluid mt-3">
         @RenderBody()
     </div>
 
@@ -53,5 +53,6 @@
     <script src="~/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/kendo.all.min.js"></script>
     <script src="~/js/site.js"></script>
+    @RenderSection("Scripts", false)
 </body>
 </html>

@@ -1,4 +1,3 @@
-using ShopApp.Business.Abstract;
 using ShopApp.Data.Repositories;
 using ShopApp.Model.Entity;
 

@@ -4,5 +4,100 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6"><h5 class="card-title mb-3">Kategoriler</h5></div>
+            <div class="col-6"><a id="btnAdd" class="btn btn-primary btn-sm float-end">Ekle</a></div>
+        </div>
+        <div id="grid"></div>
 
+        <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="frmCategory">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Kategori Adı</label>
+                                <input id="txtName" name="name" class="w-100" required validationMessage="Kategori adı zorunludur"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">URL</label>
+                                <input id="txtUrl" name="url" class="w-100" required validationMessage="URL zorunludur"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                            <button type="submit" class="btn btn-primary">Kaydet</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script>
+        $(function () {
+            var dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "/api/category",
+                        dataType: "json"
+                    },
+                },
+                pageSize: 5
+            });
+
+            $("#grid").kendoGrid({
+                columns: [
+                    {
+                        field: "name",
+                        title: "Kategori Adı",
+                    },
+                    {
+                        field: "url",
+                        title: "URL",
+                    }],
+                dataSource: dataSource,
+                loaderType: "loadingPanel",
+                pageable: {
+                    pageSize: 5,
+                    alwaysVisible: true
+                }
+            });
+
+            $("#txtName").kendoTextBox({
+                placeholder: "Kategori Adı",
+            });
+
+            $("#txtUrl").kendoTextBox({
+                placeholder: "URL",
+            });
+
+            $("#btnAdd").click(function () {
+                $("#modalTitle").text("Yeni Kategori Ekle");
+                $("#categoryModal").modal("show");
+
+            });
+
+            var validator = $("#frmCategory").kendoValidator().data("kendoValidator");
+
+            $("#frmCategory").submit(function (event) {
+                event.preventDefault();
+                if (validator.validate()) {
+
+                }
+            });
+
+        });
+    </script>
+}

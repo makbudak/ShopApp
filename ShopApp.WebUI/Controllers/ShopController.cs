@@ -2,7 +2,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using ShopApp.Business.Abstract;
 using ShopApp.Business.Concrete;
-using ShopApp.Model;
+using ShopApp.Model.Entity;
 using ShopApp.Model.Dto;
 
 namespace ShopApp.WebUI.Controllers

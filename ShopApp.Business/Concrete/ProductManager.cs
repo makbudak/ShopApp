@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using ShopApp.Business.Abstract;
 using ShopApp.Data.Repositories;
-using ShopApp.Model;
+using ShopApp.Model.Entity;
 
 namespace ShopApp.Business.Concrete
 {

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ShopApp.Business.Abstract;
 using ShopApp.Business.Concrete;
-using ShopApp.Model;
+using ShopApp.Model.Entity;
 using ShopApp.WebUI.Extensions;
 using ShopApp.WebUI.Identity;
 using ShopApp.Model.Dto;

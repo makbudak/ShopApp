@@ -99,12 +99,12 @@ namespace ShopApp.WebUI
         {
             app.UseStaticFiles(); // wwwroot
 
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "node_modules")),
-                RequestPath = "/modules"
-            });
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(
+            //        Path.Combine(Directory.GetCurrentDirectory(), "node_modules")),
+            //    RequestPath = "/modules"
+            //});
 
             if (env.IsDevelopment())
             {

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShopApp.Model;
+using ShopApp.Model.Entity;
 
 namespace ShopApp.Data.Configurations
 {

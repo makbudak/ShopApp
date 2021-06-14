@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ShopApp.Model;
+using ShopApp.Model.Entity;
 
 namespace ShopApp.Data.Configurations
 {

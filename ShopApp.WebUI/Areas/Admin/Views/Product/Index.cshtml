@@ -1,8 +1,66 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Ürünler";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a class="text-decoration-none text-secondary" href="/admin">Anasayfa</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Ürünler</li>
+    </ol>
+</nav>
 
-<h2>Index</h2>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6"><h5 class="card-title mb-3">Ürünler</h5></div>
+            <div class="col-6"><a href="/admin/product/add" class="btn btn-primary btn-sm float-end"><i class="k-icon k-i-plus"></i>Ekle</a></div>
+        </div>
+        <div id="example">
+            <table id="grid" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th width="120"></th>
+                        <th width="120"></th>
+                        <th>Ürün Adı</th>
+                        <th>Fiyatı</th>
+                        <th width="100">Anasayfa</th>
+                        <th width="80">Onaylı</th>
+                        <th>URL</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <script id="rowTemplate" type="text/x-kendo-tmpl">
+                <tr data-uid="#: productId #">
+                    <td width="120">
+                        <a href="/admin/product/edit/#: productId #" class='k-button k-button-icontext k-grid-edit border'><i class="k-icon k-i-edit"'></i></a>
+                        <a class='k-button k-button-icontext k-grid-remove border'><i class="k-icon k-i-trash"></i></a>
+                    </td>
+                    <td width="120">
+                        <img width="80" src="/img/#:data.imageUrl#"/>
+                    </td>
+                    <td>
+                        <span>#: name #</span>
+                    </td>
+                    <td>
+                        #: price #
+                    </td>
+                    <td width="100">
+                        <input type="checkbox" class="k-checkbox" checked="#: isHome == true ? 'checked': '' #">
+                    </td>
+                    <td width="80">
+                        <input type="checkbox" class="k-checkbox" checked="#: isApproved == true ? 'checked' : '' #">
+                    </td>
+                    <td>
+                        #: url #
+                    </td>
+                </tr>
+            </script>
+        </div>
+    </div>
+</div>
 
+@section Scripts{
+    <script src="~/js/pages/admin/product/productList.js"></script>
+}

@@ -89,10 +89,11 @@ namespace ShopApp.WebUI
                      _configuration["EmailSender:UserName"],
                      _configuration["EmailSender:Password"])
                 );
-            
 
-
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddRazorPages().AddRazorRuntimeCompilation();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ICartService cartService)

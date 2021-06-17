@@ -13,5 +13,16 @@ namespace ShopApp.WebUI.Areas.Admin.Controllers
         {
             return View();
         }
+
+        public IActionResult Add()
+        {
+            return View();
+        }
+
+        public IActionResult Edit(int id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
     }
 }

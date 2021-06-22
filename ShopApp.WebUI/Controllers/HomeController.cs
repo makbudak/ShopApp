@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using ShopApp.Business.Abstract;
 using ShopApp.Business.Concrete;
-using ShopApp.Model.Dto;
+using ShopApp.Model.Dto.Product;
 
 namespace ShopApp.WebUI.Controllers
 {

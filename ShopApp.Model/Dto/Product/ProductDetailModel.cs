@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using ShopApp.Model.Entity;
 
-namespace ShopApp.Model.Dto
+namespace ShopApp.Model.Dto.Product
 {
     public class ProductDetailModel
     {
-        public Product Product { get; set; }
+        public Entity.Product Product { get; set; }
         public List<Category> Categories { get; set; }
     }
 }

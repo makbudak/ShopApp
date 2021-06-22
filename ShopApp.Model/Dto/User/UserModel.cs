@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Identity;
+using System;
 
-namespace ShopApp.Model.Dto
+namespace ShopApp.Model.Dto.User
 {
-    public class User: IdentityUser
+    public class UserModel : IdentityUser
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-    }
+    }    
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using ShopApp.Model.Entity;
 
-namespace ShopApp.Model.Dto
+namespace ShopApp.Model.Dto.Product
 {
     public class ProductModel
     {

@@ -9,17 +9,18 @@ using ShopApp.WebUI.EmailServices;
 using ShopApp.WebUI.Extensions;
 using ShopApp.WebUI.Identity;
 using ShopApp.Model.Dto;
+using ShopApp.Model.Dto.User;
 
 namespace ShopApp.WebUI.Controllers
 {
     [AutoValidateAntiforgeryToken]
     public class AccountController:Controller
     {
-        private UserManager<User> _userManager;
-        private SignInManager<User> _signInManager;
+        private UserManager<UserModel> _userManager;
+        private SignInManager<UserModel> _signInManager;
         private IEmailSender _emailSender;
         private ICartService _cartService;
-        public AccountController(ICartService cartService,UserManager<User> userManager,SignInManager<User> signInManager,IEmailSender emailSender)
+        public AccountController(ICartService cartService,UserManager<UserModel> userManager,SignInManager<UserModel> signInManager,IEmailSender emailSender)
         {
             _cartService = cartService;
             _userManager=userManager;
@@ -83,7 +84,7 @@ namespace ShopApp.WebUI.Controllers
                 return View(model);
             }
 
-            var user = new User()
+            var user = new UserModel()
             {
                 FirstName  = model.FirstName,
                 LastName = model.LastName,

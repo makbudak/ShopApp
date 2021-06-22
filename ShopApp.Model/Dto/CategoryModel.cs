@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using ShopApp.Model.Entity;
 
 namespace ShopApp.Model.Dto
 {
@@ -17,6 +16,6 @@ namespace ShopApp.Model.Dto
 
         public string Url { get; set; }
 
-        public List<Product> Products { get; set; }
+        public List<Entity.Product> Products { get; set; }
     }
 }

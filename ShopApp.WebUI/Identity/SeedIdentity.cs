@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using ShopApp.Business.Concrete;
-using ShopApp.Model.Dto;
+using ShopApp.Model.Dto.User;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,7 +9,7 @@ namespace ShopApp.WebUI.Identity
 {
     public static class SeedIdentity
     {
-        public static async Task Seed(UserManager<User> userManager, RoleManager<IdentityRole> roleManager,ICartService cartService,IConfiguration configuration)
+        public static async Task Seed(UserManager<UserModel> userManager, RoleManager<IdentityRole> roleManager,ICartService cartService,IConfiguration configuration)
         {
 
             var roles = configuration.GetSection("Data:Roles").GetChildren().Select(x=>x.Value).ToArray();
@@ -35,7 +35,7 @@ namespace ShopApp.WebUI.Identity
 
                 if(await userManager.FindByNameAsync(username)==null)
                 {
-                    var user = new User()
+                    var user = new UserModel()
                     {
                         UserName = username,
                         Email = email,

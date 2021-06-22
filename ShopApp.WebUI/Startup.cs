@@ -16,6 +16,7 @@ using ShopApp.Business.Abstract;
 using ShopApp.Business.Concrete;
 using ShopApp.Data.Repositories;
 using ShopApp.Model.Dto;
+using ShopApp.Model.Dto.User;
 using ShopApp.WebUI.EmailServices;
 using ShopApp.WebUI.Identity;
 
@@ -37,7 +38,7 @@ namespace ShopApp.WebUI
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(_configuration.GetConnectionString("MsSqlConnection")));
             services.AddDbContext<ShopContext>(options => options.UseSqlServer(_configuration.GetConnectionString("MsSqlConnection")));
 
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>().AddDefaultTokenProviders();
+            services.AddIdentity<UserModel, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -96,7 +97,7 @@ namespace ShopApp.WebUI
             );
             services.AddRazorPages().AddRazorRuntimeCompilation();
         }
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ICartService cartService)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, UserManager<UserModel> userManager, RoleManager<IdentityRole> roleManager, ICartService cartService)
         {
             app.UseStaticFiles(); // wwwroot
 

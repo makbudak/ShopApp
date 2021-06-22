@@ -1,62 +1,51 @@
-  <div class="navbar bg-danger navbar-dark navbar-expand-sm">
-        <div class="container">
-            <a href="/" class="navbar-brand">ShopApp</a>
-            <ul class="navbar-nav mr-auto">
+﻿<div class="navbar bg-danger navbar-dark navbar-expand-sm">
+    <div class="container">
+        <a href="/" class="navbar-brand">ShopApp</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a href="/products" class="nav-link">Ürünler</a>
+            </li>
+
+            @if (User.Identity.IsAuthenticated)
+            {
                 <li class="nav-item">
-                    <a href="/products" class="nav-link">Products</a>
+                    <a href="/cart" class="nav-link">Sepetim</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/orders" class="nav-link">Siparişler</a>
                 </li>
 
-                @if(User.Identity.IsAuthenticated)
+            }
+        </ul>
+
+        <div class="d-flex">
+            <ul class="navbar-nav">
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <li class="nav-item">
-                        <a href="/cart" class="nav-link">Cart</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/orders" class="nav-link">Orders</a>
-                    </li>                        
-
-                    if(User.IsInRole("admin"))
-                    {
-                         <li class="nav-item">
-                        <a href="/admin/products" class="nav-link">Admin Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/admin/categories" class="nav-link">Admin Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/admin/role/list" class="nav-link">Roles</a>
-                        </li>
-                         <li class="nav-item">
-                            <a href="/admin/user/list" class="nav-link">Users</a>
-                        </li>
-                    }                      
-                }
-            </ul>
-
-             <ul class="navbar-nav ml-auto">
-
-                @if(User.Identity.IsAuthenticated)
-                {
-                    <li class="nav-item">
-                        <a href="/account/manage" class="nav-link">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownEnd" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             @User.Identity.Name
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/account/logout" class="nav-link">Logout</a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownEnd">
+                            @if (User.IsInRole("admin"))
+                            {
+                            <li><a class="dropdown-item" href="/admin/home">Yönetim Paneli</a></li>
+                            }
+                            <li><a class="dropdown-item" href="/account/profile">Hesabım</a></li>
+                            <li><a class="dropdown-item" href="/account/logout">Çıkış Yap</a></li>
+                        </ul>
                     </li>
                 }
                 else
-                {                    
+                {
                     <li class="nav-item">
-                        <a href="/account/login" class="nav-link">Login</a>
+                        <a href="/account/login" class="nav-link">Giriş Yap</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/account/register" class="nav-link">Register</a>
-                    </li>    
+                        <a href="/account/register" class="nav-link">Üye Ol</a>
+                    </li>
                 }
             </ul>
-
-
         </div>
     </div>
+</div>

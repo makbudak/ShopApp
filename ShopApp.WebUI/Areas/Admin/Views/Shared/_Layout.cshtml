@@ -21,22 +21,31 @@
                         <a class="nav-link active" aria-current="page" href="/admin/home">Anasayfa</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             İçerik Yönetimi
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
                             <li><a class="dropdown-item" href="/admin/category">Ürün Kategorileri</a></li>
                             <li><a class="dropdown-item" href="/admin/product">Ürünler</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Ayarlar
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                            <li><a class="dropdown-item" href="/admin/role">Roller</a></li>
+                            <li><a class="dropdown-item" href="/admin/user">Kullanıcılar</a></li>
                         </ul>
                     </li>
                 </ul>
                 <div class="d-flex">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Kullanıcı Adı
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownEnd" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @User.Identity.Name
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown2">
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownEnd">
                                 <li><a class="dropdown-item" href="/">Siteye Git</a></li>
                                 <li><a class="dropdown-item" href="/account/logout">Çıkış Yap</a></li>
                             </ul>

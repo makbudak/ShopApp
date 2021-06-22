@@ -1,19 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using ShopApp.Business.Abstract;
 using ShopApp.Business.Concrete;
+using ShopApp.Model.Dto;
+using ShopApp.Model.Dto.Product;
+using ShopApp.Model.Dto.User;
 using ShopApp.Model.Entity;
 using ShopApp.WebUI.Extensions;
-using ShopApp.WebUI.Identity;
-using ShopApp.Model.Dto;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShopApp.WebUI.Controllers
 {
@@ -25,11 +25,11 @@ namespace ShopApp.WebUI.Controllers
         private IProductService _productService;
         private ICategoryService _categoryService;
         private RoleManager<IdentityRole> _roleManager;
-        private UserManager<User> _userManager;
+        private UserManager<UserModel> _userManager;
         public AdminController(IProductService productService,
                                ICategoryService categoryService,
                                RoleManager<IdentityRole> roleManager,
-                               UserManager<User> userManager)
+                               UserManager<UserModel> userManager)
         {
             _productService = productService;
             _categoryService = categoryService;
@@ -103,8 +103,8 @@ namespace ShopApp.WebUI.Controllers
         {
             var role = await _roleManager.FindByIdAsync(id);
 
-            var members = new List<User>();
-            var nonmembers = new List<User>();
+            var members = new List<UserModel>();
+            var nonmembers = new List<UserModel>();
 
             foreach (var user in _userManager.Users)
             {

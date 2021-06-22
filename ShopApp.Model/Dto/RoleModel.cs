@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using ShopApp.Model.Dto.User;
 
 namespace ShopApp.Model.Dto
 {
@@ -13,8 +14,8 @@ namespace ShopApp.Model.Dto
     public class RoleDetails
     {
         public IdentityRole Role { get; set; }
-        public IEnumerable<User> Members { get; set; }
-        public IEnumerable<User> NonMembers { get; set; }
+        public IEnumerable<UserModel> Members { get; set; }
+        public IEnumerable<UserModel> NonMembers { get; set; }
     }
 
     public class RoleEditModel

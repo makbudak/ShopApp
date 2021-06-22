@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ShopApp.Model.Dto
+namespace ShopApp.Model.Dto.User
 {
     public class UserDetailsModel
     {

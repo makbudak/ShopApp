@@ -12,6 +12,7 @@ using ShopApp.Business.Concrete;
 using ShopApp.Model.Entity;
 using ShopApp.WebUI.Identity;
 using ShopApp.Model.Dto;
+using ShopApp.Model.Dto.User;
 
 namespace ShopApp.WebUI.Controllers
 {
@@ -20,8 +21,8 @@ namespace ShopApp.WebUI.Controllers
     {
         private ICartService _cartService;
         private IOrderService _orderService;
-        private UserManager<User> _userManager;
-        public CartController(IOrderService orderService, ICartService cartService, UserManager<User> userManager)
+        private UserManager<UserModel> _userManager;
+        public CartController(IOrderService orderService, ICartService cartService, UserManager<UserModel> userManager)
         {
             _cartService = cartService;
             _orderService = orderService;

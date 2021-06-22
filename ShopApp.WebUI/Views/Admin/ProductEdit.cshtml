@@ -61,7 +61,7 @@
 
             @for (int i = 0; i < Model.SelectedCategories.Count; i++)
             {
-                <input type="hidden" name="SelectedCategories[@i].CategoryId" value="@Model.SelectedCategories[@i].CategoryId">
+                <input type="hidden" name="SelectedCategories[@i].CategoryId" value="@Model.SelectedCategories[@i].Id">
                 <input type="hidden" name="SelectedCategories[@i].Name" value="@Model.SelectedCategories[@i].Name">
             }
 
@@ -71,10 +71,10 @@
                     <input type="checkbox"
                            class="custom-control-input"
                            name="categoryIds"
-                           value="@item.CategoryId"
-                           id="category_@(item.CategoryId)"
-                           @(Model.SelectedCategories.Any(i => i.CategoryId == item.CategoryId) ? "checked" : "")>
-                    <label class="custom-control-label" for="category_@(item.CategoryId)">@item.Name</label>
+                           value="@item.Id"
+                           id="category_@(item.Id)"
+                           @(Model.SelectedCategories.Any(i => i.Id == item.Id) ? "checked" : "")>
+                    <label class="custom-control-label" for="category_@(item.Id)">@item.Name</label>
                 </div>
             }
 

@@ -8,7 +8,7 @@ namespace ShopApp.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.HasKey(m=>m.ProductId);
+            builder.HasKey(m=>m.Id);
 
             builder.Property(m=>m.Name).IsRequired().HasMaxLength(100);
 

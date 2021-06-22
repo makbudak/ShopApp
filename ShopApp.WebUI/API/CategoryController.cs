@@ -49,7 +49,7 @@ namespace ShopApp.WebUI.API
             {
                 var entity = new Category()
                 {
-                    CategoryId = model.CategoryId,
+                    Id = model.CategoryId,
                     Name = model.Name,
                     Url = model.Url
                 };

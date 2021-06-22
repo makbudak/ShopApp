@@ -30,20 +30,20 @@ namespace ShopApp.WebUI.Controllers
         public IActionResult Index()
         {
             var cart = _cartService.GetCartByUserId(_userManager.GetUserId(User));
-            return View(new CartModel()
+            var model = new CartModel();
+            if (cart != null)
             {
-                CartId = cart.Id,
-                CartItems = cart.CartItems.Select(i => new CartItemModel()
+                model.CartId = cart.Id;
+                model.CartItems = cart.CartItems.Select(i => new CartItemModel()
                 {
                     CartItemId = i.Id,
                     ProductId = i.ProductId,
                     Name = i.Product.Name,
                     Price = (double)i.Product.Price,
-                    ImageUrl = i.Product.ImageUrl,
                     Quantity = i.Quantity
-
-                }).ToList()
-            });
+                }).ToList();
+            }
+            return View(model);
         }
 
         [HttpPost]
@@ -77,7 +77,7 @@ namespace ShopApp.WebUI.Controllers
                     ProductId = i.ProductId,
                     Name = i.Product.Name,
                     Price = (double)i.Product.Price,
-                    ImageUrl = i.Product.ImageUrl,
+                    //ImageUrl = i.Product.ImageUrl,
                     Quantity = i.Quantity
 
                 }).ToList()
@@ -103,7 +103,7 @@ namespace ShopApp.WebUI.Controllers
                         ProductId = i.ProductId,
                         Name = i.Product.Name,
                         Price = (double)i.Product.Price,
-                        ImageUrl = i.Product.ImageUrl,
+                        //ImageUrl = i.Product.ImageUrl,
                         Quantity = i.Quantity
                     }).ToList()
                 };
@@ -159,7 +159,7 @@ namespace ShopApp.WebUI.Controllers
                     Name = i.Product.Name,
                     Price = (double)i.Price,
                     Quantity = i.Quantity,
-                    ImageUrl = i.Product.ImageUrl
+                    //ImageUrl = i.Product.ImageUrl
                 }).ToList();
 
                 orderListModel.Add(orderModel);

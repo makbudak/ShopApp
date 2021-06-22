@@ -8,8 +8,6 @@ namespace ShopApp.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<ProductCategory> builder)
         {
-           builder.HasKey(c => new { c.CategoryId, c.ProductId });
-
   
         }
     }

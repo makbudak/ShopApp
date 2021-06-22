@@ -15,28 +15,29 @@ namespace ShopApp.Data.Repositories
     public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
 
-        public CategoryRepository(ShopContext context): base(context)
+        public CategoryRepository(ShopContext context) : base(context)
         {
-            
+
         }
-          
+
         private ShopContext ShopContext
         {
-            get {return context as ShopContext; }
+            get { return context as ShopContext; }
         }
+
         public void DeleteFromCategory(int productId, int categoryId)
         {
-                var cmd = "delete from productcategory where ProductId=@p0 and CategoryId=@p1";
-                ShopContext.Database.ExecuteSqlRaw(cmd,productId,categoryId);
+            var cmd = "delete from productcategory where ProductId=@p0 and CategoryId=@p1";
+            ShopContext.Database.ExecuteSqlRaw(cmd, productId, categoryId);
         }
 
         public Category GetByIdWithProducts(int categoryId)
         {
-                return ShopContext.Categories
-                            .Where(i=>i.CategoryId==categoryId)
-                            .Include(i=>i.ProductCategories)
-                            .ThenInclude(i=>i.Product)
-                            .FirstOrDefault();
+            return ShopContext.Categories
+                        .Where(i => i.Id == categoryId)
+                        .Include(i => i.ProductCategories)
+                        .ThenInclude(i => i.Product)
+                        .FirstOrDefault();
         }
 
 

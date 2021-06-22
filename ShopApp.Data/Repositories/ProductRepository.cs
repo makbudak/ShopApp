@@ -31,7 +31,7 @@ namespace ShopApp.Data.Repositories
         public Product GetByIdWithCategories(int id)
         {
             return ShopContext.Products
-                            .Where(i => i.ProductId == id)
+                            .Where(i => i.Id == id)
                             .Include(i => i.ProductCategories)
                             .ThenInclude(i => i.Category)
                             .FirstOrDefault();
@@ -98,7 +98,7 @@ namespace ShopApp.Data.Repositories
         {
             var product = ShopContext.Products
                                 .Include(i => i.ProductCategories)
-                                .FirstOrDefault(i => i.ProductId == entity.ProductId);
+                                .FirstOrDefault(i => i.Id == entity.Id);
 
 
             if (product != null)
@@ -107,13 +107,12 @@ namespace ShopApp.Data.Repositories
                 product.Price = entity.Price;
                 product.Description = entity.Description;
                 product.Url = entity.Url;
-                product.ImageUrl = entity.ImageUrl;
                 product.IsApproved = entity.IsApproved;
                 product.IsHome = entity.IsHome;
 
                 product.ProductCategories = categoryIds.Select(catid => new ProductCategory()
                 {
-                    ProductId = entity.ProductId,
+                    ProductId = entity.Id,
                     CategoryId = catid
                 }).ToList();
 

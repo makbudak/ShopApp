@@ -5,16 +5,21 @@ namespace ShopApp.Model.Dto
 {
     public class CartModel
     {
+        public CartModel()
+        {
+            CartItems = new List<CartItemModel>();
+        }
+
         public int CartId { get; set; }
         public List<CartItemModel> CartItems { get; set; }
 
         public double TotalPrice()
         {
-            return CartItems.Sum(i=>i.Price*i.Quantity);
+            return CartItems.Sum(i => i.Price * i.Quantity);
         }
     }
 
-    public class CartItemModel 
+    public class CartItemModel
     {
         public int CartItemId { get; set; }
         public int ProductId { get; set; }

@@ -220,7 +220,6 @@ namespace ShopApp.WebUI.Controllers
                     Url = model.Url,
                     Price = model.Price,
                     Description = model.Description,
-                    ImageUrl = model.ImageUrl
                 };
                 
                 if(_productService.Create(entity))
@@ -289,11 +288,10 @@ namespace ShopApp.WebUI.Controllers
 
             var model = new ProductModel()
             {
-                ProductId = entity.ProductId,
+                ProductId = entity.Id,
                 Name = entity.Name,
                 Url = entity.Url,
-                Price = entity.Price,
-                ImageUrl= entity.ImageUrl,
+                Price = entity.Price,                
                 Description = entity.Description,
                 IsApproved = entity.IsApproved,
                 IsHome = entity.IsHome,
@@ -326,7 +324,7 @@ namespace ShopApp.WebUI.Controllers
                 {
                     var extention = Path.GetExtension(file.FileName);
                     var randomName = string.Format($"{Guid.NewGuid()}{extention}");
-                    entity.ImageUrl = randomName;
+                    //entity.ImageUrl = randomName;
                     var path = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot\\img",randomName);
 
                     using(var stream = new FileStream(path,FileMode.Create))
@@ -371,7 +369,7 @@ namespace ShopApp.WebUI.Controllers
 
             var model = new CategoryModel()
             {
-                CategoryId = entity.CategoryId,
+                CategoryId = entity.Id,
                 Name = entity.Name,
                 Url = entity.Url,
                 Products = entity.ProductCategories.Select(p=>p.Product).ToList()

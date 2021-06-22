@@ -1,6 +1,6 @@
 namespace ShopApp.Model.Entity
 {
-    public class ProductCategory
+    public class ProductCategory: BaseEntity
     {
         public int CategoryId { get; set; }
         public Category Category { get; set; }

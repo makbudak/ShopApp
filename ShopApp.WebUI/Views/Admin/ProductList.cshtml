@@ -23,8 +23,7 @@
                        @foreach (var item in Model.Products)
                         {
                             <tr>
-                                <td>@item.ProductId</td>
-                                <td><img src="~/img/@item.ImageUrl" width="80"></td>
+                                <td>@item.Id</td>
                                 <td>@item.Name</td>
                                 <td>@item.Price</td>
                                 <td>
@@ -44,10 +43,10 @@
                                     }
                                 </td>
                                 <td>
-                                    <a href="/admin/products/@item.ProductId" class="btn btn-primary btn-sm mr-2">Edit</a>
+                                    <a href="/admin/products/@item.Id" class="btn btn-primary btn-sm mr-2">Edit</a>
                                     
                                     <form action="/admin/deleteproduct" method="POST" style="display: inline;">
-                                        <input type="hidden" name="productId" value="@item.ProductId">
+                                        <input type="hidden" name="productId" value="@item.Id">
                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                     </form>
                                 </td>

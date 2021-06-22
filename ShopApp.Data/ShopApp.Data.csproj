@@ -5,6 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20210622082526_Add_ProductImage.cs" />
+    <Compile Remove="Migrations\20210622082526_Add_ProductImage.Designer.cs" />
+    <Compile Remove="Migrations\20210622083141_add_ProductImages.cs" />
+    <Compile Remove="Migrations\20210622083141_add_ProductImages.Designer.cs" />
+    <Compile Remove="Migrations\20210622083654_add_ProductImages.cs" />
+    <Compile Remove="Migrations\20210622083654_add_ProductImages.Designer.cs" />
+    <Compile Remove="Migrations\20210622083900_remove_ProductCategoryPK.cs" />
+    <Compile Remove="Migrations\20210622083900_remove_ProductCategoryPK.Designer.cs" />
+    <Compile Remove="Migrations\20210622084248_remove_ProductCategoryPK.cs" />
+    <Compile Remove="Migrations\20210622084248_remove_ProductCategoryPK.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ShopApp.Model\ShopApp.Model.csproj" />
   </ItemGroup>
 

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace ShopApp.Model.Entity
 {
-    public class Order
-    {       
-        public int Id { get; set; }
+    public class Order : BaseEntity
+    {
         public string OrderNumber { get; set; }
         public DateTime OrderDate { get; set; }
         public string UserId { get; set; }
@@ -26,14 +25,14 @@ namespace ShopApp.Model.Entity
 
     public enum EnumPaymentType
     {
-        CreditCard=0,
-        Eft=1
+        CreditCard = 0,
+        Eft = 1
     }
 
     public enum EnumOrderState
     {
-        waiting=0,
-        unpaid=1,
-        completed=2
-    } 
+        waiting = 0,
+        unpaid = 1,
+        completed = 2
+    }
 }

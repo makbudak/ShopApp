@@ -7,7 +7,9 @@ namespace ShopApp.Model.Entity
     {
         public string OrderNumber { get; set; }
         public DateTime OrderDate { get; set; }
-        public string UserId { get; set; }
+        public int CustomerId { get; set; }
+
+        public Customer Customer { get; set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }

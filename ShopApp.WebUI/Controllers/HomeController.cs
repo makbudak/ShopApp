@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using ShopApp.Business.Concrete;
+using ShopApp.Business.Services;
 using ShopApp.Model.Dto.Product;
 
 namespace ShopApp.WebUI.Controllers

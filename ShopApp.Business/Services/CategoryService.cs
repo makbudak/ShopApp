@@ -1,11 +1,10 @@
-using System.Collections.Generic;
-using ShopApp.Business.Abstract;
 using ShopApp.Data.Repositories;
 using ShopApp.Model.Entity;
+using System.Collections.Generic;
 
-namespace ShopApp.Business.Concrete
+namespace ShopApp.Business.Services
 {
-    public interface ICategoryService : IValidator<Category>
+    public interface ICategoryService
     {
         Category GetById(int id);
 
@@ -16,15 +15,18 @@ namespace ShopApp.Business.Concrete
         void Create(Category entity);
 
         void Update(Category entity);
+
         void Delete(Category entity);
+        
         void DeleteFromCategory(int productId, int categoryId);
     }
 
 
-    public class CategoryManager : ICategoryService
+    public class CategoryService : ICategoryService
     {
-         private readonly IUnitOfWork _unitofwork;
-        public CategoryManager(IUnitOfWork unitofwork)
+        private readonly IUnitOfWork _unitofwork;
+
+        public CategoryService(IUnitOfWork unitofwork)
         {
             _unitofwork = unitofwork;
         }
@@ -45,7 +47,7 @@ namespace ShopApp.Business.Concrete
 
         public void DeleteFromCategory(int productId, int categoryId)
         {
-            _unitofwork.Categories.DeleteFromCategory(productId,categoryId);
+            _unitofwork.Categories.DeleteFromCategory(productId, categoryId);
         }
 
         public List<Category> GetAll()
@@ -55,7 +57,7 @@ namespace ShopApp.Business.Concrete
 
         public Category GetById(int id)
         {
-           return _unitofwork.Categories.GetById(id);
+            return _unitofwork.Categories.GetById(id);
         }
 
         public Category GetByIdWithProducts(int categoryId)

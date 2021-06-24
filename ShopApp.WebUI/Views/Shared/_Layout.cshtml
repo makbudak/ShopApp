@@ -3,34 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
-    <link rel="stylesheet" href="/css/bootstrap.min.css" crossorigin="anonymous">
-     @RenderSection("Css",false)
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/kendo.bootstrap-v4.min.css" rel="stylesheet" />
+    @RenderSection("Css", false)
     <link rel="stylesheet" href="~/css/style.css">
-    <title>ShopApp</title>
+    <title>Shop App</title>
 </head>
 <body>
 
-    @await Html.PartialAsync("_navbar")          
+    @await Html.PartialAsync("_navbar")
 
     <main class="my-3">
-        <div class="container">     
-
-            @if(TempData["message"]!=null)
-            {
-                <partial name="_ResultMessage" model="@(TempData.Get<AlertMessage>("message"))"/>
-            }      
-             
-            @RenderBody()             
+        <div class="container pt-3">
+            @RenderBody()
         </div>
     </main>
 
-    <footer class="py-5 bg-dark text-white text-center">
-        Shop App
+    <footer class="navbar bg-light fixed-bottom border-top">
+        <div class="container">
+            Shop App @DateTime.Now.Year
+        </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="~/js/bootstrap.bundle.min.js"></script>
-    @RenderSection("Scripts",false)
+    <script src="~/js/lib/jquery-3.6.0.min.js"></script>
+    <script src="~/js/lib/bootstrap.bundle.min.js"></script>
+    <script src="~/js/lib/kendo.all.min.js"></script>
+    <script src="~/js/lib/kendo.culture.tr-TR.min.js"></script>
+    <script src="~/js/site.js"></script>
+    @RenderSection("Scripts", false)
 </body>
 </html>

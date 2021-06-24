@@ -2,16 +2,21 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
-namespace ShopApp.WebUI.EmailServices
+namespace ShopApp.Business.Services
 {
-    public class SmtpEmailSender : IEmailSender
+    public interface IEmailSenderService
+    {
+        Task SendEmailAsync(string email, string subject, string htmlMessage);
+    }
+
+    public class SmtpEmailSenderService : IEmailSenderService
     {
         private string _host;
         private int _port;
         private bool _enableSSL;
         private string _username;
         private string _password;
-        public SmtpEmailSender(string host,int port,bool enableSSL, string username,string password)
+        public SmtpEmailSenderService(string host,int port,bool enableSSL, string username,string password)
         {
             this._host = host;
             this._port = port;

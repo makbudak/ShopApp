@@ -1,28 +1,28 @@
 using ShopApp.Data.Repositories;
 using ShopApp.Model.Entity;
 
-namespace ShopApp.Business.Concrete
+namespace ShopApp.Business.Services
 {
     public interface ICartService
     {
-        void InitializeCart(string userId);
-        Cart GetCartByUserId(string userId);
-        void AddToCart(string userId, int productId, int quantity);
-        void DeleteFromCart(string userId, int productId);
+        void InitializeCart(int customerId);
+        Cart GetCartByCustomerId(int customerId);
+        void AddToCart(int customerId, int productId, int quantity);
+        void DeleteFromCart(int customerId, int productId);
         void ClearCart(int cartId);
     }
 
-    public class CartManager : ICartService
+    public class CartService : ICartService
     {
         private readonly IUnitOfWork _unitofwork;
-        public CartManager(IUnitOfWork unitofwork)
+        public CartService(IUnitOfWork unitofwork)
         {
             _unitofwork = unitofwork;
         }
 
-        public void AddToCart(string userId, int productId, int quantity)
+        public void AddToCart(int customerId, int productId, int quantity)
         {
-            var cart = GetCartByUserId(userId);
+            var cart = GetCartByCustomerId(customerId);
 
             if(cart!=null)
             {
@@ -53,23 +53,23 @@ namespace ShopApp.Business.Concrete
             _unitofwork.Carts.ClearCart(cartId);
         }
 
-        public void DeleteFromCart(string userId, int productId)
+        public void DeleteFromCart(int customerId, int productId)
         {
-            var cart = GetCartByUserId(userId);
+            var cart = GetCartByCustomerId(customerId);
             if(cart!=null)
             {
                 _unitofwork.Carts.DeleteFromCart(cart.Id,productId);
             }   
         }
 
-        public Cart GetCartByUserId(string userId)
+        public Cart GetCartByCustomerId(int customerId)
         {
-            return _unitofwork.Carts.GetByUserId(userId);
+            return _unitofwork.Carts.GetByUserId(customerId);
         }
 
-        public void InitializeCart(string userId)
+        public void InitializeCart(int customerId)
         {
-            _unitofwork.Carts.Create(new Cart(){UserId = userId});
+            _unitofwork.Carts.Create(new Cart(){CustomerId = customerId});
             _unitofwork.Save();
         }
     }

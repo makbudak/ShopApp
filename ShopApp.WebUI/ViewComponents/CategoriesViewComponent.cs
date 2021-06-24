@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using ShopApp.Business.Abstract;
-using ShopApp.Business.Concrete;
+using ShopApp.Business.Services;
 
 namespace ShopApp.WebUI.ViewComponents
 {

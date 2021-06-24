@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ShopApp.Business.Services;
 using ShopApp.Model.Dto.User;
 using System.Linq;
 
@@ -9,24 +10,23 @@ namespace ShopApp.WebUI.API
     [ApiController]
     public class UserController : ControllerBase
     {
-        private UserManager<UserModel> _userManager;
+        private readonly IUserService _userService;
 
-        public UserController(UserManager<UserModel> userManager)
+        public UserController(IUserService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var list = _userManager.Users.Select(x => new UserGridModel
+            var list = _userService.GetAll().Select(x => new UserModel
             {
                 Id = x.Id,
-                UserName = x.UserName,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
+                FirstName = x.Name,
+                LastName = x.Surname,
                 Email = x.Email,
-                Phone = x.PhoneNumber,
+                Phone = x.Phone,
                 EmailConfirmed = x.EmailConfirmed
             }).ToList();
 

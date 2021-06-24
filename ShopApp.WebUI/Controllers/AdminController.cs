@@ -1,60 +1,52 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using ShopApp.Business.Concrete;
+using ShopApp.Business.Services;
+using ShopApp.Extensions;
 using ShopApp.Model.Dto;
 using ShopApp.Model.Dto.Product;
 using ShopApp.Model.Dto.User;
 using ShopApp.Model.Entity;
-using ShopApp.WebUI.Extensions;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ShopApp.WebUI.Controllers
-{
-    // sadikturan, efeturan, yigitbilgi => admin
-    // adabilgi => customer
-    [Authorize(Roles="admin")]
-    public class AdminController: Controller
+{    
+    [Authorize(Roles = "admin")]
+    public class AdminController : Controller
     {
         private IProductService _productService;
         private ICategoryService _categoryService;
-        private RoleManager<IdentityRole> _roleManager;
-        private UserManager<UserModel> _userManager;
+        private IUserService _userService;
         public AdminController(IProductService productService,
                                ICategoryService categoryService,
-                               RoleManager<IdentityRole> roleManager,
-                               UserManager<UserModel> userManager)
+                               IUserService userService)
         {
             _productService = productService;
             _categoryService = categoryService;
-            _roleManager = roleManager;
-            _userManager = userManager;
+            _userService = userService;
         }
 
-
-        public async Task<IActionResult> UserEdit(string id)
+        public IActionResult UserEdit(int id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if(user!=null)
+            var user = _userService.GetById(id);
+            if (user != null)
             {
-                var selectedRoles = await _userManager.GetRolesAsync(user);
-                var roles = _roleManager.Roles.Select(i=>i.Name);
+                //var selectedRoles = await _userManager.GetRolesAsync(user);
+                //var roles = _roleManager.Roles.Select(i=>i.Name);
 
-                ViewBag.Roles = roles;
-                return View(new UserDetailsModel(){
+                //ViewBag.Roles = roles;
+                return View(new UserDetailsModel()
+                {
                     UserId = user.Id,
-                    UserName = user.UserName,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
+                    FirstName = user.Name,
+                    LastName = user.Surname,
                     Email = user.Email,
                     EmailConfirmed = user.EmailConfirmed,
-                    SelectedRoles = selectedRoles
+                    //SelectedRoles = selectedRoles
                 });
             }
             return Redirect("~/admin/user/list");
@@ -62,30 +54,29 @@ namespace ShopApp.WebUI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> UserEdit(UserDetailsModel model,string[] selectedRoles)
+        public async Task<IActionResult> UserEdit(UserDetailsModel model, string[] selectedRoles)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByIdAsync(model.UserId);
-                if(user!=null)
+                var user = _userService.GetById(model.UserId);
+                if (user != null)
                 {
-                    user.FirstName = model.FirstName;
-                    user.LastName = model.LastName;
-                    user.UserName = model.UserName;
+                    user.Name = model.FirstName;
+                    user.Surname = model.LastName;                    
                     user.Email = model.Email;
                     user.EmailConfirmed = model.EmailConfirmed;
 
-                    var result = await _userManager.UpdateAsync(user);
+                    //var result = await _userManager.UpdateAsync(user);
 
-                    if(result.Succeeded)
-                    {
-                        var userRoles = await _userManager.GetRolesAsync(user);
-                        selectedRoles = selectedRoles?? new string[]{};
-                        await _userManager.AddToRolesAsync(user,selectedRoles.Except(userRoles).ToArray<string>());
-                        await _userManager.RemoveFromRolesAsync(user,userRoles.Except(selectedRoles).ToArray<string>());
+                    //if (result.Succeeded)
+                    //{
+                    //    var userRoles = await _userManager.GetRolesAsync(user);
+                    //    selectedRoles = selectedRoles ?? new string[] { };
+                    //    await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles).ToArray<string>());
+                    //    await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles).ToArray<string>());
 
-                        return Redirect("/admin/user/list");
-                    }
+                    //    return Redirect("/admin/user/list");
+                    //}
                 }
                 return Redirect("/admin/user/list");
             }
@@ -93,103 +84,104 @@ namespace ShopApp.WebUI.Controllers
             return View(model);
 
         }
-        
-        public IActionResult UserList()
-        {
-            return View(_userManager.Users);
-        }
 
-        public async Task<IActionResult> RoleEdit(string id)
-        {
-            var role = await _roleManager.FindByIdAsync(id);
+        //public IActionResult UserList()
+        //{
+        //    return View(_userManager.Users);
+        //}
 
-            var members = new List<UserModel>();
-            var nonmembers = new List<UserModel>();
+        //public async Task<IActionResult> RoleEdit(string id)
+        //{
+        //    var role = await _roleManager.FindByIdAsync(id);
 
-            foreach (var user in _userManager.Users)
-            {
-                var list = await _userManager.IsInRoleAsync(user,role.Name)
-                                ?members:nonmembers;
-                list.Add(user);
-            }
-            var model = new RoleDetails()
-            {
-                Role = role,
-                Members = members,
-                NonMembers = nonmembers
-            };
-            return View(model);
-        }
-        [HttpPost]
-        public async Task<IActionResult> RoleEdit(RoleEditModel model)
-        {
-            if(ModelState.IsValid)
-            {
-                foreach (var userId in model.IdsToAdd ?? new string[]{})
-                {
-                    var user = await _userManager.FindByIdAsync(userId);
-                    if(user!=null)
-                    {
-                        var result = await _userManager.AddToRoleAsync(user,model.RoleName);
-                        if(!result.Succeeded)
-                        {
-                              foreach (var error in result.Errors)
-                              { 
-                                ModelState.AddModelError("", error.Description);  
-                              }  
-                        }
-                    }
-                }
-          
-                foreach (var userId in model.IdsToDelete ?? new string[]{})
-                {
-                    var user = await _userManager.FindByIdAsync(userId);
-                    if(user!=null)
-                    {
-                        var result = await _userManager.RemoveFromRoleAsync(user,model.RoleName);
-                        if(!result.Succeeded)
-                        {
-                              foreach (var error in result.Errors)
-                              { 
-                                ModelState.AddModelError("", error.Description);  
-                              }  
-                        }
-                    }
-                }
-            }
-            return Redirect("/admin/role/"+model.RoleId);
-        }
-        
-        public IActionResult RoleList()
-        {
-            return View(_roleManager.Roles);
-        }
+        //    var members = new List<UserModel>();
+        //    var nonmembers = new List<UserModel>();
 
-        public IActionResult RoleCreate()
-        {
-            return View();
-        }
-        [HttpPost]        
-        public async Task<IActionResult> RoleCreate(RoleModel model)
-        {
-            if(ModelState.IsValid)
-            {
-                var result = await _roleManager.CreateAsync(new IdentityRole(model.Name));
-                if(result.Succeeded)
-                {
-                    return RedirectToAction("RoleList");
-                }else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("",error.Description);
-                    }
-                }
-            }
-            return View(model);
-        }
-        
-        
+        //    foreach (var user in _userManager.Users)
+        //    {
+        //        var list = await _userManager.IsInRoleAsync(user, role.Name)
+        //                        ? members : nonmembers;
+        //        list.Add(user);
+        //    }
+        //    var model = new RoleDetails()
+        //    {
+        //        Role = role,
+        //        Members = members,
+        //        NonMembers = nonmembers
+        //    };
+        //    return View(model);
+        //}
+        //[HttpPost]
+        //public async Task<IActionResult> RoleEdit(RoleEditModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        foreach (var userId in model.IdsToAdd ?? new string[] { })
+        //        {
+        //            var user = await _userManager.FindByIdAsync(userId);
+        //            if (user != null)
+        //            {
+        //                var result = await _userManager.AddToRoleAsync(user, model.RoleName);
+        //                if (!result.Succeeded)
+        //                {
+        //                    foreach (var error in result.Errors)
+        //                    {
+        //                        ModelState.AddModelError("", error.Description);
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //        foreach (var userId in model.IdsToDelete ?? new string[] { })
+        //        {
+        //            var user = await _userManager.FindByIdAsync(userId);
+        //            if (user != null)
+        //            {
+        //                var result = await _userManager.RemoveFromRoleAsync(user, model.RoleName);
+        //                if (!result.Succeeded)
+        //                {
+        //                    foreach (var error in result.Errors)
+        //                    {
+        //                        ModelState.AddModelError("", error.Description);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return Redirect("/admin/role/" + model.RoleId);
+        //}
+
+        //public IActionResult RoleList()
+        //{
+        //    return View(_roleManager.Roles);
+        //}
+
+        //public IActionResult RoleCreate()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //public async Task<IActionResult> RoleCreate(RoleModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var result = await _roleManager.CreateAsync(new IdentityRole(model.Name));
+        //        if (result.Succeeded)
+        //        {
+        //            return RedirectToAction("RoleList");
+        //        }
+        //        else
+        //        {
+        //            foreach (var error in result.Errors)
+        //            {
+        //                ModelState.AddModelError("", error.Description);
+        //            }
+        //        }
+        //    }
+        //    return View(model);
+        //}
+
+
         public IActionResult ProductList()
         {
             return View(new ProductListViewModel()
@@ -212,7 +204,7 @@ namespace ShopApp.WebUI.Controllers
         [HttpPost]
         public IActionResult ProductCreate(ProductModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var entity = new Product()
                 {
@@ -221,27 +213,26 @@ namespace ShopApp.WebUI.Controllers
                     Price = model.Price,
                     Description = model.Description,
                 };
-                
-                if(_productService.Create(entity))
-                {                    
+
+                if (_productService.Create(entity))
+                {
                     TempData.Put("message", new AlertMessage()
                     {
-                        Title="kayıt eklendi",
-                        Message="kayıt eklendi",
-                        AlertType="success"
+                        Title = "kayıt eklendi",
+                        Message = "kayıt eklendi",
+                        AlertType = "success"
                     });
                     return RedirectToAction("ProductList");
                 }
                 TempData.Put("message", new AlertMessage()
                 {
-                    Title="hata",
-                    Message=_productService.ErrorMessage,
-                    AlertType="danger"
-                });                
+                    Title = "hata",
+                    AlertType = "danger"
+                });
 
                 return View(model);
-            }            
-            return View(model);         
+            }
+            return View(model);
         }
         public IActionResult CategoryCreate()
         {
@@ -251,22 +242,22 @@ namespace ShopApp.WebUI.Controllers
         [HttpPost]
         public IActionResult CategoryCreate(CategoryModel model)
         {
-             if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var entity = new Category()
                 {
                     Name = model.Name,
-                    Url = model.Url            
+                    Url = model.Url
                 };
-                
+
                 _categoryService.Create(entity);
 
                 TempData.Put("message", new AlertMessage()
                 {
-                    Title="kayıt eklendi.",
-                    Message=$"{entity.Name} isimli category eklendi.",
-                    AlertType="success"
-                });             
+                    Title = "kayıt eklendi.",
+                    Message = $"{entity.Name} isimli category eklendi.",
+                    AlertType = "success"
+                });
 
                 return RedirectToAction("CategoryList");
             }
@@ -274,16 +265,16 @@ namespace ShopApp.WebUI.Controllers
         }
         public IActionResult ProductEdit(int? id)
         {
-            if(id==null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var entity = _productService.GetByIdWithCategories((int)id);
 
-            if(entity==null)
+            if (entity == null)
             {
-                 return NotFound();
+                return NotFound();
             }
 
             var model = new ProductModel()
@@ -291,11 +282,11 @@ namespace ShopApp.WebUI.Controllers
                 ProductId = entity.Id,
                 Name = entity.Name,
                 Url = entity.Url,
-                Price = entity.Price,                
+                Price = entity.Price,
                 Description = entity.Description,
                 IsApproved = entity.IsApproved,
                 IsHome = entity.IsHome,
-                SelectedCategories = entity.ProductCategories.Select(i=>i.Category).ToList()
+                SelectedCategories = entity.ProductCategories.Select(i => i.Category).ToList()
             };
 
             ViewBag.Categories = _categoryService.GetAll();
@@ -304,12 +295,12 @@ namespace ShopApp.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ProductEdit(ProductModel model,int[] categoryIds,IFormFile file)
+        public async Task<IActionResult> ProductEdit(ProductModel model, int[] categoryIds, IFormFile file)
         {
-            if(ModelState.IsValid)
-            {        
+            if (ModelState.IsValid)
+            {
                 var entity = _productService.GetById(model.ProductId);
-                if(entity==null)
+                if (entity == null)
                 {
                     return NotFound();
                 }
@@ -320,51 +311,50 @@ namespace ShopApp.WebUI.Controllers
                 entity.IsHome = model.IsHome;
                 entity.IsApproved = model.IsApproved;
 
-                if(file!=null)
+                if (file != null)
                 {
                     var extention = Path.GetExtension(file.FileName);
                     var randomName = string.Format($"{Guid.NewGuid()}{extention}");
                     //entity.ImageUrl = randomName;
-                    var path = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot\\img",randomName);
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", randomName);
 
-                    using(var stream = new FileStream(path,FileMode.Create))
+                    using (var stream = new FileStream(path, FileMode.Create))
                     {
                         await file.CopyToAsync(stream);
                     }
                 }
 
-                if(_productService.Update(entity,categoryIds))
-                {                    
-                     TempData.Put("message", new AlertMessage()
+                if (_productService.Update(entity, categoryIds))
+                {
+                    TempData.Put("message", new AlertMessage()
                     {
-                        Title="kayıt güncellendi",
-                        Message="kayıt güncellendi",
-                        AlertType="success"
-                    });  
+                        Title = "kayıt güncellendi",
+                        Message = "kayıt güncellendi",
+                        AlertType = "success"
+                    });
                     return RedirectToAction("ProductList");
                 }
-                 TempData.Put("message", new AlertMessage()
-                    {
-                        Title="hata",
-                        Message=_productService.ErrorMessage,
-                        AlertType="danger"
-                    }); 
+                TempData.Put("message", new AlertMessage()
+                {
+                    Title = "hata",
+                    AlertType = "danger"
+                });
             }
             ViewBag.Categories = _categoryService.GetAll();
             return View(model);
         }
         public IActionResult CategoryEdit(int? id)
         {
-            if(id==null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var entity = _categoryService.GetByIdWithProducts((int)id);
 
-            if(entity==null)
+            if (entity == null)
             {
-                 return NotFound();
+                return NotFound();
             }
 
             var model = new CategoryModel()
@@ -372,18 +362,18 @@ namespace ShopApp.WebUI.Controllers
                 CategoryId = entity.Id,
                 Name = entity.Name,
                 Url = entity.Url,
-                Products = entity.ProductCategories.Select(p=>p.Product).ToList()
+                Products = entity.ProductCategories.Select(p => p.Product).ToList()
             };
             return View(model);
         }
-        
+
         [HttpPost]
         public IActionResult CategoryEdit(CategoryModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var entity = _categoryService.GetById(model.CategoryId);
-                if(entity==null)
+                if (entity == null)
                 {
                     return NotFound();
                 }
@@ -393,12 +383,12 @@ namespace ShopApp.WebUI.Controllers
                 _categoryService.Update(entity);
 
                 var msg = new AlertMessage()
-                {            
+                {
                     Message = $"{entity.Name} isimli category güncellendi.",
                     AlertType = "success"
                 };
 
-                TempData["message"] =  JsonConvert.SerializeObject(msg);
+                TempData["message"] = JsonConvert.SerializeObject(msg);
 
                 return RedirectToAction("CategoryList");
             }
@@ -408,18 +398,18 @@ namespace ShopApp.WebUI.Controllers
         {
             var entity = _productService.GetById(productId);
 
-            if(entity!=null)
+            if (entity != null)
             {
                 _productService.Delete(entity);
             }
 
-              var msg = new AlertMessage()
-            {            
+            var msg = new AlertMessage()
+            {
                 Message = $"{entity.Name} isimli ürün silindi.",
                 AlertType = "danger"
             };
 
-            TempData["message"] =  JsonConvert.SerializeObject(msg);
+            TempData["message"] = JsonConvert.SerializeObject(msg);
 
             return RedirectToAction("ProductList");
         }
@@ -427,27 +417,27 @@ namespace ShopApp.WebUI.Controllers
         {
             var entity = _categoryService.GetById(categoryId);
 
-            if(entity!=null)
+            if (entity != null)
             {
                 _categoryService.Delete(entity);
             }
 
-              var msg = new AlertMessage()
-            {            
+            var msg = new AlertMessage()
+            {
                 Message = $"{entity.Name} isimli category silindi.",
                 AlertType = "danger"
             };
 
-            TempData["message"] =  JsonConvert.SerializeObject(msg);
+            TempData["message"] = JsonConvert.SerializeObject(msg);
 
             return RedirectToAction("CategoryList");
         }
-    
+
         [HttpPost]
-        public IActionResult DeleteFromCategory(int productId,int categoryId)
+        public IActionResult DeleteFromCategory(int productId, int categoryId)
         {
-            _categoryService.DeleteFromCategory(productId,categoryId);
-            return Redirect("/admin/categories/"+categoryId);
+            _categoryService.DeleteFromCategory(productId, categoryId);
+            return Redirect("/admin/categories/" + categoryId);
         }
     }
 }

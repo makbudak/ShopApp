@@ -16,8 +16,7 @@ namespace ShopApp.Data.Repositories
         void Update(Product entity, int[] categoryIds);
     }
 
-    public class ProductRepository :
-        GenericRepository<Product>, IProductRepository
+    public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
         public ProductRepository(ShopContext context) : base(context)
         {

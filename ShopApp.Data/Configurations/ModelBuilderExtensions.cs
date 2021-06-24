@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using ShopApp.Extensions;
 using ShopApp.Model.Entity;
+using ShopApp.Model.Enum;
+using System;
 
 namespace ShopApp.Data.Configurations
 {
@@ -41,8 +44,12 @@ namespace ShopApp.Data.Configurations
                 new ProductCategory() { CategoryId = 1, ProductId = 4, Id = 8 },
                 new ProductCategory() { CategoryId = 1, ProductId = 5, Id = 9 },
                 new ProductCategory() { CategoryId = 2, ProductId = 5, Id = 10 }
+                );
 
-           );
+            builder.Entity<User>().HasData(
+                new User() { Deleted = false, Email = "akbudak.mehmet@gmail.com", EmailConfirmed = true, Id = 1, InsertedDate = DateTime.Now, IsActive = true, Name = "Mehmet", Surname = "Akbudak", UserType = UserType.SuperAdmin, Password = HashExtension.Sha256("1") }
+                );
+
         }
     }
 }

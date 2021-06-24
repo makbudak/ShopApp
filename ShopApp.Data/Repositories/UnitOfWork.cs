@@ -8,8 +8,9 @@ namespace ShopApp.Data.Repositories
         ICategoryRepository Categories { get; }
         IOrderRepository Orders { get; }
         IProductRepository Products { get; }
+        ICustomerRepository Customers { get; }
+        IUserRepository Users { get; }
         void Save();
-
     }
 
     public class UnitOfWork : IUnitOfWork
@@ -24,6 +25,8 @@ namespace ShopApp.Data.Repositories
         private CategoryRepository _categoryRepository;
         private OrderRepository _orderRepository;
         private ProductRepository _productRepository;
+        private CustomerRepository _customerRepository;
+        private UserRepository _userRepository;
 
         public ICartRepository Carts =>
             _cartRepository = _cartRepository ?? new CartRepository(_context);
@@ -36,6 +39,10 @@ namespace ShopApp.Data.Repositories
 
         public IProductRepository Products =>
             _productRepository = _productRepository ?? new ProductRepository(_context);
+
+        public ICustomerRepository Customers => _customerRepository = _customerRepository ?? new CustomerRepository(_context);
+
+        public IUserRepository Users => _userRepository = _userRepository ?? new UserRepository(_context);
 
         public void Dispose()
         {

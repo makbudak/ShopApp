@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 
-namespace ShopApp.WebUI.Extensions
+namespace ShopApp.Extensions
 {
     public static class TempDataExtensions
     {

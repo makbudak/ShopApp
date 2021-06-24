@@ -6,7 +6,7 @@ namespace ShopApp.Data.Repositories
 {
     public interface ICartRepository : IRepository<Cart>
     {
-        Cart GetByUserId(string userId);
+        Cart GetByUserId(int customerId);
         void DeleteFromCart(int cartId, int productId);
         void ClearCart(int cartId);
     }
@@ -34,12 +34,12 @@ namespace ShopApp.Data.Repositories
             ShopContext.Database.ExecuteSqlRaw(cmd, cartId, productId);
         }
 
-        public Cart GetByUserId(string userId)
+        public Cart GetByUserId(int customerId)
         {
             return ShopContext.Carts
                         .Include(i => i.CartItems)
                         .ThenInclude(i => i.Product)
-                        .FirstOrDefault(i => i.UserId == userId);
+                        .FirstOrDefault(i => i.CustomerId == customerId);
         }
 
         public override void Update(Cart entity)

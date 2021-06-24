@@ -2,6 +2,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\ShopApp.Extensions\ShopApp.Extensions.csproj" />
     <ProjectReference Include="..\ShopApp.Model\ShopApp.Model.csproj" />
     <ProjectReference Include="..\ShopApp.Data\ShopApp.Data.csproj" />
   </ItemGroup>

@@ -1,11 +1,10 @@
-using System.Collections.Generic;
-using ShopApp.Business.Abstract;
 using ShopApp.Data.Repositories;
 using ShopApp.Model.Entity;
+using System.Collections.Generic;
 
-namespace ShopApp.Business.Concrete
+namespace ShopApp.Business.Services
 {
-    public interface IProductService : IValidator<Product>
+    public interface IProductService
     {
         Product GetById(int id);
         Product GetByIdWithCategories(int id);
@@ -22,19 +21,18 @@ namespace ShopApp.Business.Concrete
         bool Update(Product entity, int[] categoryIds);
     }
 
-    public class ProductManager : IProductService
+    public class ProductService : IProductService
     {
-
-         private readonly IUnitOfWork _unitofwork;
-        public ProductManager(IUnitOfWork unitofwork)
+        private readonly IUnitOfWork _unitofwork;
+        public ProductService(IUnitOfWork unitofwork)
         {
             _unitofwork = unitofwork;
         }
 
         public bool Create(Product entity)
         {
-            if(Validation(entity))
-            {       
+            if (Validation(entity))
+            {
                 _unitofwork.Products.Create(entity);
                 _unitofwork.Save();
                 return true;
@@ -50,7 +48,7 @@ namespace ShopApp.Business.Concrete
         }
 
         public List<Product> GetAll()
-        {            
+        {
             return _unitofwork.Products.GetAll();
         }
 
@@ -71,7 +69,7 @@ namespace ShopApp.Business.Concrete
 
         public List<Product> GetHomePageProducts()
         {
-           return _unitofwork.Products.GetHomePageProducts();
+            return _unitofwork.Products.GetHomePageProducts();
         }
 
         public Product GetProductDetails(string url)
@@ -79,36 +77,36 @@ namespace ShopApp.Business.Concrete
             return _unitofwork.Products.GetProductDetails(url);
         }
 
-        public List<Product> GetProductsByCategory(string name,int page,int pageSize)
+        public List<Product> GetProductsByCategory(string name, int page, int pageSize)
         {
-            return _unitofwork.Products.GetProductsByCategory(name,page,pageSize);
+            return _unitofwork.Products.GetProductsByCategory(name, page, pageSize);
         }
 
         public List<Product> GetSearchResult(string searchString)
         {
-           return _unitofwork.Products.GetSearchResult(searchString);
+            return _unitofwork.Products.GetSearchResult(searchString);
         }
 
         public void Update(Product entity)
-        {            
+        {
             _unitofwork.Products.Update(entity);
             _unitofwork.Save();
         }
 
         public bool Update(Product entity, int[] categoryIds)
         {
-            if(Validation(entity))
+            if (Validation(entity))
             {
-                if(categoryIds.Length==0)
+                if (categoryIds.Length == 0)
                 {
                     ErrorMessage += "Ürün için en az bir kategori seçmelisiniz.";
                     return false;
                 }
-                 _unitofwork.Products.Update(entity,categoryIds);
-                 _unitofwork.Save();
+                _unitofwork.Products.Update(entity, categoryIds);
+                _unitofwork.Save();
                 return true;
             }
-            return false;          
+            return false;
         }
 
         public string ErrorMessage { get; set; }
@@ -117,16 +115,16 @@ namespace ShopApp.Business.Concrete
         {
             var isValid = true;
 
-            if(string.IsNullOrEmpty(entity.Name))
+            if (string.IsNullOrEmpty(entity.Name))
             {
                 ErrorMessage += "ürün ismi girmelisiniz.\n";
-                isValid=false;
+                isValid = false;
             }
 
-            if(entity.Price<0)
+            if (entity.Price < 0)
             {
                 ErrorMessage += "ürün fiyatı negatif olamaz.\n";
-                isValid=false;
+                isValid = false;
             }
 
             return isValid;

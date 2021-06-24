@@ -8,11 +8,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using ShopApp.Business.Concrete;
 using ShopApp.Model.Entity;
-using ShopApp.WebUI.Identity;
 using ShopApp.Model.Dto;
 using ShopApp.Model.Dto.User;
+using ShopApp.Business.Services;
 
 namespace ShopApp.WebUI.Controllers
 {
@@ -21,16 +20,17 @@ namespace ShopApp.WebUI.Controllers
     {
         private ICartService _cartService;
         private IOrderService _orderService;
-        private UserManager<UserModel> _userManager;
-        public CartController(IOrderService orderService, ICartService cartService, UserManager<UserModel> userManager)
+        private ICustomerService _customerService;
+
+        public CartController(IOrderService orderService, ICartService cartService, ICustomerService customerService)
         {
             _cartService = cartService;
             _orderService = orderService;
-            _userManager = userManager;
+            _customerService = customerService;
         }
         public IActionResult Index()
         {
-            var cart = _cartService.GetCartByUserId(_userManager.GetUserId(User));
+            var cart = _cartService.GetCartByCustomerId(1);
             var model = new CartModel();
             if (cart != null)
             {
@@ -50,22 +50,20 @@ namespace ShopApp.WebUI.Controllers
         [HttpPost]
         public IActionResult AddToCart(int productId, int quantity)
         {
-            var userId = _userManager.GetUserId(User);
-            _cartService.AddToCart(userId, productId, quantity);
+            _cartService.AddToCart(1, productId, quantity);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public IActionResult DeleteFromCart(int productId)
         {
-            var userId = _userManager.GetUserId(User);
-            _cartService.DeleteFromCart(userId, productId);
+            _cartService.DeleteFromCart(1, productId);
             return RedirectToAction("Index");
         }
 
         public IActionResult Checkout()
         {
-            var cart = _cartService.GetCartByUserId(_userManager.GetUserId(User));
+            var cart = _cartService.GetCartByCustomerId(1);
 
             var orderModel = new OrderModel();
 
@@ -92,9 +90,7 @@ namespace ShopApp.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userId = _userManager.GetUserId(User);
-                var cart = _cartService.GetCartByUserId(userId);
-
+                var cart = _cartService.GetCartByCustomerId(1);
                 model.CartModel = new CartModel()
                 {
                     CartId = cart.Id,
@@ -113,7 +109,7 @@ namespace ShopApp.WebUI.Controllers
 
                 if (payment.Status == "success")
                 {
-                    SaveOrder(model, payment, userId);
+                    SaveOrder(model, payment, 1);
                     ClearCart(model.CartModel.CartId);
                     return View("Success");
                 }
@@ -133,8 +129,8 @@ namespace ShopApp.WebUI.Controllers
 
         public IActionResult GetOrders()
         {
-            var userId = _userManager.GetUserId(User);
-            var orders = _orderService.GetOrders(userId);
+            var user = _customerService.GetById(1);
+            var orders = _orderService.GetOrders(user.Id);
 
             var orderListModel = new List<OrderListModel>();
             OrderListModel orderModel;
@@ -175,7 +171,7 @@ namespace ShopApp.WebUI.Controllers
             _cartService.ClearCart(cartId);
         }
 
-        private void SaveOrder(OrderModel model, Payment payment, string userId)
+        private void SaveOrder(OrderModel model, Payment payment, int customerId)
         {
             var order = new Order();
 
@@ -187,7 +183,7 @@ namespace ShopApp.WebUI.Controllers
             order.OrderDate = new DateTime();
             order.FirstName = model.FirstName;
             order.LastName = model.LastName;
-            order.UserId = userId;
+            order.CustomerId = 1;
             order.Address = model.Address;
             order.Phone = model.Phone;
             order.Email = model.Email;

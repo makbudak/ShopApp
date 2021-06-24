@@ -18,6 +18,14 @@ namespace ShopApp.Data.Repositories
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<RoleAccessRight> RoleAccessRights { get; set; }
+        public DbSet<AccessRight> AccessRights { get; set; }
+        public DbSet<AccessRightCategory> AccessRightCategories { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<CustomerAddress> CustomerAddresses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

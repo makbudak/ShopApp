@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ShopApp.Data.Configurations;
 using ShopApp.Model.Entity;
 
-namespace ShopApp.Data.Repositories
+namespace ShopApp.Data
 {
     public class ShopContext : DbContext
     {

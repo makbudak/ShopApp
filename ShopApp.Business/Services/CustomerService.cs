@@ -1,7 +1,10 @@
-﻿using ShopApp.Data.Repositories;
+﻿using ShopApp.Data.GenericRepository;
 using ShopApp.Extensions;
+using ShopApp.Model.Dto;
 using ShopApp.Model.Entity;
+using System;
 using System.Linq;
+using System.Net;
 
 namespace ShopApp.Business.Services
 {
@@ -10,30 +13,35 @@ namespace ShopApp.Business.Services
         Customer GetById(int id);
 
         Customer GetByEmail(string email);
-        
+
         bool IsEmailConfirmed(string email);
 
-        bool LoginControl(string email, string password);
+        ServiceResult Login(string email, string password);
+
+        ServiceResult Register(RegisterModel model);
     }
 
     public class CustomerService : ICustomerService
     {
         private readonly IUnitOfWork _unitofwork;
+        private readonly IEmailSenderService _emailSenderService;
 
-        public CustomerService(IUnitOfWork unitOfWork)
+        public CustomerService(IUnitOfWork unitOfWork, 
+            IEmailSenderService emailSenderService)
         {
             _unitofwork = unitOfWork;
+            _emailSenderService = emailSenderService;
         }
 
         public Customer GetByEmail(string email)
         {
-            return _unitofwork.Customers.GetAll()
-                .FirstOrDefault(x => x.Email == email && !x.Deleted);
+            return _unitofwork.Repository<Customer>()
+                .Get(x => x.Email == email && !x.Deleted);
         }
 
         public Customer GetById(int id)
         {
-            return _unitofwork.Customers.GetById(id);
+            return _unitofwork.Repository<Customer>().Get(x => x.Id == id);
         }
 
         public bool IsEmailConfirmed(string email)
@@ -45,10 +53,68 @@ namespace ShopApp.Business.Services
                 return customer.EmailConfirmed;
         }
 
-        public bool LoginControl(string email, string password)
+        public ServiceResult Login(string email, string password)
         {
+            var result = new ServiceResult { StatusCode = HttpStatusCode.OK };
             string hashedPassword = HashExtension.Sha256(password);
-            return _unitofwork.Customers.GetAll().Any(x => !x.Deleted && x.EmailConfirmed && x.IsActive && x.Email == email && x.Password == hashedPassword);
+
+            var customer = _unitofwork.Repository<Customer>()
+                .Get(x => !x.Deleted && x.EmailConfirmed && x.IsActive && x.Email == email && x.Password == hashedPassword);
+            if (customer == null)
+            {
+                result.StatusCode = HttpStatusCode.NotFound;
+                result.Message = "Kullanıcı bulunamadı.";
+            }
+            else
+            {
+                if (!customer.EmailConfirmed)
+                {
+                    result.StatusCode = HttpStatusCode.NotAcceptable;
+                    result.Message = "Email adresi onaylanmamış. Lütfen girilen email adresine gelen link ile aktivasyon işlemini gerçekleştiriniz.";
+                }
+            }
+            return result;
+        }
+
+        public ServiceResult Register(RegisterModel model)
+        {
+            var result = new ServiceResult { StatusCode = HttpStatusCode.OK };
+            if (model.Password != model.RePassword)
+            {
+                result.StatusCode = HttpStatusCode.BadRequest;
+                result.Message = "Şifre alanları uyuşmamaktadır.";
+                return result;
+            }
+
+            var emailCheck = _unitofwork.Repository<Customer>()
+                .Get(x => !x.Deleted && x.Email == model.Email);
+
+            if (emailCheck != null)
+            {
+                result.StatusCode = HttpStatusCode.Found;
+                result.Message = "Email adresiyle daha önce kullanıcı kaydedilmiş.";
+                return result;
+            }
+
+            var entity = new Customer
+            {
+                Deleted = false,
+                Email = model.Email,
+                EmailConfirmed = false,
+                InsertedDate = DateTime.Now,
+                IsActive = true,
+                Name = model.Name,
+                Password = model.Password,
+                Phone = model.Phone,
+                Surname = model.Surname,
+                PasswordHashCode=Guid.NewGuid().ToString()
+            };
+            _unitofwork.Repository<Customer>().Add(entity);
+            _unitofwork.Save();
+
+            _emailSenderService.SendEmailAsync(model.Email, "Üyelik Aktivasyonu", $"<p>Merhaba {model.Name} {model.Surname}</p><p>Aşağıdaki linki tıklayarak aktivasyon işlemini gerçekleştiriniz.</p><p><a href='http://localhost:55991/account/activation?code={entity.PasswordHashCode}'>http://localhost:55991/account/activation?code={entity.PasswordHashCode}</a></p>");
+
+            return result;
         }
     }
 }

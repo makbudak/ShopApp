@@ -56,8 +56,8 @@ namespace ShopApp.WebUI.Controllers
                 return View(model);
             }
 
-            var check = _customerService.LoginControl(model.Email, model.Password);
-            if (check)
+            var check = _customerService.Login(model.Email, model.Password);
+            if (check.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 return Redirect(model.ReturnUrl ?? "~/");
             }
@@ -82,9 +82,8 @@ namespace ShopApp.WebUI.Controllers
 
             var user = new UserModel()
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                UserName = model.UserName,
+                FirstName = model.Name,
+                LastName = model.Surname,
                 Email = model.Email
             };
 

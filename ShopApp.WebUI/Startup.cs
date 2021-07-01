@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShopApp.Business.Services;
-using ShopApp.Data.Repositories;
-using ShopApp.Model.Dto.User;
+using ShopApp.Data;
+using ShopApp.Data.GenericRepository;
 using System;
 
 namespace ShopApp.WebUI

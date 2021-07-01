@@ -16,7 +16,7 @@ namespace ShopApp.Business.Services
         private bool _enableSSL;
         private string _username;
         private string _password;
-        public SmtpEmailSenderService(string host,int port,bool enableSSL, string username,string password)
+        public SmtpEmailSenderService(string host, int port, bool enableSSL, string username, string password)
         {
             this._host = host;
             this._port = port;
@@ -26,14 +26,15 @@ namespace ShopApp.Business.Services
         }
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            var client = new SmtpClient(this._host,this._port)
+            var client = new SmtpClient(this._host, this._port)
             {
-                Credentials = new NetworkCredential(_username,_password),
-                EnableSsl =this._enableSSL
+                Credentials = new NetworkCredential(_username, _password),
+                EnableSsl = this._enableSSL
             };
 
             return client.SendMailAsync(
-                new MailMessage(this._username,email,subject,htmlMessage){
+                new MailMessage(this._username, email, subject, htmlMessage)
+                {
                     IsBodyHtml = true
                 }
             );

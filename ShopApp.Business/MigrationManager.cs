@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ShopApp.Data.Repositories;
+using ShopApp.Data;
 
 namespace ShopApp.Business
 {

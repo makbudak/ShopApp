@@ -1,4 +1,4 @@
-﻿using ShopApp.Data.Repositories;
+﻿using ShopApp.Data.GenericRepository;
 using ShopApp.Model.Entity;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +22,12 @@ namespace ShopApp.Business.Services
 
         public List<User> GetAll()
         {
-            return _unitofwork.Users.GetAll().Where(x => !x.Deleted).ToList();
+            return _unitofwork.Repository<User>().GetAll(x => !x.Deleted).ToList();
         }
 
         public User GetById(int id)
         {
-            return _unitofwork.Users.GetById(id);
+            return _unitofwork.Repository<User>().Get(x => x.Id == id);
         }
     }
 }

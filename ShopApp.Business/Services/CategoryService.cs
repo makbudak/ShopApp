@@ -1,6 +1,8 @@
-using ShopApp.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
+using ShopApp.Data.GenericRepository;
 using ShopApp.Model.Entity;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ShopApp.Business.Services
 {
@@ -17,7 +19,7 @@ namespace ShopApp.Business.Services
         void Update(Category entity);
 
         void Delete(Category entity);
-        
+
         void DeleteFromCategory(int productId, int categoryId);
     }
 
@@ -31,49 +33,53 @@ namespace ShopApp.Business.Services
             _unitofwork = unitofwork;
         }
 
-        public string ErrorMessage { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
         public void Create(Category entity)
         {
-            _unitofwork.Categories.Create(entity);
+            _unitofwork.Repository<Category>().Add(entity);
             _unitofwork.Save();
         }
 
         public void Delete(Category entity)
         {
-            _unitofwork.Categories.Delete(entity);
+            _unitofwork.Repository<Category>().Delete(entity);
             _unitofwork.Save();
         }
 
         public void DeleteFromCategory(int productId, int categoryId)
         {
-            _unitofwork.Categories.DeleteFromCategory(productId, categoryId);
+            var productCategory = _unitofwork.Repository<ProductCategory>()
+                .Get(x => x.CategoryId == categoryId && x.ProductId == productId);
+            if (productCategory != null)
+            {
+                _unitofwork.Repository<ProductCategory>().Delete(productCategory);
+                _unitofwork.Save();
+            }
         }
 
         public List<Category> GetAll()
         {
-            return _unitofwork.Categories.GetAll();
+            return _unitofwork.Repository<Category>().GetAll().ToList();
         }
 
         public Category GetById(int id)
         {
-            return _unitofwork.Categories.GetById(id);
+            return _unitofwork.Repository<Category>().Get(x => x.Id == id);
         }
 
         public Category GetByIdWithProducts(int categoryId)
         {
-            return _unitofwork.Categories.GetByIdWithProducts(categoryId);
+            var category = _unitofwork.Repository<Category>()
+                .GetAll(i => i.Id == categoryId)
+                .Include(i => i.ProductCategories)
+                .ThenInclude(i => i.Product)
+                .FirstOrDefault();
+            return category;
         }
 
         public void Update(Category entity)
         {
-            _unitofwork.Categories.Update(entity);
+            _unitofwork.Repository<Category>().Update(entity);
             _unitofwork.Save();
-        }
-
-        public bool Validation(Category entity)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

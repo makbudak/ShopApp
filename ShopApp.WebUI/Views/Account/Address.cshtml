@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewData["Title"] = "Adreslerim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-3">
+    <div class="col-md-3">
+        @await Html.PartialAsync("_profileMenu")
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-9">
+                        <h5><i class="k-icon k-i-envelop"></i> Adreslerim</h5>
+                    </div>
+                    <div class="col-3">
+                        <a id="btnAdd" class="btn btn-secondary btn-sm float-end"><i class="k-icon k-i-plus"></i> Ekle</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="modalAddress" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="labelModalAddress"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-success">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var modalAddress = new bootstrap.Modal($("#modalAddress"), {});
+
+        $("#btnAdd").click(function () {
+            modalAddress.show();
+            $("#labelModalAddress").text("Adres Ekle");
+        });
+    </script>
+}

@@ -61,8 +61,8 @@ function deleteUser(e) {
 }
 
 $("#grid .k-grid-content").on("change", "input.chkbx", function (e) {
-    var grid = $("#grid").data("kendoGrid"),
-        dataItem = grid.dataItem($(e.target).closest("tr"));
+    var grid = $("#grid").data("kendoGrid");
+    dataItem = grid.dataItem($(e.target).closest("tr"));
     dataItem.set("emailConfirmed", this.checked);
 });
 

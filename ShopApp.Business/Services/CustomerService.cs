@@ -3,7 +3,6 @@ using ShopApp.Extensions;
 using ShopApp.Model.Dto;
 using ShopApp.Model.Entity;
 using System;
-using System.Linq;
 using System.Net;
 
 namespace ShopApp.Business.Services
@@ -26,7 +25,7 @@ namespace ShopApp.Business.Services
         private readonly IUnitOfWork _unitofwork;
         private readonly IEmailSenderService _emailSenderService;
 
-        public CustomerService(IUnitOfWork unitOfWork, 
+        public CustomerService(IUnitOfWork unitOfWork,
             IEmailSenderService emailSenderService)
         {
             _unitofwork = unitOfWork;
@@ -64,6 +63,7 @@ namespace ShopApp.Business.Services
             {
                 result.StatusCode = HttpStatusCode.NotFound;
                 result.Message = "Kullanıcı bulunamadı.";
+                return result;
             }
             else
             {
@@ -71,7 +71,9 @@ namespace ShopApp.Business.Services
                 {
                     result.StatusCode = HttpStatusCode.NotAcceptable;
                     result.Message = "Email adresi onaylanmamış. Lütfen girilen email adresine gelen link ile aktivasyon işlemini gerçekleştiriniz.";
+                    return result;
                 }
+                result.Data = customer;
             }
             return result;
         }
@@ -79,41 +81,47 @@ namespace ShopApp.Business.Services
         public ServiceResult Register(RegisterModel model)
         {
             var result = new ServiceResult { StatusCode = HttpStatusCode.OK };
-            if (model.Password != model.RePassword)
+            try
             {
-                result.StatusCode = HttpStatusCode.BadRequest;
-                result.Message = "Şifre alanları uyuşmamaktadır.";
-                return result;
+                if (model.Password != model.RePassword)
+                {
+                    result.StatusCode = HttpStatusCode.BadRequest;
+                    result.Message = "Şifre alanları uyuşmamaktadır.";
+                    return result;
+                }
+
+                var emailCheck = _unitofwork.Repository<Customer>()
+                    .Get(x => !x.Deleted && x.Email == model.Email);
+
+                if (emailCheck != null)
+                {
+                    result.StatusCode = HttpStatusCode.Found;
+                    result.Message = "Email adresiyle daha önce kullanıcı kaydedilmiş.";
+                    return result;
+                }
+
+                var entity = new Customer
+                {
+                    Deleted = false,
+                    Email = model.Email,
+                    EmailConfirmed = false,
+                    InsertedDate = DateTime.Now,
+                    IsActive = true,
+                    Name = model.Name,
+                    Password = HashExtension.Sha256(model.Password),
+                    Phone = model.Phone,
+                    Surname = model.Surname,
+                    PasswordHashCode = Guid.NewGuid().ToString()
+                };
+                _unitofwork.Repository<Customer>().Add(entity);
+                _unitofwork.Save();
+
+                _emailSenderService.SendEmailAsync(model.Email, "Üyelik Aktivasyonu", $"<p>Merhaba {model.Name} {model.Surname}</p><p>Aşağıdaki linki tıklayarak aktivasyon işlemini gerçekleştiriniz.</p><p><a href='http://localhost:55991/account/activation?code={entity.PasswordHashCode}'>http://localhost:55991/account/activation?code={entity.PasswordHashCode}</a></p>");
             }
-
-            var emailCheck = _unitofwork.Repository<Customer>()
-                .Get(x => !x.Deleted && x.Email == model.Email);
-
-            if (emailCheck != null)
+            catch (Exception)
             {
-                result.StatusCode = HttpStatusCode.Found;
-                result.Message = "Email adresiyle daha önce kullanıcı kaydedilmiş.";
-                return result;
+
             }
-
-            var entity = new Customer
-            {
-                Deleted = false,
-                Email = model.Email,
-                EmailConfirmed = false,
-                InsertedDate = DateTime.Now,
-                IsActive = true,
-                Name = model.Name,
-                Password = model.Password,
-                Phone = model.Phone,
-                Surname = model.Surname,
-                PasswordHashCode=Guid.NewGuid().ToString()
-            };
-            _unitofwork.Repository<Customer>().Add(entity);
-            _unitofwork.Save();
-
-            _emailSenderService.SendEmailAsync(model.Email, "Üyelik Aktivasyonu", $"<p>Merhaba {model.Name} {model.Surname}</p><p>Aşağıdaki linki tıklayarak aktivasyon işlemini gerçekleştiriniz.</p><p><a href='http://localhost:55991/account/activation?code={entity.PasswordHashCode}'>http://localhost:55991/account/activation?code={entity.PasswordHashCode}</a></p>");
-
             return result;
         }
     }

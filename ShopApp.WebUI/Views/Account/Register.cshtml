@@ -38,6 +38,13 @@
                             </div>
 
                             <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Telefon No</label>
+                                <div class="col-sm-9">
+                                    <input name="phone" type="text" class="w-100" id="txtPhone">
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
                                 <div class="col-sm-9 offset-sm-3">
                                     <button type="submit" class="btn btn-success float-end">Kaydet</button>
                                 </div>
@@ -73,12 +80,39 @@
             placeholder: "Şifre Tekrar",
         });
 
+        $("#txtPhone").kendoTextBox({
+            placeholder: "Telefon No",
+        });
+
         var validator = $("#frmRegister").kendoValidator().data("kendoValidator");
 
         $("#frmRegister").submit(function (event) {
             event.preventDefault();
             if (validator.validate()) {
+                var data = {
+                    name: $("#txtName").data("kendoTextBox").value(),
+                    surname: $("#txtSurname").data("kendoTextBox").value(),
+                    password: $("#txtPassword").data("kendoTextBox").value(),
+                    rePassword: $("#txtRePassword").data("kendoTextBox").value(),
+                    email: $("#txtEmailAddress").data("kendoTextBox").value(),
+                    phone: $("#txtPhone").data("kendoTextBox").value()
+                };
+                $.ajax({
+                    url: "/api/customer/register",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    contentType: "application/json",
+                    complete: function (res) {
+                        var result = res.responseJSON;
+                        if (result.statusCode == 200) {
+                            alertShow("İşlem Başarılı", "Kullanıcı başarıyla kaydedildi.");
 
+                        } else {
+                            alertShow("İşlem Başarısız", result.message);
+                        }
+                    }
+                });
             }
         });
 

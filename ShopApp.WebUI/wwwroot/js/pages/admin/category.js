@@ -65,7 +65,6 @@ function deleteCategory(e) {
     e.preventDefault();
     var data = this.dataItem($(e.currentTarget).closest("tr"));
     kendo.confirm("Silme istediğinize emin misiniz?").then(function () {
-        console.log(data);
         $.ajax({
             url: "/api/category/" + data.categoryId,
             type: "DELETE",

@@ -3,17 +3,17 @@
         <div class="card border-success">
             <div class="card-header bg-success"><h5 class="text-white py-2">Giriş Yap</h5></div>
             <div class="card-body">
-                <form class="p-3 ">
+                <form class="p-3" id="frmLogin">
                     <div class="mb-3 row">
                         <label class="col-sm-4 col-form-label">Email Adresi</label>
                         <div class="col-sm-8">
-                            <input class="form-control">
+                            <input type="email" name="emailAddress" class="w-100" required data-required-msg="Email adresi zorunludur" id="txtEmailAddress" data-email-msg="Email formatı geçersiz" />
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-4 col-form-label">Şifre</label>
                         <div class="col-sm-8">
-                            <input class="form-control">
+                            <input name="password" type="password" class="w-100" required validationMessage="Şifre zorunludur" id="txtPassword" />
                         </div>
                     </div>
 
@@ -29,3 +29,44 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        $("#txtEmailAddress").kendoTextBox({
+            placeholder: "Email Adresi",
+        });
+
+        $("#txtPassword").kendoTextBox({
+            placeholder: "Şifre",
+        });
+
+        var validator = $("#frmLogin").kendoValidator().data("kendoValidator");
+
+        $("#frmLogin").submit(function (event) {
+            event.preventDefault();
+            if (validator.validate()) {
+                var data = {
+                    password: $("#txtPassword").data("kendoTextBox").value(),
+                    email: $("#txtEmailAddress").data("kendoTextBox").value()
+                };
+                $.ajax({
+                    url: "/api/customer/login",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    contentType: "application/json",
+                    complete: function (res) {
+                        var result = res.responseJSON;
+                        if (result.statusCode == 200) {
+                            window.location.href = "/";
+                        } else {
+                            alertShow("İşlem Başarısız", result.message);
+                        }
+                    }
+                });
+            }
+        });
+
+    </script>
+}

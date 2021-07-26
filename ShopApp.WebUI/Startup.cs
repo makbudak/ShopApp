@@ -22,21 +22,11 @@ namespace ShopApp.WebUI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ShopContext>(options => options.UseSqlServer(_configuration.GetConnectionString("AppConnectionString")));           
+            services.AddDbContext<ShopContext>(options => options.UseSqlServer(_configuration.GetConnectionString("AppConnectionString")));
 
-            services.ConfigureApplicationCookie(options =>
+            services.AddSession(options =>
             {
-                options.LoginPath = "/account/login";
-                options.LogoutPath = "/account/logout";
-                options.AccessDeniedPath = "/account/accessdenied";
-                options.SlidingExpiration = true;
-                options.ExpireTimeSpan = TimeSpan.FromDays(30);
-                options.Cookie = new CookieBuilder
-                {
-                    HttpOnly = true,
-                    Name = ".ShopApp.Security.Cookie",
-                    SameSite = SameSiteMode.Strict
-                };
+                options.IdleTimeout = TimeSpan.FromHours(2);
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -46,7 +36,7 @@ namespace ShopApp.WebUI
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICustomerService, CustomerService>();
-            services.AddScoped<IUserService, UserService>(); 
+            services.AddScoped<IUserService, UserService>();
 
             services.AddScoped<IEmailSenderService, SmtpEmailSenderService>(i =>
                  new SmtpEmailSenderService(
@@ -66,26 +56,17 @@ namespace ShopApp.WebUI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, ICartService cartService)
         {
             app.UseStaticFiles(); // wwwroot
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseAuthentication();
             app.UseRouting();
-            app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
-
-                endpoints.MapControllerRoute(
-                  name: "orders",
-                  pattern: "orders",
-                  defaults: new { controller = "Cart", action = "GetOrders" }
-              );
-
-
                 endpoints.MapControllerRoute(
                   name: "checkout",
                   pattern: "checkout",

@@ -26,6 +26,9 @@ namespace ShopApp.Data
         public DbSet<AccessRightCategory> AccessRightCategories { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CustomerAddress> CustomerAddresses { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<Neighborhood> Neighborhoods { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

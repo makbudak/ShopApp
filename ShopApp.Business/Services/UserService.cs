@@ -1,7 +1,10 @@
 ﻿using ShopApp.Data.GenericRepository;
+using ShopApp.Extensions;
+using ShopApp.Model.Dto;
 using ShopApp.Model.Entity;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace ShopApp.Business.Services
 {
@@ -9,25 +12,52 @@ namespace ShopApp.Business.Services
     {
         List<User> GetAll();
         User GetById(int id);
+        ServiceResult Login(LoginModel model);
     }
 
     public class UserService : IUserService
     {
-        private readonly IUnitOfWork _unitofwork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public UserService(IUnitOfWork unitOfWork)
         {
-            _unitofwork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         public List<User> GetAll()
         {
-            return _unitofwork.Repository<User>().GetAll(x => !x.Deleted).ToList();
+            return _unitOfWork.Repository<User>().GetAll(x => !x.Deleted).ToList();
         }
 
         public User GetById(int id)
         {
-            return _unitofwork.Repository<User>().Get(x => x.Id == id);
+            return _unitOfWork.Repository<User>().Get(x => x.Id == id);
+        }
+
+        public ServiceResult Login(LoginModel model)
+        {
+            var result = new ServiceResult { StatusCode = HttpStatusCode.OK };
+            string hashedPassword = HashExtension.Sha256(model.Password);
+
+            var user = _unitOfWork.Repository<User>()
+                .Get(x => !x.Deleted && x.EmailConfirmed && x.IsActive && x.Email == model.Email && x.Password == hashedPassword);
+            if (user == null)
+            {
+                result.StatusCode = HttpStatusCode.NotFound;
+                result.Message = "Email adresi veya şifre hatalıdır. Lütfen tekrar deneyiniz.";
+                return result;
+            }
+            else
+            {
+                if (!user.EmailConfirmed)
+                {
+                    result.StatusCode = HttpStatusCode.NotAcceptable;
+                    result.Message = "Email adresi onaylanmamış. Lütfen girilen email adresine gelen link ile aktivasyon işlemini gerçekleştiriniz.";
+                    return result;
+                }
+                result.Data = user;
+            }
+            return result;
         }
     }
 }

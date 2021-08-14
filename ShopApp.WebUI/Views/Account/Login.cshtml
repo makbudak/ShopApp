@@ -2,21 +2,20 @@
     <div class="col-md-6 offset-md-3">
         <div class="card border-success">
             <div class="card-header bg-success"><h5 class="text-white py-2">Giriş Yap</h5></div>
-            <div class="card-body">
+            <div class="card-body" ng-controller="loginController">
                 <form class="p-3" id="frmLogin">
                     <div class="mb-3 row">
                         <label class="col-sm-4 col-form-label">Email Adresi</label>
                         <div class="col-sm-8">
-                            <input type="email" name="emailAddress" class="w-100" required data-required-msg="Email adresi zorunludur" id="txtEmailAddress" data-email-msg="Email formatı geçersiz" />
+                            <input kendo-text-box ng-model="customer.email" k-placeholder="'Email Adres'" type="email" class="w-100" required data-required-msg="Email adresi zorunludur" data-email-msg="Email formatı geçersiz" />
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-4 col-form-label">Şifre</label>
                         <div class="col-sm-8">
-                            <input name="password" type="password" class="w-100" required validationMessage="Şifre zorunludur" id="txtPassword" />
+                            <input kendo-text-box ng-model="customer.password" k-placeholder="'Şifre'" type="password" class="w-100" required validationMessage="Şifre zorunludur" />
                         </div>
                     </div>
-
 
                     <div class="mb-3 row">
                         <div class="col-sm-8 offset-sm-4">
@@ -33,40 +32,21 @@
 @section Scripts
 {
     <script>
-        $("#txtEmailAddress").kendoTextBox({
-            placeholder: "Email Adresi",
-        });
+        app.controller("loginController", function ($scope, $http) {
+            var validator = $("#frmLogin").kendoValidator().data("kendoValidator");
 
-        $("#txtPassword").kendoTextBox({
-            placeholder: "Şifre",
-        });
-
-        var validator = $("#frmLogin").kendoValidator().data("kendoValidator");
-
-        $("#frmLogin").submit(function (event) {
-            event.preventDefault();
-            if (validator.validate()) {
-                var data = {
-                    password: $("#txtPassword").data("kendoTextBox").value(),
-                    email: $("#txtEmailAddress").data("kendoTextBox").value()
-                };
-                $.ajax({
-                    url: "/api/customer/login",
-                    type: "POST",
-                    data: JSON.stringify(data),
-                    dataType: "json",
-                    contentType: "application/json",
-                    complete: function (res) {
-                        var result = res.responseJSON;
-                        if (result.statusCode == 200) {
+            $("#frmLogin").submit(function (event) {
+                event.preventDefault();
+                if (validator.validate()) {
+                    $http.post("/api/Customer/Login", $scope.customer)
+                        .then((res) => {
                             window.location.href = "/";
-                        } else {
-                            alertShow("İşlem Başarısız", result.message);
-                        }
-                    }
-                });
-            }
-        });
+                        }, (err) => {
+                            alertShow("İşlem Başarısız", err.data.message, "danger");
+                        });
+                }
+            });
+        });       
 
     </script>
 }

@@ -24,18 +24,18 @@ namespace ShopApp.Business.Services
 
     public class ProductService : IProductService
     {
-        private readonly IUnitOfWork _unitofwork;
-        public ProductService(IUnitOfWork unitofwork)
+        private readonly IUnitOfWork _unitOfWork;
+        public ProductService(IUnitOfWork unitOfWork)
         {
-            _unitofwork = unitofwork;
+            _unitOfWork = unitOfWork;
         }
 
         public bool Create(Product entity)
         {
             if (Validation(entity))
             {
-                _unitofwork.Repository<Product>().Add(entity);
-                _unitofwork.Save();
+                _unitOfWork.Repository<Product>().Add(entity);
+                _unitOfWork.Save();
                 return true;
             }
             return false;
@@ -43,23 +43,23 @@ namespace ShopApp.Business.Services
 
         public void Delete(Product entity)
         {
-            _unitofwork.Repository<Product>().Delete(entity);
-            _unitofwork.Save();
+            _unitOfWork.Repository<Product>().Delete(entity);
+            _unitOfWork.Save();
         }
 
         public List<Product> GetAll()
         {
-            return _unitofwork.Repository<Product>().GetAll().ToList();
+            return _unitOfWork.Repository<Product>().GetAll().ToList();
         }
 
         public Product GetById(int id)
         {
-            return _unitofwork.Repository<Product>().Get(x => x.Id == id);
+            return _unitOfWork.Repository<Product>().Get(x => x.Id == id);
         }
 
         public Product GetByIdWithCategories(int id)
         {
-            return _unitofwork.Repository<Product>()
+            return _unitOfWork.Repository<Product>()
                             .GetAll()
                             .Include(x => x.ProductCategories)
                             .ThenInclude(x => x.Category)
@@ -68,7 +68,7 @@ namespace ShopApp.Business.Services
 
         public int GetCountByCategory(string category)
         {
-            var products = _unitofwork.Repository<Product>()
+            var products = _unitOfWork.Repository<Product>()
                 .GetAll(i => i.IsApproved);
 
             if (!string.IsNullOrEmpty(category))
@@ -82,13 +82,13 @@ namespace ShopApp.Business.Services
 
         public List<Product> GetHomePageProducts()
         {
-            return _unitofwork.Repository<Product>()
+            return _unitOfWork.Repository<Product>()
                            .GetAll(i => i.IsApproved && i.IsHome).ToList();
         }
 
         public Product GetProductDetails(string url)
         {
-            return _unitofwork.Repository<Product>()
+            return _unitOfWork.Repository<Product>()
                  .GetAll()
                  .Include(i => i.ProductCategories)
                  .ThenInclude(i => i.Category)
@@ -97,7 +97,7 @@ namespace ShopApp.Business.Services
 
         public List<Product> GetProductsByCategory(string name, int page, int pageSize)
         {
-            var products = _unitofwork.Repository<Product>()
+            var products = _unitOfWork.Repository<Product>()
                  .GetAll(i => i.IsApproved);
 
             if (!string.IsNullOrEmpty(name))
@@ -112,7 +112,7 @@ namespace ShopApp.Business.Services
 
         public List<Product> GetSearchResult(string searchString)
         {
-            var products = _unitofwork.Repository<Product>()
+            var products = _unitOfWork.Repository<Product>()
                             .GetAll(i => i.IsApproved && (i.Name.ToLower().Contains(searchString.ToLower()) || i.Description.ToLower().Contains(searchString.ToLower()))).ToList();
 
             return products;
@@ -120,8 +120,8 @@ namespace ShopApp.Business.Services
 
         public void Update(Product entity)
         {
-            _unitofwork.Repository<Product>().Update(entity);
-            _unitofwork.Save();
+            _unitOfWork.Repository<Product>().Update(entity);
+            _unitOfWork.Save();
         }
 
         public bool Update(Product entity, int[] categoryIds)
@@ -133,7 +133,7 @@ namespace ShopApp.Business.Services
                     ErrorMessage += "Ürün için en az bir kategori seçmelisiniz.";
                     return false;
                 }
-                var product = _unitofwork.Repository<Product>()
+                var product = _unitOfWork.Repository<Product>()
                     .Include(i => i.ProductCategories)
                     .FirstOrDefault(i => i.Id == entity.Id);
 
@@ -152,7 +152,7 @@ namespace ShopApp.Business.Services
                         CategoryId = catid
                     }).ToList();
                 }
-                _unitofwork.Save();
+                _unitOfWork.Save();
                 return true;
             }
             return false;

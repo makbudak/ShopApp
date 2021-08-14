@@ -17,11 +17,7 @@ $("#grid").kendoGrid({
             ],
             title: " ",
             width: "120px"
-        },
-        {
-            field: "userName",
-            title: "Kullanıcı Adı",
-        },
+        },        
         {
             field: "firstName",
             title: "Adı",

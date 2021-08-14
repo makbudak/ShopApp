@@ -1,6 +1,7 @@
 ﻿using ShopApp.Data.GenericRepository;
 using ShopApp.Extensions;
 using ShopApp.Model.Dto;
+using ShopApp.Model.Dto.Customer;
 using ShopApp.Model.Entity;
 using System;
 using System.Net;
@@ -18,29 +19,36 @@ namespace ShopApp.Business.Services
         ServiceResult Login(string email, string password);
 
         ServiceResult Register(RegisterModel model);
+
+        CustomerProfileModel GetProfile();
+
+        ServiceResult UpdateProfile(CustomerProfileModel model);
+
+        ServiceResult ChangePassword(PasswordModel model);
+
     }
 
     public class CustomerService : ICustomerService
     {
-        private readonly IUnitOfWork _unitofwork;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailSenderService _emailSenderService;
 
         public CustomerService(IUnitOfWork unitOfWork,
             IEmailSenderService emailSenderService)
         {
-            _unitofwork = unitOfWork;
+            _unitOfWork = unitOfWork;
             _emailSenderService = emailSenderService;
         }
 
         public Customer GetByEmail(string email)
         {
-            return _unitofwork.Repository<Customer>()
+            return _unitOfWork.Repository<Customer>()
                 .Get(x => x.Email == email && !x.Deleted);
         }
 
         public Customer GetById(int id)
         {
-            return _unitofwork.Repository<Customer>().Get(x => x.Id == id);
+            return _unitOfWork.Repository<Customer>().Get(x => x.Id == id);
         }
 
         public bool IsEmailConfirmed(string email)
@@ -57,12 +65,12 @@ namespace ShopApp.Business.Services
             var result = new ServiceResult { StatusCode = HttpStatusCode.OK };
             string hashedPassword = HashExtension.Sha256(password);
 
-            var customer = _unitofwork.Repository<Customer>()
+            var customer = _unitOfWork.Repository<Customer>()
                 .Get(x => !x.Deleted && x.EmailConfirmed && x.IsActive && x.Email == email && x.Password == hashedPassword);
             if (customer == null)
             {
                 result.StatusCode = HttpStatusCode.NotFound;
-                result.Message = "Kullanıcı bulunamadı.";
+                result.Message = "Email adresi veya şifre hatalıdır. Lütfen tekrar deneyiniz.";
                 return result;
             }
             else
@@ -90,7 +98,7 @@ namespace ShopApp.Business.Services
                     return result;
                 }
 
-                var emailCheck = _unitofwork.Repository<Customer>()
+                var emailCheck = _unitOfWork.Repository<Customer>()
                     .Get(x => !x.Deleted && x.Email == model.Email);
 
                 if (emailCheck != null)
@@ -113,14 +121,94 @@ namespace ShopApp.Business.Services
                     Surname = model.Surname,
                     PasswordHashCode = Guid.NewGuid().ToString()
                 };
-                _unitofwork.Repository<Customer>().Add(entity);
-                _unitofwork.Save();
+                _unitOfWork.Repository<Customer>().Add(entity);
+                _unitOfWork.Save();
 
                 _emailSenderService.SendEmailAsync(model.Email, "Üyelik Aktivasyonu", $"<p>Merhaba {model.Name} {model.Surname}</p><p>Aşağıdaki linki tıklayarak aktivasyon işlemini gerçekleştiriniz.</p><p><a href='http://localhost:55991/account/activation?code={entity.PasswordHashCode}'>http://localhost:55991/account/activation?code={entity.PasswordHashCode}</a></p>");
             }
             catch (Exception)
             {
 
+            }
+            return result;
+        }
+
+        public CustomerProfileModel GetProfile()
+        {
+            var customer = _unitOfWork.Repository<Customer>().Get(x => !x.Deleted && x.IsActive && x.Id == CustomerAuthContent.Current.CustomerId);
+            if (customer != null)
+            {
+                var model = new CustomerProfileModel
+                {
+                    EmailAddress = customer.Email,
+                    Name = customer.Name,
+                    Phone = customer.Phone,
+                    Surname = customer.Surname
+                };
+                return model;
+            }
+            return null;
+        }
+
+
+        public ServiceResult UpdateProfile(CustomerProfileModel model)
+        {
+            var result = new ServiceResult { StatusCode = HttpStatusCode.OK };
+            try
+            {
+                var customer = _unitOfWork.Repository<Customer>().Get(x => !x.Deleted && x.IsActive && x.Id == CustomerAuthContent.Current.CustomerId);
+                if (customer == null)
+                {
+                    result.Message = "Müşteri bilgileri bulunamadı.";
+                    result.StatusCode = HttpStatusCode.NotFound;
+                    return result;
+                }
+                customer.Name = model.Name;
+                customer.Surname = model.Surname;
+                customer.Phone = model.Phone;
+                _unitOfWork.Save();
+            }
+            catch (Exception ex)
+            {
+                result.Message = ex.Message;
+                result.StatusCode = HttpStatusCode.InternalServerError;
+            }
+            return result;
+        }
+
+        public ServiceResult ChangePassword(PasswordModel model)
+        {
+            var result = new ServiceResult { StatusCode = HttpStatusCode.OK };
+            try
+            {
+                if (model.NewPassword != model.ReNewPassword)
+                {
+                    result.Message = "Yeni şifre ve yeni şifre tekrar alanları uyuşmamaktadır.";
+                    result.StatusCode = HttpStatusCode.NotFound;
+                    return result;
+                }
+                var customer = _unitOfWork.Repository<Customer>().Get(x => !x.Deleted && x.IsActive && x.Id == CustomerAuthContent.Current.CustomerId);
+                if (customer == null)
+                {
+                    result.Message = "Müşteri bilgileri bulunamadı.";
+                    result.StatusCode = HttpStatusCode.NotFound;
+                    return result;
+                }
+                var oldPassword = HashExtension.Sha256(model.OldPassword);
+                if (customer.Password != oldPassword)
+                {
+                    result.Message = "Mevcut şifre bilgisi hatalıdır. Lütfen tekrar deneyiniz.";
+                    result.StatusCode = HttpStatusCode.BadRequest;
+                    return result;
+                }
+                var newPassword = HashExtension.Sha256(model.NewPassword);
+                customer.Password = newPassword;
+                _unitOfWork.Save();
+            }
+            catch (Exception ex)
+            {
+                result.Message = ex.Message;
+                result.StatusCode = HttpStatusCode.InternalServerError;
             }
             return result;
         }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ShopApp.Business.Attributes;
 using ShopApp.Business.Services;
 using ShopApp.Model.Dto;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ namespace ShopApp.WebUI.Controllers
         }
 
         [Route("logout")]
+        [CustomerAuthorize]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
@@ -79,18 +81,21 @@ namespace ShopApp.WebUI.Controllers
         }
 
         [Route("profile")]
+        [CustomerAuthorize]
         public IActionResult Profile()
         {
             return View();
         }
 
         [Route("change-password")]
+        [CustomerAuthorize]
         public IActionResult ChangePassword()
         {
             return View();
         }
 
         [Route("orders")]
+        [CustomerAuthorize]
         public IActionResult Orders()
         {
             var user = _customerService.GetById(1);
@@ -131,6 +136,7 @@ namespace ShopApp.WebUI.Controllers
         }
 
         [Route("address")]
+        [CustomerAuthorize]
         public IActionResult Address()
         {
             return View();

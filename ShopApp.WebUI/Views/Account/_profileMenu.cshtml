@@ -1,22 +1,13 @@
-﻿<div class="accordion accordion-flush" id="accordionFlushExample">
-    <div class="accordion-item">
-        <div class="card mb-2">
-            <div class="card-body p-0">
-                <h2 class="accordion-header" id="flush-headingOne">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
-                        <span> Hesabım</span>
-                    </button>
-                </h2>
-            </div>
-        </div>
-        <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-            <ul class="list-group">
-                <li class="list-group-item"><a class="text-dark text-decoration-none" href="/account/profile">Kullanıcı Bilgileri</a></li>
-                <li class="list-group-item"><a class="text-dark text-decoration-none" href="/account/orders">Siparişlerim</a></li>
-                <li class="list-group-item"><a class="text-dark text-decoration-none" href="/account/address">Adreslerim</a></li>
-                <li class="list-group-item"><a class="text-dark text-decoration-none" href="/account/change-password">Şifre Değiştir</a></li>
-                <li class="list-group-item"><a class="text-dark text-decoration-none" href="/account/logout">Çıkış Yap</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
+﻿<ul id="profile" kendo-panel-bar="tree">
+    <li class="k-state-active">
+        <span class="k-link k-state-selected">Hesabım</span>
+        <ul>
+            <li class="border-bottom"><a class="cursor-pointer" href="/account/profile">Kullanıcı Bilgileri</a></li>
+            <li class="border-bottom"><a href="/account/orders">Siparişlerim</a></li>
+            <li class="border-bottom"><a href="/account/address">Adreslerim</a></li>
+            <li class="border-bottom"><a href="/account/change-password">Şifre Değiştir</a></li>
+            <li><a href="/account/logout">Çıkış Yap</a></li>
+        </ul>
+    </li>
+
+</ul>

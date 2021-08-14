@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ShopApp.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class ProductCategoryController : Controller
     {
         public IActionResult Index()
         {

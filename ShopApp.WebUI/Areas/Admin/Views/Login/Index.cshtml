@@ -1,0 +1,85 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/kendo.bootstrap-v4.min.css" rel="stylesheet" />
+    <title>Shop App - Admin Paneli</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row mt-3" ng-app="myApp">
+            <div class="col-md-6 offset-md-3">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary">
+                        <div class="row">
+                            <div class="col-9">
+                                <h5 class="text-white py-2">
+                                    Admin Paneli - Giriş Yap
+                                </h5>
+                            </div>
+                            <div class="col-3">
+                                <a class="text-white float-end text-decoration-none" href="/">
+                                    <i class="k-icon k-i-home k-icon-md mt-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" ng-controller="loginController">
+                        <form class="p-3" id="frmLogin">
+                            <div class="mb-3 row">
+                                <label class="col-sm-4 col-form-label">Email Adresi</label>
+                                <div class="col-sm-8">
+                                    <input kendo-text-box ng-model="user.email" k-placeholder="'Email Adres'" type="email" class="w-100" required data-required-msg="Email adresi zorunludur" data-email-msg="Email formatı geçersiz" />
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-4 col-form-label">Şifre</label>
+                                <div class="col-sm-8">
+                                    <input kendo-text-box ng-model="user.password" k-placeholder="'Şifre'" type="password" class="w-100" required validationMessage="Şifre zorunludur" />
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <div class="col-sm-8 offset-sm-4">
+                                    <a href="/account/forgotpassword" class="btn btn-link text-dark">Şifremi Unuttum</a>
+                                    <button type="submit" class="btn btn-primary float-end">Giriş Yap</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/lib/jquery-3.6.0.min.js"></script>
+    <script src="~/js/lib/bootstrap.bundle.min.js"></script>
+    <script src="~/js/lib/angular.min.js"></script>
+    <script src="~/js/lib/kendo.all.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script>
+        var app = angular.module("myApp", ["kendo.directives"]);
+        app.controller("loginController", function ($scope, $http) {
+            var validator = $("#frmLogin").kendoValidator().data("kendoValidator");
+
+            $("#frmLogin").submit(function (event) {
+                event.preventDefault();
+                if (validator.validate()) {
+                    $http.post("/Admin/Login", $scope.user)
+                        .then((res) => {
+                            window.location.href = "/admin/home";
+                        }, (err) => {
+                            alertShow("İşlem Başarısız", err.data.message, "danger");
+                        });
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
+

@@ -37,6 +37,8 @@ namespace ShopApp.WebUI
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICustomerAddressService, CustomerAddressService>();
+            services.AddScoped<ILookupService, LookupService>();
 
             services.AddScoped<IEmailSenderService, SmtpEmailSenderService>(i =>
                  new SmtpEmailSenderService(

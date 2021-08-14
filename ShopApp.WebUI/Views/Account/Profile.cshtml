@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row mt-3 mb-3">
+<div class="row mt-3 mb-3" ng-controller="profileController">
     <div class="col-md-3">
         @await Html.PartialAsync("_profileMenu")
     </div>
@@ -13,30 +13,32 @@
             <div class="card-header">
                 <h5><i class="k-icon k-i-info"></i> Kullanıcı Bilgileri</h5>
             </div>
-            <div class="card-body">                
+            <div class="card-body">
                 <div class="row mt-3">
                     <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label bold">Email Adresi</label>
-                            <input id="txtEmailAddress" type="text" readonly disabled class="w-100" />
-                        </div>
+                        <form id="frmProfile">
+                            <div class="mb-3">
+                                <label class="form-label bold">Email Adresi</label>
+                                <input kendo-text-box ng-model="customer.emailAddress" k-placeholder="'Email Adresi'" type="text" disabled class="w-100" />
+                            </div>
 
-                        <div class="mb-3">
-                            <label class="form-label bold">Adı</label>
-                            <input id="txtName" type="text" class="w-100" />
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label bold">Adı</label>
+                                <input kendo-text-box ng-model="customer.name" k-placeholder="'Adı'" type="text" class="w-100" />
+                            </div>
 
-                        <div class="mb-3">
-                            <label class="form-label bold">Soyadı</label>
-                            <input id="txtSurname" type="text" class="w-100" />
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label bold">Soyadı</label>
+                                <input kendo-text-box ng-model="customer.surname" k-placeholder="'Soyadı'" type="text" class="w-100" />
+                            </div>
 
-                        <div class="mb-3">
-                            <label class="form-label bold">Telefon No</label>
-                            <input id="txtPhone" type="text" class="w-100" />
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label bold">Telefon No</label>
+                                <input kendo-text-box ng-model="customer.phone" k-placeholder="'Telefon No'" type="text" class="w-100" />
+                            </div>
 
-                        <button class="btn btn-success float-end">Kaydet</button>
+                            <button type="submit" class="btn btn-success float-end">Kaydet</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -47,20 +49,26 @@
 
 @section Scripts{
     <script>
-        $("#txtEmailAddress").kendoTextBox({
-            placeholder: "Email Adresi",
-        });
+        app.controller("profileController", function ($scope, $http) {
 
-        $("#txtName").kendoTextBox({
-            placeholder: "Adı",
-        });
+            $http.get("/api/Customer/GetProfile")
+                .then((res) => {
+                    $scope.customer = res.data;
+                });
 
-        $("#txtSurname").kendoTextBox({
-            placeholder: "Soyadı",
-        });
+            var validator = $("#frmProfile").kendoValidator().data("kendoValidator");
 
-        $("#txtPhone").kendoTextBox({
-            placeholder: "Telefon No",
+            $("#frmProfile").submit(function (event) {
+                event.preventDefault();
+                if (validator.validate()) {
+                    $http.put("/api/Customer/UpdateProfile", $scope.customer)
+                        .then((res) => {
+                            alertShow("İşlem Başarılı", "Kullanıcı bilgileri güncelleme işlemi başarıyla gerçekleşti.", "success");
+                        }, (err) => {
+                            alertShow("İşlem Başarısız", err.data.message, "danger");
+                        });
+                }
+            });
         });
     </script>
 }

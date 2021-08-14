@@ -16,10 +16,13 @@ namespace ShopApp.Model.Entity
         public string NameSurname { get; set; }
 
         public int CityId { get; set; }
-
-        public int ProvinceId { get; set; }
+        public City City { get; set; }
 
         public int DistrictId { get; set; }
+        public District District { get; set; }
+
+        public int NeighborhoodId { get; set; }
+        public Neighborhood Neighborhood { get; set; }
 
         [StringLength(500)]
         public string Address { get; set; }
@@ -29,5 +32,7 @@ namespace ShopApp.Model.Entity
 
         [StringLength(50)]
         public string Phone { get; set; }
+
+        public bool Deleted{ get; set; }
     }
 }

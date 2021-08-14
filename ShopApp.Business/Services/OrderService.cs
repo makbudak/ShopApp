@@ -14,20 +14,20 @@ namespace ShopApp.Business.Services
 
     public class OrderService : IOrderService
     {
-        private readonly IUnitOfWork _unitofwork;
-        public OrderService(IUnitOfWork unitofwork)
+        private readonly IUnitOfWork _unitOfWork;
+        public OrderService(IUnitOfWork unitOfWork)
         {
-            _unitofwork = unitofwork;
+            _unitOfWork = unitOfWork;
         }
         public void Create(Order entity)
         {
-            _unitofwork.Repository<Order>().Add(entity);
-            _unitofwork.Save();
+            _unitOfWork.Repository<Order>().Add(entity);
+            _unitOfWork.Save();
         }
 
         public List<Order> GetOrders(int customerId)
         {
-            return _unitofwork.Repository<Order>()
+            return _unitOfWork.Repository<Order>()
                 .GetAll(i => i.CustomerId == customerId)
                 .Include(i => i.OrderItems)
                 .ThenInclude(i => i.Product)

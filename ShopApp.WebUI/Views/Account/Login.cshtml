@@ -31,22 +31,5 @@
 
 @section Scripts
 {
-    <script>
-        app.controller("loginController", function ($scope, $http) {
-            var validator = $("#frmLogin").kendoValidator().data("kendoValidator");
-
-            $("#frmLogin").submit(function (event) {
-                event.preventDefault();
-                if (validator.validate()) {
-                    $http.post("/api/Customer/Login", $scope.customer)
-                        .then((res) => {
-                            window.location.href = "/";
-                        }, (err) => {
-                            alertShow("İşlem Başarısız", err.data.message, "danger");
-                        });
-                }
-            });
-        });       
-
-    </script>
+    <script src="~/js/pages/customer/login.js"></script>
 }

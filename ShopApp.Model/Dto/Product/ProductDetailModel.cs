@@ -6,6 +6,6 @@ namespace ShopApp.Model.Dto.Product
     public class ProductDetailModel
     {
         public Entity.Product Product { get; set; }
-        public List<Category> Categories { get; set; }
+        public List<ProductCategory> ProductCategories { get; set; }
     }
 }

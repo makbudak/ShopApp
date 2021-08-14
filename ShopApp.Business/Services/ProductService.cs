@@ -15,7 +15,7 @@ namespace ShopApp.Business.Services
         int GetCountByCategory(string category);
         List<Product> GetHomePageProducts();
         List<Product> GetSearchResult(string searchString);
-        List<Product> GetAll();
+        List<Product> Get();
         bool Create(Product entity);
         void Update(Product entity);
         void Delete(Product entity);
@@ -47,7 +47,7 @@ namespace ShopApp.Business.Services
             _unitOfWork.Save();
         }
 
-        public List<Product> GetAll()
+        public List<Product> Get()
         {
             return _unitOfWork.Repository<Product>().GetAll().ToList();
         }
@@ -61,21 +61,22 @@ namespace ShopApp.Business.Services
         {
             return _unitOfWork.Repository<Product>()
                             .GetAll()
-                            .Include(x => x.ProductCategories)
-                            .ThenInclude(x => x.Category)
+                            .Include(x => x.ProductCategoryItems)
                             .FirstOrDefault(i => i.Id == id);
         }
 
         public int GetCountByCategory(string category)
         {
             var products = _unitOfWork.Repository<Product>()
-                .GetAll(i => i.IsApproved);
+                .GetAll(i => i.IsApproved)
+                .Include(x => x.ProductCategoryItems)
+                .AsQueryable();
 
             if (!string.IsNullOrEmpty(category))
             {
-                products = products.Include(i => i.ProductCategories)
-                    .ThenInclude(i => i.Category)
-                    .Where(i => i.ProductCategories.Any(a => a.Category.Url == category));
+                products = products
+                    .Include(i => i.ProductCategoryItems)
+                    .Where(i => i.ProductCategoryItems.Any(a => a.ProductCategory.Name == category));
             }
             return products.Count();
         }
@@ -90,8 +91,7 @@ namespace ShopApp.Business.Services
         {
             return _unitOfWork.Repository<Product>()
                  .GetAll()
-                 .Include(i => i.ProductCategories)
-                 .ThenInclude(i => i.Category)
+                 .Include(i => i.ProductCategoryItems)
                  .FirstOrDefault(i => i.Url == url);
         }
 
@@ -103,9 +103,9 @@ namespace ShopApp.Business.Services
             if (!string.IsNullOrEmpty(name))
             {
                 products = products
-                    .Include(i => i.ProductCategories)
-                    .ThenInclude(i => i.Category)
-                    .Where(i => i.ProductCategories.Any(a => a.Category.Url == name));
+                    .Include(i => i.ProductCategoryItems)
+                    .ThenInclude(x => x.ProductCategory)
+                    .Where(i => i.ProductCategoryItems.Any(a => a.ProductCategory.Name == name));
             }
             return products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
         }
@@ -134,7 +134,7 @@ namespace ShopApp.Business.Services
                     return false;
                 }
                 var product = _unitOfWork.Repository<Product>()
-                    .Include(i => i.ProductCategories)
+                    .Include(i => i.ProductCategoryItems)
                     .FirstOrDefault(i => i.Id == entity.Id);
 
                 if (product != null)
@@ -146,11 +146,12 @@ namespace ShopApp.Business.Services
                     product.IsApproved = entity.IsApproved;
                     product.IsHome = entity.IsHome;
 
-                    product.ProductCategories = categoryIds.Select(catid => new ProductCategory()
-                    {
-                        ProductId = entity.Id,
-                        CategoryId = catid
-                    }).ToList();
+                    product.ProductCategoryItems = categoryIds
+                        .Select(catid => new ProductCategoryItem()
+                        {
+                            ProductId = entity.Id,
+                            ProductCategoryId = catid
+                        }).ToList();
                 }
                 _unitOfWork.Save();
                 return true;

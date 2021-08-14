@@ -1,7 +1,7 @@
 ﻿var dataSource = new kendo.data.DataSource({
     transport: {
         read: {
-            url: "/api/user",
+            url: "/admin/user/list",
             dataType: "json"
         },
     },

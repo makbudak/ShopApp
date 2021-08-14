@@ -32,7 +32,7 @@ namespace ShopApp.WebUI
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductCategoryService, ProductCategoryService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICustomerService, CustomerService>();
@@ -68,38 +68,7 @@ namespace ShopApp.WebUI
             app.UseSession();
 
             app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                  name: "checkout",
-                  pattern: "checkout",
-                  defaults: new { controller = "Cart", action = "Checkout" }
-              );
-
-                endpoints.MapControllerRoute(
-                    name: "cart",
-                    pattern: "cart",
-                    defaults: new { controller = "Cart", action = "Index" }
-                );
-
-                // localhost/search    
-                endpoints.MapControllerRoute(
-                    name: "search",
-                    pattern: "search",
-                    defaults: new { controller = "Shop", action = "search" }
-                );
-
-                endpoints.MapControllerRoute(
-                    name: "productdetails",
-                    pattern: "{url}",
-                    defaults: new { controller = "Shop", action = "details" }
-                );
-
-                endpoints.MapControllerRoute(
-                    name: "products",
-                    pattern: "products/{category?}",
-                    defaults: new { controller = "Shop", action = "list" }
-                );
-
+            {                             
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}"

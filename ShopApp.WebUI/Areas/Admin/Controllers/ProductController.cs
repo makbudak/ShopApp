@@ -1,14 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ShopApp.Business.Services;
 
 namespace ShopApp.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("admin/product")]
     public class ProductController : Controller
     {
+        private readonly IProductService _productService;
+
+        public ProductController(IProductService productService)
+        {
+            _productService = productService;
+        }
+
+        #region Views
+
         public IActionResult Index()
         {
             return View();
@@ -24,5 +31,19 @@ namespace ShopApp.WebUI.Areas.Admin.Controllers
             ViewBag.Id = id;
             return View();
         }
+
+        #endregion
+
+        #region API
+
+        [HttpGet]
+        [Route("list")]
+        public IActionResult Get()
+        {
+            var list = _productService.Get();
+            return Ok(list);
+        }
+
+        #endregion
     }
 }

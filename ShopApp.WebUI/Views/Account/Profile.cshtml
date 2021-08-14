@@ -6,7 +6,7 @@
 
 <div class="row mt-3 mb-3" ng-controller="profileController">
     <div class="col-md-3">
-        @await Html.PartialAsync("_profileMenu")
+        @await Html.PartialAsync("_ProfileMenu")
     </div>
     <div class="col-md-9">
         <div class="card">
@@ -48,27 +48,5 @@
 </div>
 
 @section Scripts{
-    <script>
-        app.controller("profileController", function ($scope, $http) {
-
-            $http.get("/api/Customer/GetProfile")
-                .then((res) => {
-                    $scope.customer = res.data;
-                });
-
-            var validator = $("#frmProfile").kendoValidator().data("kendoValidator");
-
-            $("#frmProfile").submit(function (event) {
-                event.preventDefault();
-                if (validator.validate()) {
-                    $http.put("/api/Customer/UpdateProfile", $scope.customer)
-                        .then((res) => {
-                            alertShow("İşlem Başarılı", "Kullanıcı bilgileri güncelleme işlemi başarıyla gerçekleşti.", "success");
-                        }, (err) => {
-                            alertShow("İşlem Başarısız", err.data.message, "danger");
-                        });
-                }
-            });
-        });
-    </script>
+    <script src="~/js/pages/customer/profile.js"></script>
 }

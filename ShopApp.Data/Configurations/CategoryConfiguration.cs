@@ -4,9 +4,9 @@ using ShopApp.Model.Entity;
 
 namespace ShopApp.Data.Configurations
 {
-    public class CategoryConfiguration : IEntityTypeConfiguration<Category>
+    public class CategoryConfiguration : IEntityTypeConfiguration<ProductCategory>
     {
-        public void Configure(EntityTypeBuilder<Category> builder)
+        public void Configure(EntityTypeBuilder<ProductCategory> builder)
         {
             builder.HasKey(m=>m.Id);
 

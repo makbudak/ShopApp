@@ -26,24 +26,24 @@ namespace ShopApp.Data.Configurations
                 new ProductImage() { Id = 5, ImageUrl = "5.jpg", ProductId = 5, Order = 1 }
                 );
 
-            builder.Entity<Category>().HasData(
-                            new Category() { Id = 1, Name = "Telefon", Url = "telefon" },
-                            new Category() { Id = 2, Name = "Bilgisayar", Url = "bilgisayar" },
-                            new Category() { Id = 3, Name = "Elektronik", Url = "elektronik" },
-                            new Category() { Id = 4, Name = "Beyaz Eşya", Url = "beyaz-esya" }
+            builder.Entity<ProductCategory>().HasData(
+                            new ProductCategory() { Id = 1, Name = "Telefon", Url = "telefon" },
+                            new ProductCategory() { Id = 2, Name = "Bilgisayar", Url = "bilgisayar" },
+                            new ProductCategory() { Id = 3, Name = "Elektronik", Url = "elektronik" },
+                            new ProductCategory() { Id = 4, Name = "Beyaz Eşya", Url = "beyaz-esya" }
                         );
 
-            builder.Entity<ProductCategory>().HasData(
-                new ProductCategory() { CategoryId = 1, ProductId = 1, Id = 1 },
-                new ProductCategory() { CategoryId = 2, ProductId = 1, Id = 2 },
-                new ProductCategory() { CategoryId = 3, ProductId = 1, Id = 3 },
-                new ProductCategory() { CategoryId = 1, ProductId = 2, Id = 4 },
-                new ProductCategory() { CategoryId = 2, ProductId = 2, Id = 5 },
-                new ProductCategory() { CategoryId = 3, ProductId = 2, Id = 6 },
-                new ProductCategory() { CategoryId = 1, ProductId = 3, Id = 7 },
-                new ProductCategory() { CategoryId = 1, ProductId = 4, Id = 8 },
-                new ProductCategory() { CategoryId = 1, ProductId = 5, Id = 9 },
-                new ProductCategory() { CategoryId = 2, ProductId = 5, Id = 10 }
+            builder.Entity<ProductCategoryItem>().HasData(
+                new ProductCategoryItem() { ProductCategoryId = 1, ProductId = 1, Id = 1 },
+                new ProductCategoryItem() { ProductCategoryId = 2, ProductId = 1, Id = 2 },
+                new ProductCategoryItem() { ProductCategoryId = 3, ProductId = 1, Id = 3 },
+                new ProductCategoryItem() { ProductCategoryId = 1, ProductId = 2, Id = 4 },
+                new ProductCategoryItem() { ProductCategoryId = 2, ProductId = 2, Id = 5 },
+                new ProductCategoryItem() { ProductCategoryId = 3, ProductId = 2, Id = 6 },
+                new ProductCategoryItem() { ProductCategoryId = 1, ProductId = 3, Id = 7 },
+                new ProductCategoryItem() { ProductCategoryId = 1, ProductId = 4, Id = 8 },
+                new ProductCategoryItem() { ProductCategoryId = 1, ProductId = 5, Id = 9 },
+                new ProductCategoryItem() { ProductCategoryId = 2, ProductId = 5, Id = 10 }
                 );
 
             builder.Entity<User>().HasData(

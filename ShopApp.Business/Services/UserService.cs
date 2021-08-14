@@ -1,6 +1,7 @@
 ﻿using ShopApp.Data.GenericRepository;
 using ShopApp.Extensions;
 using ShopApp.Model.Dto;
+using ShopApp.Model.Dto.User;
 using ShopApp.Model.Entity;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace ShopApp.Business.Services
 {
     public interface IUserService
     {
-        List<User> GetAll();
+        List<UserModel> Get();
         User GetById(int id);
         ServiceResult Login(LoginModel model);
     }
@@ -24,9 +25,20 @@ namespace ShopApp.Business.Services
             _unitOfWork = unitOfWork;
         }
 
-        public List<User> GetAll()
+        public List<UserModel> Get()
         {
-            return _unitOfWork.Repository<User>().GetAll(x => !x.Deleted).ToList();
+            return _unitOfWork.Repository<User>()
+                .GetAll(x => !x.Deleted)
+                .Select(x => new UserModel
+                {
+                    Id = x.Id,
+                    FirstName = x.Name,
+                    LastName = x.Surname,
+                    Email = x.Email,
+                    Phone = x.Phone,
+                    EmailConfirmed = x.EmailConfirmed
+                }).ToList();
+
         }
 
         public User GetById(int id)

@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopApp.Business.Attributes;
 using ShopApp.Business.Services;
 using ShopApp.Model.Dto;
+using ShopApp.Model.Entity;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace ShopApp.WebUI.Controllers
 {
@@ -25,7 +28,10 @@ namespace ShopApp.WebUI.Controllers
             _orderService = orderService;
         }
 
+        #region Views
+
         [Route("login")]
+        [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -39,7 +45,6 @@ namespace ShopApp.WebUI.Controllers
         }
 
         [Route("logout")]
-        [CustomerAuthorize]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
@@ -141,5 +146,13 @@ namespace ShopApp.WebUI.Controllers
         {
             return View();
         }
+
+        #endregion
+
+        #region API
+
+        
+
+        #endregion
     }
 }

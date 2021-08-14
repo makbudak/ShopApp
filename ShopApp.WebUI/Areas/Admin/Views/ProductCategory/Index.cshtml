@@ -1,12 +1,12 @@
 ﻿
 @{
-    ViewData["Title"] = "Kategoriler";
+    ViewData["Title"] = "Ürün Kategorileri";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a class="text-decoration-none text-secondary" href="/admin">Anasayfa</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Kategoriler</li>
+        <li class="breadcrumb-item"><a class="text-decoration-none text-secondary" href="/admin/home">Anasayfa</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Ürün Kategorileri</li>
     </ol>
 </nav>
 
@@ -27,6 +27,10 @@
                     </div>
                     <form id="frmCategory">
                         <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Bağlı Kategori</label>                           <input kendo-drop-down-tree k-ng-model="parentId" k-placeholder="'Kategori Seçiniz'" k-data-text-field="'name'" dataValueField="'id'" k-value-primitive="true" k-auto-bind="false" k-data-source="categories" />
+                            </div>
+
                             <div class="mb-3">
                                 <label class="form-label">Kategori Adı</label>
                                 <input id="txtName" name="name" class="w-100" required validationMessage="Kategori adı zorunludur" />
@@ -51,5 +55,5 @@
 
 
 @section Scripts{
-    <script src="~/js/pages/admin/category.js"></script>
+    <script src="~/js/pages/admin/product-category.js"></script>
 }

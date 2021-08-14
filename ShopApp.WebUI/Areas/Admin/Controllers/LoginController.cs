@@ -8,6 +8,7 @@ using System.Net;
 namespace ShopApp.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("admin/login")]
     public class LoginController : Controller
     {
         private readonly IUserService _userService;
@@ -17,6 +18,7 @@ namespace ShopApp.WebUI.Areas.Admin.Controllers
             _userService = userService;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();

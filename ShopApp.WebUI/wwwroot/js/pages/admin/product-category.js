@@ -1,112 +1,95 @@
-﻿var id = 0;
-var categoryModal = new bootstrap.Modal($("#categoryModal"));
-
-var dataSource = new kendo.data.DataSource({
-    transport: {
-        read: {
-            url: "/api/product-category",
-            dataType: "json"
-        },
-    },
-    pageSize: 5
-});
-
-$("#grid").kendoGrid({
-    columns: [
-        {
-            command: [
-                { text: "", name: "edit", iconClass: "k-icon k-i-edit", click: editCategory },
-                { text: "", name: "remove", iconClass: "k-icon k-i-trash", click: deleteCategory }
-            ],
-            title: " ",
-            width: "120px"
-        },
-        {
-            field: "name",
-            title: "Kategori Adı",
-        },
-        {
-            field: "url",
-            title: "URL",
-        }],
-    dataSource: dataSource,
-    loaderType: "loadingPanel",
-    pageable: {
-        pageSize: 5,
-        alwaysVisible: true
-    }
-});
-
-$("#txtName").kendoTextBox({
-    placeholder: "Kategori Adı",
-});
-
-$("#txtUrl").kendoTextBox({
-    placeholder: "URL",
-});
-
-$("#btnAdd").click(function () {
-    $("#modalTitle").text("Yeni Kategori Ekle");
-    categoryModal.show();
+﻿app.controller("productCategoryController", function ($scope, $http) {
+    var categoryModal = new bootstrap.Modal($("#categoryModal"));
+    $scope.title = "";
+    $scope.dataSource = getAll();
     reset();
-});
 
-function editCategory(e) {
-    $("#modalTitle").text("Kategori Düzenle");
-    $("#categoryModal").modal("show");
-    e.preventDefault();
-    var data = this.dataItem($(e.currentTarget).closest("tr"));
-    $("#txtName").data("kendoTextBox").value(data.name);
-    $("#txtUrl").data("kendoTextBox").value(data.url);
-    id = data.categoryId;
-}
 
-function deleteCategory(e) {
-    e.preventDefault();
-    var data = this.dataItem($(e.currentTarget).closest("tr"));
-    kendo.confirm("Silme istediğinize emin misiniz?").then(function () {
-        $.ajax({
-            url: "/api/category/" + data.categoryId,
-            type: "DELETE",
-            complete: function (res) {
-                dataSource.read();
+    function getAll() {
+        //$http.get("/admin/product-category/list")
+        //    .then(res => {
+        //        $scope.dataSource = res.data;
+        //    });
+        var data = new kendo.data.HierarchicalDataSource({
+            transport: {
+                read: {
+                    url: "/admin/product-category/list",
+                    dataType: "json"
+                },
+            },
+            schema: {
+                model: {
+                    children: "items"
+                }
             }
         });
-    });
-}
+        return data;
+    }
 
-var validator = $("#frmCategory").kendoValidator().data("kendoValidator");
+    $scope.add = function () {
+        $scope.title = "Yeni Kategori Ekle";
+        categoryModal.show();
+        reset();
+    }
 
-$("#frmCategory").submit(function (event) {
-    event.preventDefault();
-    var type = "";
-    if (validator.validate()) {
-        var data = {
-            categoryId: id,
-            name: $("#txtName").data("kendoTextBox").value(),
-            url: $("#txtUrl").data("kendoTextBox").value()
-        };
-        if (id == 0) {
-            type = "POST";
+    $scope.edit = function (e) {
+        //categoryModal.show();
+        $scope.title = "Kategori Düzenle";
+        $scope.categoryDataSource = getAll();
+        console.log(e.parentId);
+        debugger;
+        if (e.parentId == null) {
+            $scope.parentId = 0;
         } else {
-            type = "PUT";
+            $scope.parentId = e.parentId;
         }
-        $.ajax({
-            url: "/api/category",
-            type: type,
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json",
-            complete: function (res) {
-                categoryModal.hide();
-                dataSource.read();
-            }
+
+        //$http.get("/admin/product-category/list/" + e.id)
+        //    .then(res => {
+        //        $scope.productCategory = {
+        //            id: res.data.id,
+        //            name: res.data.name,
+        //            url: res.data.url,
+        //            parentId: res.data.parentId
+        //        };
+        //    });
+    }
+
+    $scope.delete = function (e) {
+        kendo.confirm("Silme istediğinize emin misiniz?").then(function () {
+            $http.delete("/admin/product-category/delete/" + e.id)
+                .then(res => {
+                    getAll();
+                });
         });
     }
-});
 
-function reset() {
-    id = 0;
-    $("#txtName").data("kendoTextBox").value("");
-    $("#txtUrl").data("kendoTextBox").value("");
-}
+    var validator = $("#frmCategory").kendoValidator().data("kendoValidator");
+
+    $("#frmCategory").submit(function (event) {
+        if (validator.validate()) {
+            if ($scope.productCategory.id === 0) {
+                $http.post("/admin/product-category/create", $scope.productCategory)
+                    .then(res => {
+                        getAll();
+                        categoryModal.hide();
+                    });
+            } else {
+                $http.put("/admin/product-category/update", $scope.productCategory)
+                    .then(res => {
+                        getAll();
+                        categoryModal.hide();
+                    });
+            }
+        };
+    });
+
+    function reset() {
+        $scope.productCategory = {
+            id: 0,
+            name: "",
+            url: "",
+            parentId: null
+        };
+    }
+});

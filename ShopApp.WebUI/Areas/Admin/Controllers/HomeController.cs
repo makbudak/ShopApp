@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace ShopApp.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("admin/home")]
     public class HomeController : Controller
     {
         public IActionResult Index()

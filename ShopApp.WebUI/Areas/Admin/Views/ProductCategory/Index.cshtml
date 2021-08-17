@@ -10,35 +10,53 @@
     </ol>
 </nav>
 
-<div class="card">
+<div class="card" ng-controller="productCategoryController">
     <div class="card-body">
         <div class="row">
-            <div class="col-6"><h5 class="card-title mb-3">Kategoriler</h5></div>
-            <div class="col-6"><a id="btnAdd" class="btn btn-primary btn-sm float-end"><i class="k-icon k-i-plus"></i>Ekle</a></div>
+            <div class="col-6"><h5 class="card-title mb-3">Ürün Kategorileri</h5></div>
+            <div class="col-6"><a ng-click="add()" class="btn btn-primary btn-sm float-end"><i class="k-icon k-i-plus"></i>Ekle</a></div>
         </div>
-        <div id="grid"></div>
+
+        <input class="w-100" kendo-drop-down-tree k-autoBind="false"
+                ng-model="parentId" k-placeholder="'Kategori Seçiniz'" k-data-text-field="'name'" k-data-value-field="'id'" k-data-source="categoryDataSource" />
+
+        <div class="border-top p-3" ng-cloak kendo-tree-view="tree"
+             k-data-source="dataSource">
+            <div k-template>
+                <div class="border-bottom pb-2">
+                    <a class="btn btn-secondary text-white btn-sm" ng-click="edit(dataItem)">
+                        <i class="k-icon k-i-edit"></i>
+                    </a>
+                    <a class="btn btn-danger text-white btn-sm" ng-click="delete(dataItem)">
+                        <i class="k-icon k-i-delete"></i>
+                    </a>
+                    {{dataItem.name}}
+                </div>
+            </div>
+        </div>
 
         <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalTitle"></h5>
+                        <h5 class="modal-title">{{title}}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form id="frmCategory">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label class="form-label">Bağlı Kategori</label>                           <input kendo-drop-down-tree k-ng-model="parentId" k-placeholder="'Kategori Seçiniz'" k-data-text-field="'name'" dataValueField="'id'" k-value-primitive="true" k-auto-bind="false" k-data-source="categories" />
+                                <label class="form-label">Bağlı Kategori</label>
+                                <input class="w-100" kendo-drop-down-tree ng-model="productCategory.parentId" k-placeholder="'Kategori Seçiniz'" k-data-text-field="'name'" k-data-value-field="'id'" k-data-source="dataSource" />
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Kategori Adı</label>
-                                <input id="txtName" name="name" class="w-100" required validationMessage="Kategori adı zorunludur" />
+                                <input kendo-text-box ng-model="productCategory.name" class="w-100" required validationMessage="Kategori adı zorunludur" />
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">URL</label>
-                                <input id="txtUrl" name="url" class="w-100" required validationMessage="URL zorunludur" />
+                                <input kendo-text-box ng-model="productCategory.url" class="w-100" required validationMessage="URL zorunludur" />
                             </div>
                         </div>
                         <div class="modal-footer">

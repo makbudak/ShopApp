@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using ShopApp.Data.GenericRepository;
+using ShopApp.Model.Dto;
 using ShopApp.Model.Entity;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace ShopApp.Business.Services
 {
@@ -14,7 +13,7 @@ namespace ShopApp.Business.Services
 
         ProductCategory GetByIdWithProducts(int categoryId);
 
-        List<ProductCategory> GetAll();
+        List<TreeProductCategoryModel> GetAll(int? parentId = null);
 
         void Create(ProductCategory entity);
 
@@ -60,9 +59,26 @@ namespace ShopApp.Business.Services
             }
         }
 
-        public List<ProductCategory> GetAll()
+        public List<TreeProductCategoryModel> GetAll(int? parentId = null)
         {
-            return _unitOfWork.Repository<ProductCategory>().GetAll().ToList();
+            var productCategories = new List<TreeProductCategoryModel>();
+            var list = _unitOfWork.Repository<ProductCategory>()
+                .GetAll(x => x.ParentId == parentId)
+                .Select(x => new TreeProductCategoryModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ParentId = x.ParentId,
+                }).ToList();
+
+            foreach (var item in list)
+            {
+                item.Items = GetAll(item.Id);
+            }
+
+            productCategories.AddRange(list);
+
+            return productCategories;
         }
 
         public ProductCategory GetById(int id)

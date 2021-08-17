@@ -21,11 +21,13 @@ namespace ShopApp.WebUI.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpGet("add")]
         public IActionResult Add()
         {
             return View();
         }
 
+        [HttpGet("edit/{id}")]
         public IActionResult Edit(int id)
         {
             ViewBag.Id = id;
@@ -36,12 +38,11 @@ namespace ShopApp.WebUI.Areas.Admin.Controllers
 
         #region API
 
-        [HttpGet]
-        [Route("list")]
+        [HttpGet("list")]        
         public IActionResult Get()
         {
             var list = _productService.Get();
-            return Ok(list);
+            return Json(list);
         }
 
         #endregion

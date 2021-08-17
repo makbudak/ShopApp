@@ -10,46 +10,72 @@
     <link href="~/css/kendo.bootstrap-v4.min.css" rel="stylesheet" />
     <link href="~/css/style.css" rel="stylesheet" />
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-        <div class="container-fluid">
+<body ng-app="myApp">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom py-md-0">
+        <div class="container-fluid" ng-cloak>
             <a class="navbar-brand" href="/admin/home">Admin Paneli</a>
-            <button class="navbar-toggler border-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler border-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto my-2 my-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/admin/home">Anasayfa</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            İçerik Yönetimi
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                            <li><a class="dropdown-item" href="/admin/product-category">Ürün Kategorileri</a></li>
-                            <li><a class="dropdown-item" href="/admin/product">Ürünler</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Ayarlar
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                            <li><a class="dropdown-item" href="/admin/role">Roller</a></li>
-                            <li><a class="dropdown-item" href="/admin/user">Kullanıcılar</a></li>
+                        <ul class="text-dark"
+                            kendo-menu
+                            k-orientation="'horizontal'"
+                            k-rebind="'horizontal'">
+                            <li class="pe-3">
+                                İçerik Yönetimi
+                                <ul>
+                                    <li>
+                                        <a href="/admin/product-category">
+                                            Ürün Kategorileri
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/product">
+                                            Ürünler
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="pe-3">
+                                Ayarlar
+                                <ul>
+                                    <li>
+                                        <a href="/admin/role">
+                                            Roller
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/user">
+                                            Kullanıcılar
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                 </ul>
+
                 <div class="d-flex">
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownEnd" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span>@Context.Session.GetString("UserName")</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownEnd">
-                                <li><a class="dropdown-item" href="/">Siteye Git</a></li>
-                                <li><a class="dropdown-item" href="/account/logout">Çıkış Yap</a></li>
+                    <ul class="text-dark"
+                        kendo-menu
+                        k-orientation="'horizontal'"
+                        k-rebind="'horizontal'">
+                        <li class="pe-3">
+                            <span>@Context.Session.GetString("UserName")</span>
+                            <ul>
+                                <li>
+                                    <a href="/">
+                                        Siteye Git
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/account/logout">
+                                        Çıkış Yap
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -63,6 +89,7 @@
 
     <script src="~/js/lib/jquery-3.6.0.min.js"></script>
     <script src="~/js/lib/bootstrap.bundle.min.js"></script>
+    <script src="~/js/lib/angular.min.js"></script>
     <script src="~/js/lib/kendo.all.min.js"></script>
     <script src="~/js/lib/kendo.culture.tr-TR.min.js"></script>
     <script src="~/js/site.js"></script>

@@ -34,7 +34,7 @@ namespace ShopApp.WebUI.Areas.Admin.Controllers
                 HttpContext.Session.SetInt32("UserId", user.Id);
                 HttpContext.Session.SetString("UserName", $"{user.Name} {user.Surname}");
             }
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int)result.StatusCode);
         }
     }
 }

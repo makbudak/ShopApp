@@ -1,73 +1,175 @@
-﻿var dataSource = new kendo.data.DataSource({
-    transport: {
-        read: {
-            url: "/admin/user/list",
-            dataType: "json"
-        },
-    },
-    pageSize: 5
-});
+﻿const user = {
+    data() {
+        return {
+            userList: [],
+            userTypes: [],
+            showGrid: true,
+            showForm: false,
+            title: "Kullanıcılar",
+            pageNumber: 1,
+            total: 0,
+            user: {
+                userType: null,
+                name: "",
+                surname: "",
+                email: "",
+                phone: "",
+                isActive: true
+            },
+            rules:
+            {
+                userType: [
+                    {
+                        required: true,
+                        message: 'Kullanıcı tipi seçiniz.',
+                        trigger: ['blur', 'change']
+                    },
+                ],
+                name: [
+                    {
+                        required: true,
+                        message: 'Adı zorunludur.',
+                        trigger: 'blur',
+                    },
+                ],
+                surname: [
+                    {
+                        required: true,
+                        message: 'Soyadı zorunludur.',
+                        trigger: 'blur',
+                    },
+                ],
+                email: [
+                    {
+                        required: true,
+                        message: 'Email adresi zorunludur.',
+                        trigger: 'blur',
+                    },
+                    {
+                        type: 'email',
+                        message: 'Lütfen geçerli email adresi giriniz.',
+                        trigger: ['blur', 'change']
+                    }
 
-$("#grid").kendoGrid({
-    columns: [
-        {
-            command: [
-                { text: "", name: "edit", iconClass: "k-icon k-i-edit", click: editUser },
-                { text: "", name: "remove", iconClass: "k-icon k-i-trash", click: deleteUser }
-            ],
-            title: " ",
-            width: "120px"
-        },        
-        {
-            field: "firstName",
-            title: "Adı",
-        },
-        {
-            field: "lastName",
-            title: "Soyadı",
-        },
-        {
-            field: "email",
-            title: "E-mail Adresi",
-        },
-        {
-            title: "Email Onay",
-            template: '#=dirtyField(data,"emailConfirmed")#<input type="checkbox" #= emailConfirmed ? \'checked="checked"\' : "" # class="chkbx k-checkbox" />',
-            width: 120
-        },
-        {
-            field: "phone",
-            title: "Telefon No"
+                ],
+            },
+            filterModel: {
+                name: "",
+                surname: "",
+                email: ""
+            }
         }
-    ],
-    dataSource: dataSource,
-    loaderType: "loadingPanel",
-    pageable: {
-        pageSize: 5,
-        alwaysVisible: true
+    },
+    created() {
+        this.getUsers();
+        this.getUserTypes();
+    },
+    methods: {
+        getUsers() {
+            var query = `/admin/user/list?pageNumber=${this.pageNumber}`;
+            if (this.filterModel.name) {
+                query = `${query}&name=${this.filterModel.name}`;
+            }
+            if (this.filterModel.surname) {
+                query = `${query}&surname=${this.filterModel.surname}`;
+            }
+            if (this.filterModel.email) {
+                query = `${query}&email=${this.filterModel.email}`;
+            }
+            axios.get(query).then(res => {
+                this.userList = res.data.list;
+                this.total = res.data.total;
+            })
+        },
+        getUserTypes() {
+            axios.get("/admin/lookup/user-types").then(res => {
+                this.userTypes = res.data;
+            });
+        },
+        editUser(e) {
+            this.showForm = true;
+            this.showGrid = false;
+            this.title = "Kullanıcı Düzenle";
+            this.user = e;
+        },
+        deleteUser(e) {
+            this.$confirm(
+                'Silmek istediğinize emin misiniz?',
+                'Silme Onayı',
+                {
+                    confirmButtonText: 'Evet',
+                    cancelButtonText: 'Hayır',
+                    type: 'danger',
+                }
+            ).then(() => {
+                axios.delete(`/admin/user/${e.id}`)
+                    .then(res => {
+                        this.getUsers();
+                        this.$message({
+                            type: 'success',
+                            message: 'Silme işlemi başarıyla gerçekleşti.',
+                        });
+                    });
+            });
+        },
+        addUser() {
+            this.showForm = true;
+            this.showGrid = false;
+            this.title = "Kullanıcı Ekle";
+        },
+        saveUser(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    if (this.user.id == 0) {
+                        axios.post("/admin/user", this.user)
+                            .then(res => {
+                                this.reset();
+                                this.getUsers();
+                            });
+                    } else {
+                        axios.put("/admin/user", this.user)
+                            .then(res => {
+                                this.reset();
+                                this.getUsers();
+                            });
+                    }
+                } else {
+                    return false;
+                }
+            })
+        },
+        reset() {
+            this.showForm = false;
+            this.showGrid = true;
+            this.pageNumber = 1;
+            this.user = {
+                userType: null,
+                name: "",
+                surname: "",
+                email: "",
+                phone: "",
+                isActive: true
+            };
+        },
+        pageChange(val) {
+            this.pageNumber = val;
+            this.getUsers();
+        },
+        filter() {
+            this.getUsers();
+        },
+        filterReset() {
+            this.pageNumber = 1;
+            this.filterModel = {
+                name: "",
+                surname: "",
+                email: ""
+            };
+            this.getUsers();
+        }
     }
-});
+};
 
-function editUser(e) {
-
-}
-
-function deleteUser(e) {
-
-}
-
-$("#grid .k-grid-content").on("change", "input.chkbx", function (e) {
-    var grid = $("#grid").data("kendoGrid");
-    dataItem = grid.dataItem($(e.target).closest("tr"));
-    dataItem.set("emailConfirmed", this.checked);
-});
-
-function dirtyField(data, fieldName) {
-    var hasClass = $("[data-uid=" + data.id + "]").find(".k-dirty-cell").length < 1;
-    if (data.dirty && data.dirtyFields[fieldName] && hasClass) {
-        return "<span class='k-dirty'></span>"
-    }
-    else {
-        return "";
-    }
-}
+const userApp = Vue.createApp(user);
+userApp.use(ElementPlus);
+userApp.mount("#app");

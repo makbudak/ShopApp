@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopApp.WebUI", "shopapp.we
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopApp.Model", "ShopApp.Model\ShopApp.Model.csproj", "{B5EE420F-51D8-4D01-A3CA-ECB398F7889C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopApp.Extensions", "ShopApp.Extensions\ShopApp.Extensions.csproj", "{5B6D0E71-737E-4C84-85E1-029BC1BDF819}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopApp.Extensions", "ShopApp.Extensions\ShopApp.Extensions.csproj", "{5B6D0E71-737E-4C84-85E1-029BC1BDF819}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

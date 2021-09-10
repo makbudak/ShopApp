@@ -2,32 +2,6 @@
     font-weight: 500 !important;
 }
 
-.k-expander-title {
-    color: unset !important;
-    text-transform: unset !important;
-}
-
-.k-expander-header {
-    border-bottom: 1px solid rgba(0,0,0,.125);
-    background-color: rgba(0,0,0,.03) !important;
-}
-
-.k-expander {
-    border-radius: .25rem;
-}
-
-.k-menu-link {
-    color: #212529 !important;
-}
-
-.cursor-pointer {
-    cursor: pointer !important;
-}
-
-.k-panelbar .k-group > .k-item > .k-link, .k-panelbar .k-panelbar-group > .k-panelbar-item > .k-link {
-    cursor: pointer !important;
-}
-
-.k-treeview .k-in .k-icon, .k-treeview .k-in .k-image, .k-treeview .k-in .k-sprite {
-    margin-right: unset !important;
+.el-tree-node {
+    padding: 5px;
 }

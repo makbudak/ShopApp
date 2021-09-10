@@ -27,7 +27,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\" />
+    <Folder Include="wwwroot\css\fonts\" />
     <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\fonts\fontawesome-webfont.woff2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">

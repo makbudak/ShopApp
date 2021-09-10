@@ -1,4 +1,4 @@
-﻿const App = {
+﻿const app = {
     data() {
         return {
             login: {
@@ -33,18 +33,14 @@
         onSubmit(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    axios.post("/admin/login", this.login)
+                    axios.post("/customer/login", this.login)
                         .then(res => {
                             if (res.status == 200) {
-                                location.href = "/admin/home";
+                                location.href = "/";
                             }
                         });
                 }
             });
         },
-    },
+    }
 }
-
-const app = Vue.createApp(App);
-app.use(ElementPlus);
-app.mount("#app");

@@ -1,13 +1,29 @@
-﻿<ul id="profile" kendo-panel-bar="tree">
-    <li class="k-state-active">
-        <span class="k-link k-state-selected">Hesabım</span>
-        <ul>
-            <li class="border-bottom"><a class="cursor-pointer" href="/account/profile">Kullanıcı Bilgileri</a></li>
-            <li class="border-bottom"><a href="/account/orders">Siparişlerim</a></li>
-            <li class="border-bottom"><a href="/account/address">Adreslerim</a></li>
-            <li class="border-bottom"><a href="/account/change-password">Şifre Değiştir</a></li>
-            <li><a href="/account/logout">Çıkış Yap</a></li>
+﻿
+<el-collapse class="shadow border px-3" model-value="1" accordion>
+    <el-collapse-item name="1">
+        <template #title>
+            <h5>
+                <i class="header-icon el-icon-user"></i>
+                &nbsp;Hesabım
+            </h5>
+        </template>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <a class="text-decoration-none text-dark" href="/account/profile">Kullanıcı Bilgileri</a>
+            </li>
+            <li class="list-group-item">
+                <a class="text-decoration-none text-dark" href="/account/orders">Siparişlerim</a>
+            </li>
+            <li class="list-group-item">
+                <a class="text-decoration-none text-dark" href="/account/address">Adreslerim</a>
+            </li>
+            <li class="list-group-item">
+                <a class="text-decoration-none text-dark" href="/account/change-password">Şifre Değiştir</a>
+            </li>
+            <li class="list-group-item">
+                <a class="text-decoration-none text-dark" href="/account/logout">Çıkış Yap</a>
+            </li>
         </ul>
-    </li>
+    </el-collapse-item>
+</el-collapse>
 
-</ul>

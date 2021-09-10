@@ -1,8 +1,64 @@
 ﻿
 @{
-    ViewData["Title"] = "Blog";
+    ViewData["Title"] = "Blog Yazıları";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Blog</h2>
+<div class="row mb-5">
+    <div class="col-md-9">
+        <el-card>
+            <template #header>
+                <h5><i class="el-icon-document h5"></i> Blog Yazıları</h5>
+            </template>
+            <div class="row">
+                <div class="col-md-4 mt-3 mb-3" v-for="item in 9" :key="item">
+                    <div class="card shadow">
+                        <img class="card-img-top" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" />
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <time class="time">{{ currentDate }}</time>
+                            <el-button type="text" class="button">Operating</el-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 mb-5">
+                <el-pagination class="float-end" background layout="prev, pager, next" :total="1000"></el-pagination>
+            </div>
+        </el-card>
+    </div>
+    <div class="col-md-3">
+
+        <el-collapse class="shadow border px-3" model-value="1" accordion>
+            <el-collapse-item name="1">
+                <template #title>
+                    <h5>
+                        <i class="header-icon el-icon-s-grid"></i>
+                        &nbsp;Blog Kategorileri
+                    </h5>
+                </template>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a class="text-decoration-none text-dark" href="/account/profile">Kullanıcı Bilgileri</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="text-decoration-none text-dark" href="/account/orders">Siparişlerim</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="text-decoration-none text-dark" href="/account/address">Adreslerim</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="text-decoration-none text-dark" href="/account/change-password">Şifre Değiştir</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="text-decoration-none text-dark" href="/account/logout">Çıkış Yap</a>
+                    </li>
+                </ul>
+            </el-collapse-item>
+        </el-collapse>
+
+
+    </div>
+</div>
+
 

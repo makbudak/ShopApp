@@ -69,6 +69,7 @@ namespace ShopApp.Business.Services
                     Id = x.Id,
                     Name = x.Name,
                     ParentId = x.ParentId,
+                    Url = x.Url
                 }).ToList();
 
             foreach (var item in list)

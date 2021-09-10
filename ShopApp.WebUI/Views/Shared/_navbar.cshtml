@@ -1,89 +1,70 @@
 ﻿@using Microsoft.AspNetCore.Http;
 
-<div class="navbar navbar-expand-lg navbar-light bg-light border-bottom py-md-0" ng-controller="navbarController">
-    <div class="container" ng-cloak>
+<div class="navbar navbar-expand-lg navbar-light bg-light border-bottom" id="navbar">
+    <div class="container">
         <a href="/" class="navbar-brand text-dark">Shop App</a>
-        <button class="navbar-toggler border-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto my-2 my-lg-0">
                 <li class="nav-item">
-                    <ul class="text-dark"
-                        kendo-menu
-                        k-orientation="'horizontal'"
-                        k-rebind="'horizontal'">
-                        <li class="pe-3">
-                            Ürün Kategorileri
-                            <ul>
-                                <li>
-                                    <a href="/product/phone">Telefon</a>
-                                </li>
-                                <li>
-                                    Bilgisayar
-                                </li>
-                                <li>
-                                    Beyaz Eşya
-                                </li>
-                                <li>
-                                    Küçük Ev Aletleri
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="pe-3">
-                            <a href="/blog">Blog</a>
-                        </li>
-                        <li class="pe-3">
-                            <a href="/contact">İletişim</a>
-                        </li>
-                    </ul>
+
                 </li>
             </ul>
 
             <div class="d-flex">
                 @if (Context.Session.GetInt32("CustomerId") != null)
                 {
-                    <ul kendo-menu
-                        k-orientation="'horizontal'"
-                        k-rebind="'horizontal'">
-                        <li class="pe-3">
-                            @Context.Session.GetString("CustomerName")
-                            <ul>
-                                <li><a class="dropdown-item" href="/account/profile">Hesabım</a></li>
-                                <li>
-                                    <a href="/account/orders" class="dropdown-item">Siparişlerim</a>
-                                </li>
-                                <li><a class="dropdown-item" href="/account/logout">Çıkış Yap</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="btn btn-sm" href="/cart">
-                                <i class="k-icon k-i-cart k-i-shopping-cart"></i>
-                                <span class="pb-1">0</span>
-                            </a>
-                        </li>
-                    </ul>
+                    <el-row>
+                        <el-dropdown>
+                            <div class="el-dropdown-link me-2">
+                                <el-button round size="small">
+                                    @Context.Session.GetString("CustomerName")
+                                    <i class="el-icon-arrow-down"></i>
+                                </el-button>
+                            </div>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item>
+                                        <a class="text-decoration-none text-dark" href="/account/profile">Hesabım</a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a class="text-decoration-none text-dark" href="/account/orders">Siparişlerim</a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a class="text-decoration-none text-dark" href="/account/logout">Çıkış Yap</a>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                        <el-button v-on:click="goCart()" class="border ms-2" icon="el-icon-shopping-cart-1" round size="small">
+                            Sepetim
+                        </el-button>
+                    </el-row>
                 }
                 else
                 {
-                    <ul kendo-menu
-                        k-orientation="'horizontal'"
-                        k-rebind="'horizontal'">
-                        <li>
-                            <i class="k-icon k-i-user"></i>
-                            <ul>
-                                <li>
-                                    <a href="/account/login" class="nav-link text-dark">Giriş Yap</a>
-                                </li>
-                                <li>
-                                    <a href="/admin/login" class="nav-link text-dark">Yönetici Girişi</a>
-                                </li>
-                                <li>
-                                    <a href="/account/register" class="nav-link text-dark">Üye Ol</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <el-row>
+                        <el-dropdown>
+                            <span class="el-dropdown-link">
+                                <el-button icon="el-icon-user" round size="small">Giriş Yap</el-button>
+                            </span>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item>
+                                        <a class="text-decoration-none text-dark" href="/account/login">Giriş Yap</a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a class="text-decoration-none text-dark" href="/admin/login">Yönetici Girişi</a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a class="text-decoration-none text-dark" href="/account/register">Üye Ol</a>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                        <el-button v-on:click="goCart()" class="border ms-2" icon="el-icon-shopping-cart-1" round size="small">
+                            Sepetim
+                        </el-button>
+                    </el-row>
                 }
             </div>
         </div>

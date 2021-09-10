@@ -1,5 +1,8 @@
 ﻿using ShopApp.Data.GenericRepository;
+using ShopApp.Extensions;
+using ShopApp.Model.Dto;
 using ShopApp.Model.Entity;
+using ShopApp.Model.Enum;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +13,7 @@ namespace ShopApp.Business.Services
         List<City> GetCities();
         List<District> GetDistrictsByCityId(int cityId);
         List<Neighborhood> GetNeighborhoodsByDistrictId(int districtId);
+        List<LookupModel> GetUserTypes();
     }
 
     public class LookupService : ILookupService
@@ -37,6 +41,12 @@ namespace ShopApp.Business.Services
         {
             return _unitOfWork.Repository<Neighborhood>()
                 .GetAll(x => x.DistrictId == districtId).ToList();
+        }
+
+        public List<LookupModel> GetUserTypes()
+        {
+            var list = EnumHelper.GetEnumValuesAndDescriptions<UserType>();
+            return list;
         }
     }
 }

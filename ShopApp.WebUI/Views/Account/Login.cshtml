@@ -1,29 +1,20 @@
 <div class="row mt-3">
-    <div class="col-md-6 offset-md-3">
-        <div class="card border-success">
+    <div class="col-md-4 offset-md-4">
+        <div class="card shadow">
             <div class="card-header bg-success"><h5 class="text-white py-2">Giriş Yap</h5></div>
-            <div class="card-body" ng-controller="loginController">
-                <form class="p-3" id="frmLogin">
-                    <div class="mb-3 row">
-                        <label class="col-sm-4 col-form-label">Email Adresi</label>
-                        <div class="col-sm-8">
-                            <input kendo-text-box ng-model="customer.email" k-placeholder="'Email Adres'" type="email" class="w-100" required data-required-msg="Email adresi zorunludur" data-email-msg="Email formatı geçersiz" />
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label class="col-sm-4 col-form-label">Şifre</label>
-                        <div class="col-sm-8">
-                            <input kendo-text-box ng-model="customer.password" k-placeholder="'Şifre'" type="password" class="w-100" required validationMessage="Şifre zorunludur" />
-                        </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <div class="col-sm-8 offset-sm-4">
-                            <a href="/account/forgotpassword" class="btn btn-link text-dark">Şifremi Unuttum</a>
-                            <button type="submit" class="btn btn-success float-end">Giriş Yap</button>
-                        </div>
-                    </div>
-                </form>
+            <div class="card-body">
+                <el-form ref="loginForm" :model="login" label-width="120px" :rules="rules" label-position="top">
+                    <el-form-item label="Email Adresi" prop="email">
+                        <el-input placeholder="Email Adresi" v-model="login.email"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Şifre" prop="password">
+                        <el-input placeholder="Şifre" v-model="login.password" show-password></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <a href="/account/forgotpassword" class="btn btn-link text-dark float-start">Şifremi Unuttum</a>
+                        <el-button type="success" v-on:click="onSubmit('loginForm')" class="float-end bg-success">Giriş Yap</el-button>
+                    </el-form-item>
+                </el-form>
             </div>
         </div>
     </div>
@@ -31,5 +22,5 @@
 
 @section Scripts
 {
-    <script src="~/js/pages/customer/login.js"></script>
+    <script src="~/js/pages/frontend/account/login.js"></script>
 }

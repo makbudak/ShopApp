@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopApp.Business.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ShopApp.Model.Dto.User;
 
 namespace ShopApp.WebUI.Areas.Admin.Controllers
 {
@@ -23,11 +20,33 @@ namespace ShopApp.WebUI.Areas.Admin.Controllers
             return View();
         }
 
-        [Route("list")]
-        public IActionResult Get()
+        [HttpGet("list")]
+        public IActionResult Get([FromQuery] UserFilterModel model)
         {
-            var list = _userService.Get();
+            var list = _userService.Get(model);
             return Ok(list);
         }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] UserModel model)
+        {
+            var result = _userService.Post(model);
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] UserModel model)
+        {
+            var result = _userService.Put(model);
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var result = _userService.Delete(id);
+            return StatusCode((int)result.StatusCode, result);
+        }
+
     }
 }

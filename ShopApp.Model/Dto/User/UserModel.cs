@@ -1,14 +1,14 @@
+using ShopApp.Model.Enum;
+
 namespace ShopApp.Model.Dto.User
 {
-    public class UserModel
+    public class UserModel : BaseModel
     {
-        public int Id { get; set; }
+        public UserType UserType { get; set; }
 
-        public string UserName { get; set; }
+        public string Name { get; set; }
 
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        public string Surname { get; set; }
 
         public string Email { get; set; }
 
@@ -16,6 +16,6 @@ namespace ShopApp.Model.Dto.User
 
         public string Phone { get; set; }
 
-
-    }    
+        public bool IsActive { get; set; }
+    }
 }

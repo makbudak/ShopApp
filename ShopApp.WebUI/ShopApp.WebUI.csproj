@@ -26,11 +26,13 @@
     <PackageReference Include="Iyzipay" Version="2.1.37" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Views\Shared\" />
-    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\css\fonts\" />
     <Folder Include="wwwroot\images\" />
-    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\fonts\fontawesome-webfont.woff2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">

@@ -1,143 +1,155 @@
-﻿app.controller("addressController", function ($scope, $http) {
-    $scope.addresses = [];
-    $scope.cities = [];
-    $scope.districts = [];
-    $scope.neighborhoods = [];
-    $scope.address = {
-        id: 0,
-        title: "",
-        nameSurname: "",
-        postCode: "",
-        address: "",
-        phone: "",
-        cityId: 0,
-        districtId: 0,
-        neighborhoodId: 0
-    }
-
-    allHideContent();
-    getAll();
-
-    function getAll() {
-        $http.get("/customer-address")
-            .then((res) => {
-                if (res.data.length > 0) {
-                    allHideContent();
-                    $scope.showGrid = true;
-                } else {
-                    allHideContent();
-                    $scope.showEmpty = true;
-                }
-                $scope.cardTitle = "Adreslerim";
-                $scope.addresses = res.data;
-            });
-    }
-
-    function getCities() {
-        $scope.cities = {
-            transport: {
-                read: {
-                    url: "/lookup/cities",
-                }
+﻿const app = {
+    data() {
+        return {
+            addresses: [],
+            cities: [],
+            districts: [],
+            neighborhoods: [],
+            cardTitle: "Adreslerim",
+            showGrid: true,
+            showForm: false,
+            showEmpty: false,
+            address: {
+                id: 0,
+                title: "",
+                nameSurname: "",
+                postCode: "",
+                address: "",
+                phone: "",
+                cityId: null,
+                districtId: null,
+                neighborhoodId: null
+            },
+            rules:
+            {
+                name: [
+                    {
+                        required: true,
+                        message: "Adı zorunludur.",
+                        trigger: "blur",
+                    },
+                ],
+                surname: [
+                    {
+                        required: true,
+                        message: "Soyadı zorunludur.",
+                        trigger: "blur",
+                    },
+                ]
             }
-        };
-    }
-
-    function getDistricts(cityId) {
-        $scope.districts = {
-            transport: {
-                read: {
-                    url: "/lookup/districts/" + cityId,
-                }
-            }
-        };
-    }
-
-    function getNeighborhoods(districtId) {
-        $scope.neighborhoods = {
-            transport: {
-                read: {
-                    url: "/lookup/neighborhoods/" + districtId,
-                }
-            }
-        };
-    }
-
-    function allHideContent() {
-        $scope.showForm = false;
-        $scope.showGrid = false;
-        $scope.showEmpty = false;
-    }
-
-    $scope.selectCity = function () {
-        getDistricts($scope.address.cityId);
-    }
-
-    $scope.selectDistrict = function () {
-        getNeighborhoods($scope.address.districtId);
-    }
-
-    $scope.add = function () {
-        allHideContent();
-        $scope.showForm = true;
-        $scope.cardTitle = "Adres Ekle";
-        getCities();
-        $scope.address = {
-            id: 0,
-            title: "",
-            nameSurname: "",
-            postCode: "",
-            address: "",
-            phone: "",
-            cityId: 0,
-            districtId: 0,
-            neighborhoodId: 0
         }
-    };
-
-    $scope.edit = function (e) {
-        allHideContent();
-        $scope.showForm = true;
-        $scope.cardTitle = "Adres Düzenle";
-        getCities();
-        getDistricts(e.cityId);
-        getNeighborhoods(e.districtId);
-        $scope.address = e;
-    }
-
-    $scope.cancel = function () {
-        allHideContent();
-        getAll();
-    }
-
-    $scope.delete = function (e) {
-        if (confirm("Adresi silmek istediğinize emin misiniz?")) {
-            $http.delete("/customer-address/" + e.id)
+    },
+    created() {
+        this.getAll();
+    },
+    methods: {
+        getAll() {
+            axios.get("/customer-address")
                 .then((res) => {
-                    getAll();
-                    alertShow("İşlem Başarılı", "Adres silme işlemi başarıyla gerçekleşti.");
+                    if (res.data.length > 0) {
+                        this.allHideContent();
+                        this.showGrid = true;
+                    } else {
+                        this.allHideContent();
+                        this.showEmpty = true;
+                    }
+                    this.cardTitle = "Adreslerim";
+                    this.addresses = res.data;
                 });
-        }
-    }
-
-    var validator = $("#frmAddress").kendoValidator().data("kendoValidator");
-
-    $("#frmAddress").submit(function (event) {
-        event.preventDefault();
-        if (validator.validate()) {
-            if ($scope.address.id == 0) {
-                $http.post("/customer-address", $scope.address)
+        },
+        getCities() {
+            axios.get(`/lookup/cities`)
+                .then(res => {
+                    this.cities = res.data;
+                });
+        },
+        getDistricts(cityId) {
+            axios.get(`/lookup/districts/${cityId}`)
+                .then(res => {
+                    this.districts = res.data;
+                });
+        },
+        getNeighborhoods(districtId) {
+            axios.get(`/lookup/neighborhoods/${districtId}`)
+                .then(res => {
+                    this.neighborhoods = res.data;
+                });
+        },
+        allHideContent() {
+            this.showForm = false;
+            this.showGrid = false;
+            this.showEmpty = false;
+        },
+        selectCity() {
+            this.getDistricts(this.address.cityId);
+        },
+        selectDistrict() {
+            this.getNeighborhoods(this.address.districtId);
+        },
+        addAddress() {
+            this.allHideContent();
+            this.showForm = true;
+            this.cardTitle = "Adres Ekle";
+            this.getCities();
+            this.address = {
+                id: 0,
+                title: "",
+                nameSurname: "",
+                postCode: "",
+                address: "",
+                phone: "",
+                cityId: null,
+                districtId: null,
+                neighborhoodId: null
+            };
+        },
+        editAddress(e) {
+            this.allHideContent();
+            this.showForm = true;
+            this.cardTitle = "Adres Düzenle";
+            this.getCities();
+            this.getDistricts(e.cityId);
+            this.getNeighborhoods(e.districtId);
+            this.address = e;
+        },
+        cancel() {
+            this.allHideContent();
+            this.getAll();
+        },
+        deleteAddress(e) {
+            if (confirm("Adresi silmek istediğinize emin misiniz?")) {
+                axios.delete(`/customer-address/${e.id}`)
                     .then((res) => {
-                        getAll();
-                        alertShow("İşlem Başarılı", "Yeni adres ekleme işlemi başarıyla gerçekleşti.");
-                    });
-            } else {
-                $http.put("/customer-address", $scope.address)
-                    .then((res) => {
-                        getAll();
-                        alertShow("İşlem Başarılı", "Adres güncelleme işlemi başarıyla gerçekleşti.");
+                        this.getAll();
+                        this.$message({
+                            type: "success",
+                            message: "Adres silme işlemi başarıyla gerçekleşti."
+                        });
                     });
             }
-        }
-    });
-});
+        },
+        onSubmit(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    if (this.address.id == 0) {
+                        axios.put("/customer-address", this.address)
+                            .then(res => {
+                                this.$message({
+                                    type: "success",
+                                    message: "Adres ekleme işlemi başarıyla gerçekleşti."
+                                });
+                            });
+                    } else {
+                        axios.put("/customer-address", this.address)
+                            .then(res => {
+                                this.$message({
+                                    type: "success",
+                                    message: "Adres güncelleme işlemi başarıyla gerçekleşti."
+                                });
+                            });
+                    }
+                }
+            });
+        },
+    }
+}

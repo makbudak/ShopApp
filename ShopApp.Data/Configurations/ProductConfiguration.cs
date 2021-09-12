@@ -12,7 +12,7 @@ namespace ShopApp.Data.Configurations
 
             builder.Property(m=>m.Name).IsRequired().HasMaxLength(100);
 
-            builder.Property(m=>m.DateAdded).HasDefaultValueSql("getdate()");  // mssql
+            //builder.Property(m=>m.DateAdded).HasDefaultValueSql("getdate()");  // mssql
             // builder.Property(m=>m.DateAdded).HasDefaultValueSql ("date('now')");   // sqlite            
         }
     }

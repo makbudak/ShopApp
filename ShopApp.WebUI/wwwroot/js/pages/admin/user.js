@@ -9,6 +9,7 @@
             pageNumber: 1,
             total: 0,
             user: {
+                id: 0,
                 userType: null,
                 name: "",
                 surname: "",
@@ -113,6 +114,7 @@
             });
         },
         addUser() {
+            this.reset();
             this.showForm = true;
             this.showGrid = false;
             this.title = "Kullanıcı Ekle";
@@ -139,10 +141,12 @@
             })
         },
         reset() {
+            this.title = "Kullanıcılar";
             this.showForm = false;
             this.showGrid = true;
             this.pageNumber = 1;
             this.user = {
+                id: 0,
                 userType: null,
                 name: "",
                 surname: "",

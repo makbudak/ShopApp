@@ -5,6 +5,6 @@ namespace ShopApp.Model.Dto
 {
     public class CategoryListViewModel
     {
-        public List<ProductCategory> Categories { get; set; }
+        //public List<ProductCategory> Categories { get; set; }
     }
 }

@@ -1,21 +1,53 @@
-﻿app.controller("profileController", function ($scope, $http) {
-
-    $http.get("/customer/profile")
-        .then((res) => {
-            $scope.customer = res.data;
-        });
-
-    var validator = $("#frmProfile").kendoValidator().data("kendoValidator");
-
-    $("#frmProfile").submit(function (event) {
-        event.preventDefault();
-        if (validator.validate()) {
-            $http.put("/customer/update-profile", $scope.customer)
-                .then((res) => {
-                    alertShow("İşlem Başarılı", "Kullanıcı bilgileri güncelleme işlemi başarıyla gerçekleşti.", "success");
-                }, (err) => {
-                    alertShow("İşlem Başarısız", err.data.message, "danger");
-                });
+﻿const app = {
+    data() {
+        return {
+            customer: {
+                emailAddress: "",
+                name: "",
+                surname: "",
+                phone: ""
+            },
+            rules:
+            {
+                name: [
+                    {
+                        required: true,
+                        message: "Adı zorunludur.",
+                        trigger: "blur",
+                    },
+                ],
+                surname: [
+                    {
+                        required: true,
+                        message: "Soyadı zorunludur.",
+                        trigger: "blur",
+                    },
+                ]
+            }
         }
-    });
-});
+    },
+    created() {
+        this.getProfile();
+    },
+    methods: {
+        getProfile() {
+            axios.get("/customer/profile")
+                .then(res => {
+                    this.customer = res.data;
+                });
+        },
+        onSubmit(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    axios.put("/customer/update-profile", this.customer)
+                        .then(res => {
+                            this.$message({
+                                type: "success",
+                                message: "Kaydetme işlemi başarıyla gerçekleşti."
+                            });
+                        });
+                }
+            });
+        },
+    }
+}

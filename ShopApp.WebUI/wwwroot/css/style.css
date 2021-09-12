@@ -5,3 +5,7 @@
 .el-tree-node {
     padding: 5px;
 }
+
+.el-form--label-top .el-form-item__label {
+    padding: 0px !important;
+}

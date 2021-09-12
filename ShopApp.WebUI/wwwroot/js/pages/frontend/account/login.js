@@ -2,28 +2,28 @@
     data() {
         return {
             login: {
-                email: '',
-                password: ''
+                email: "",
+                password: ""
             },
             rules:
             {
                 email: [
                     {
                         required: true,
-                        message: 'Email adresi zorunludur.',
-                        trigger: 'blur',
+                        message: "Email adresi zorunludur.",
+                        trigger: "blur",
                     },
                     {
-                        type: 'email',
-                        message: 'Lütfen geçerli email adresi giriniz.',
-                        trigger: ['blur', 'change']
+                        type: "email",
+                        message: "Lütfen geçerli email adresi giriniz.",
+                        trigger: ["blur", "change"]
                     }
                 ],
                 password: [
                     {
                         required: true,
-                        message: 'Şifre zorunludur.',
-                        trigger: 'blur',
+                        message: "Şifre zorunludur.",
+                        trigger: "blur",
                     },
                 ]
             }

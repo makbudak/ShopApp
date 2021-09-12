@@ -15,31 +15,27 @@
             </template>
             <div class="row mt-3">
                 <div class="col-md-6">
+                    <el-form ref="profileForm" :model="customer" label-width="120px" :rules="rules" label-position="top">
+                        <el-form-item label="Email Adresi">
+                            <el-input placeholder="Email Adresi" v-model="customer.emailAddress" disabled></el-input>
+                        </el-form-item>
 
+                        <el-form-item label="Adı" prop="name">
+                            <el-input placeholder="Adı" v-model="customer.name"></el-input>
+                        </el-form-item>
 
-                    <form id="frmProfile">
-                        <div class="mb-3">
-                            <label class="form-label bold">Email Adresi</label>
-                            <input kendo-text-box ng-model="customer.emailAddress" k-placeholder="'Email Adresi'" type="text" disabled class="w-100" />
-                        </div>
+                        <el-form-item label="Soyadı" prop="surname">
+                            <el-input placeholder="Soyadı" v-model="customer.surname"></el-input>
+                        </el-form-item>
 
-                        <div class="mb-3">
-                            <label class="form-label bold">Adı</label>
-                            <input kendo-text-box ng-model="customer.name" k-placeholder="'Adı'" type="text" class="w-100" />
-                        </div>
+                        <el-form-item label="Telefon">
+                            <el-input placeholder="Telefon" v-model="customer.phone"></el-input>
+                        </el-form-item>
 
-                        <div class="mb-3">
-                            <label class="form-label bold">Soyadı</label>
-                            <input kendo-text-box ng-model="customer.surname" k-placeholder="'Soyadı'" type="text" class="w-100" />
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label bold">Telefon No</label>
-                            <input kendo-text-box ng-model="customer.phone" k-placeholder="'Telefon No'" type="text" class="w-100" />
-                        </div>
-
-                        <button type="submit" class="btn btn-success float-end">Kaydet</button>
-                    </form>
+                        <el-form-item>                            
+                            <el-button type="success" v-on:click="onSubmit('profileForm')" class="float-end bg-success">Kaydet</el-button>
+                        </el-form-item>
+                    </el-form>                    
                 </div>
             </div>
         </el-card>
@@ -47,5 +43,5 @@
 </div>
 
 @section Scripts{
-    <script src="~/js/pages/customer/profile.js"></script>
+    <script src="~/js/pages/frontend/account/profile.js"></script>
 }

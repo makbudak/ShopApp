@@ -11,7 +11,7 @@ namespace ShopApp.Data.Configurations
         public static void Seed(this ModelBuilder builder)
         {
             builder.Entity<Product>().HasData(
-                new Product() { Id = 1, Name = "Samsung S5", Url = "samsung-s5", Price = 2000, Description = "iyi telefon", IsApproved = true },
+                new Product() { Id = 1, Name = "Samsung S5", Url = "samsung-s5", Price = 2000, Description = "iyi telefon", IsApproved = true},
                 new Product() { Id = 2, Name = "Samsung S6", Url = "samsung-s6", Price = 3000, Description = "iyi telefon", IsApproved = false },
                 new Product() { Id = 3, Name = "Samsung S7", Url = "samsung-s7", Price = 4000, Description = "iyi telefon", IsApproved = true },
                 new Product() { Id = 4, Name = "Samsung S8", Url = "samsung-s8", Price = 5000, Description = "iyi telefon", IsApproved = false },

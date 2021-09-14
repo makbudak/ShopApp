@@ -9,33 +9,37 @@
         @await Html.PartialAsync("_ProfileMenu")
     </div>
     <div class="col-md-9">
-        <el-card class="box-card mb-3">
+        <el-card class="box-card">
             <template #header>
                 <h5><i class="el-icon-info"></i> Kullanıcı Bilgileri</h5>
             </template>
             <div class="row mt-3">
-                <div class="col-md-6">
-                    <el-form ref="profileForm" :model="customer" label-width="120px" :rules="rules" label-position="top">
-                        <el-form-item label="Email Adresi">
-                            <el-input placeholder="Email Adresi" v-model="customer.emailAddress" disabled></el-input>
-                        </el-form-item>
+                <div class="col-md-12">
+                    <el-form ref="profileForm" :model="customer" :rules="rules" label-position="top">
+                        <el-row :gutter="20">
+                            <el-col :span="12">
+                                <el-form-item label="Email Adresi">
+                                    <el-input placeholder="Email Adresi" v-model="customer.emailAddress" disabled></el-input>
+                                </el-form-item>
 
-                        <el-form-item label="Adı" prop="name">
-                            <el-input placeholder="Adı" v-model="customer.name"></el-input>
-                        </el-form-item>
+                                <el-form-item label="Adı" prop="name">
+                                    <el-input placeholder="Adı" v-model="customer.name"></el-input>
+                                </el-form-item>
 
-                        <el-form-item label="Soyadı" prop="surname">
-                            <el-input placeholder="Soyadı" v-model="customer.surname"></el-input>
-                        </el-form-item>
+                                <el-form-item label="Soyadı" prop="surname">
+                                    <el-input placeholder="Soyadı" v-model="customer.surname"></el-input>
+                                </el-form-item>
 
-                        <el-form-item label="Telefon">
-                            <el-input placeholder="Telefon" v-model="customer.phone"></el-input>
-                        </el-form-item>
+                                <el-form-item label="Telefon">
+                                    <el-input placeholder="Telefon" v-model="customer.phone"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
 
-                        <el-form-item>                            
-                            <el-button type="success" v-on:click="onSubmit('profileForm')" class="float-end bg-success">Kaydet</el-button>
+                        <el-form-item>
+                            <el-button type="success" v-on:click="onSubmit('profileForm')" class="bg-success">Kaydet</el-button>
                         </el-form-item>
-                    </el-form>                    
+                    </el-form>
                 </div>
             </div>
         </el-card>

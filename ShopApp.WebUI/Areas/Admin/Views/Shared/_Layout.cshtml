@@ -15,7 +15,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" id="navbar">
         <div class="container-fluid">
             <div>
-                <span class="btn btn-secondary btn-sm" v-on:click="menuShow()">
+                <span class="btn btn-primary btn-sm" v-on:click="menuShow()">
                     <i class="el-icon-s-unfold"></i> Menü
                 </span>
                 <a class="navbar-brand ms-3" href="/Admin/Home">Admin Paneli</a>
@@ -24,6 +24,7 @@
                 <ul class="navbar-nav me-auto mb-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="el-icon-user fw-bold"></i>
                             @Context.Session.GetString("UserName")
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">

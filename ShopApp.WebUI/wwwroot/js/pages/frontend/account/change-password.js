@@ -1,17 +1,55 @@
-﻿app.controller("changePasswordController", function ($scope, $http) {
-
-    var validator = $("#frmChangePassword").kendoValidator().data("kendoValidator");
-
-    $("#frmChangePassword").submit(function (event) {
-        event.preventDefault();
-        if (validator.validate()) {
-            $http.put("/customer/change-password", $scope.customer)
-                .then((res) => {
-                    alertShow("İşlem Başarılı", "Şifre güncelleme işlemi başarıyla gerçekleşti.", "success");
-                    $scope.customer = null;
-                }, (err) => {
-                    alertShow("İşlem Başarısız", err.data.message, "danger");
-                });
+﻿const app = {
+    data() {
+        return {
+            customer: {
+                oldPassword: "",
+                newPassword: "",
+                reNewPassword: ""
+            },
+            rules:
+            {
+                oldPassword: [
+                    {
+                        required: true,
+                        message: "Eski şifre zorunludur.",
+                        trigger: "blur",
+                    },
+                ],
+                newPassword: [
+                    {
+                        required: true,
+                        message: "Yeni şifre zorunludur.",
+                        trigger: "blur",
+                    },
+                ],
+                reNewPassword: [
+                    {
+                        required: true,
+                        message: "Yeni Şifre Tekrar zorunludur.",
+                        trigger: "blur",
+                    },
+                ],
+            }
         }
-    });
-});
+    },   
+    methods: {      
+        onSubmit(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    axios.put("/customer/change-password", this.customer)
+                        .then(res => {
+                            this.customer = {
+                                oldPassword: "",
+                                newPassword: "",
+                                reNewPassword: ""
+                            };
+                            this.$message({
+                                type: "success",
+                                message: "Şifre güncelleme işlemi başarıyla gerçekleşti."
+                            });
+                        });
+                }
+            });
+        },
+    }
+}

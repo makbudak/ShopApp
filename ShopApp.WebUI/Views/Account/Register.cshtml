@@ -9,7 +9,6 @@
             </template>
             <div class="row">
                 <div class="col-md-6">
-
                     <el-form ref="registerForm" :model="customer" :rules="rules" label-position="top">
                         <el-form-item label="Adı" prop="name">
                             <el-input placeholder="Adı" v-model="customer.name"></el-input>
@@ -36,7 +35,7 @@
                         </el-form-item>
 
                         <el-form-item>
-                            <el-button type="success" v-on:click="onSubmit('registerForm')" class="float-end bg-success">Kaydet</el-button>
+                            <el-button type="success" v-on:click="onSubmit('registerForm')" class="bg-success">Kaydet</el-button>
                         </el-form-item>
                     </el-form>
 

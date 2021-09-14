@@ -9,3 +9,11 @@
 .el-form--label-top .el-form-item__label {
     padding: 0px !important;
 }
+
+.el-collapse {
+    border-radius: 4px !important;
+}
+
+.box-card {
+    min-height: 300px;
+}

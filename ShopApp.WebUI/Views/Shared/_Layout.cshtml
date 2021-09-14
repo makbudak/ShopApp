@@ -13,8 +13,8 @@
 <body>
     @await Html.PartialAsync("_navbar")
 
-    <main class="position-relative" style="top: 70px; bottom: 50px;">
-        <div class="container mb-5" id="app">
+    <main class="position-relative" style="top: 70px;">
+        <div class="container" id="app" style="padding-bottom: 50px;">
             @RenderBody()
         </div>
     </main>

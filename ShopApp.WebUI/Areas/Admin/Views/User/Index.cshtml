@@ -4,126 +4,125 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div id="app">
-    <el-breadcrumb class="mb-3" separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item>
-            <a class="text-decoration-none text-secondary" href="/admin">Anasayfa</a>
-        </el-breadcrumb-item>
-        <el-breadcrumb-item>Kullanıcılar</el-breadcrumb-item>
-    </el-breadcrumb>
+<el-breadcrumb class="mb-3" separator-class="el-icon-arrow-right">
+    <el-breadcrumb-item>
+        <a class="text-decoration-none text-secondary" href="/admin">Anasayfa</a>
+    </el-breadcrumb-item>
+    <el-breadcrumb-item>Kullanıcılar</el-breadcrumb-item>
+</el-breadcrumb>
 
-    <el-card class="box-card">
-        <template #header>
-            <div>
-                <span class="fw-bold">{{title}}</span>
-                <el-button class="float-end mb-2 bg-primary text-white" v-if="showGrid" v-on:click="addUser()" icon="el-icon-plus" size="small">Ekle</el-button>
-            </div>
-        </template>
-        <div class="row">
-            <div class="col-md-12">
-                <div v-if="showGrid">
-                    <el-collapse class="border px-3" model-value="1" accordion>
-                        <el-collapse-item name="1">
-                            <template #title>
-                                <div class="row w-100">
-                                    <div class="col-3">
-                                        <h5>
-                                            <i class="header-icon el-icon-search"></i>
-                                            &nbsp;Filtrele
-                                        </h5>
-                                    </div>
-                                    <div class="col-9">
-                                        <el-row class="float-end me-3">
-                                            <el-button icon="el-icon-close" class="float-end" type="info" v-on:click="filterReset" size="small">Temizle</el-button>
-                                            <el-button icon="el-icon-search" class="bg-primary" type="primary" v-on:click="filter" size="small">Ara</el-button>
-                                        </el-row>
-                                    </div>
+<el-card class="box-card">
+    <template #header>
+        <div>
+            <span class="fw-bold">{{title}}</span>
+            <el-button class="float-end mb-2 bg-primary text-white" v-if="showGrid" v-on:click="addUser()" icon="el-icon-plus" size="small">Ekle</el-button>
+        </div>
+    </template>
+    <div class="row">
+        <div class="col-md-12">
+            <div v-if="showGrid">
+                <el-collapse class="border px-3" model-value="1" accordion>
+                    <el-collapse-item name="1">
+                        <template #title>
+                            <div class="row w-100">
+                                <div class="col-3">
+                                    <h5>
+                                        <i class="header-icon el-icon-search"></i>
+                                        &nbsp;Filtrele
+                                    </h5>
                                 </div>
-                            </template>
-                            <el-form class="mt-3" :inline="true" :model="filterModel" :label-width="100">
-                                <el-form-item label="Adı">
-                                    <el-input v-model="filterModel.name" placeholder="Adı" clearable></el-input>
-                                </el-form-item>
-                                <el-form-item label="Soyadı">
-                                    <el-input v-model="filterModel.surname" placeholder="Soyadı" clearable></el-input>
-                                </el-form-item>
-                                <el-form-item label="Email Adresi">
-                                    <el-input class="w-100" v-model="filterModel.email" placeholder="Email Adresi" clearable></el-input>
-                                </el-form-item>
-                            </el-form>
-                        </el-collapse-item>
-                    </el-collapse>                    
+                                <div class="col-9">
+                                    <el-row class="float-end me-3">
+                                        <el-button icon="el-icon-close" class="float-end" type="info" v-on:click="filterReset" size="small">Temizle</el-button>
+                                        <el-button icon="el-icon-search" class="bg-primary" type="primary" v-on:click="filter" size="small">Ara</el-button>
+                                    </el-row>
+                                </div>
+                            </div>
+                        </template>
+                        <el-form class="mt-3" :inline="true" :model="filterModel" :label-width="100">
+                            <el-form-item label="Adı">
+                                <el-input v-model="filterModel.name" placeholder="Adı" clearable></el-input>
+                            </el-form-item>
+                            <el-form-item label="Soyadı">
+                                <el-input v-model="filterModel.surname" placeholder="Soyadı" clearable></el-input>
+                            </el-form-item>
+                            <el-form-item label="Email Adresi">
+                                <el-input class="w-100" v-model="filterModel.email" placeholder="Email Adresi" clearable></el-input>
+                            </el-form-item>
+                        </el-form>
+                    </el-collapse-item>
+                </el-collapse>
 
-                    <el-table :data="userList" border class="w-100 mt-3 border">
-                        <el-table-column prop="name" label="Adı"></el-table-column>
-                        <el-table-column prop="surname" label="Soyadı"></el-table-column>
-                        <el-table-column prop="email" label="Email Adresi"></el-table-column>
-                        <el-table-column prop="phone" label="Telefon No"></el-table-column>
-                        <el-table-column prop="emailConfirmed" label="Email Doğrulandı mı?">
-                            <template #default="scope">
-                                <el-checkbox v-model="scope.row.emailConfirmed"></el-checkbox>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="isActive" label="Aktif?">
-                            <template #default="scope">
-                                <el-checkbox v-model="scope.row.isActive"></el-checkbox>
-                            </template>
-                        </el-table-column>
-                        <el-table-column fixed="right" label="" width="100">
-                            <template #default="scope">
-                                <el-row>
-                                    <el-button v-on:click="editUser(scope.row)" type="info" circle size="small" icon="el-icon-edit"></el-button>
-                                    <el-button v-on:click="deleteUser(scope.row)" type="danger" circle size="small" icon="el-icon-delete"></el-button>
-                                </el-row>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+                <el-table :data="userList" border class="w-100 mt-3 border">
+                    <el-table-column prop="name" label="Adı"></el-table-column>
+                    <el-table-column prop="surname" label="Soyadı"></el-table-column>
+                    <el-table-column prop="email" label="Email Adresi"></el-table-column>
+                    <el-table-column prop="phone" label="Telefon No"></el-table-column>
+                    <el-table-column prop="emailConfirmed" label="Email Doğrulandı mı?">
+                        <template #default="scope">
+                            <el-checkbox v-model="scope.row.emailConfirmed"></el-checkbox>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="isActive" label="Aktif?">
+                        <template #default="scope">
+                            <el-checkbox v-model="scope.row.isActive"></el-checkbox>
+                        </template>
+                    </el-table-column>
+                    <el-table-column fixed="right" label="" width="100">
+                        <template #default="scope">
+                            <el-row>
+                                <el-button v-on:click="editUser(scope.row)" type="info" circle size="small" icon="el-icon-edit-outline" class="bg-secondary"></el-button>
+                                <el-button v-on:click="deleteUser(scope.row)" type="danger" circle size="small" icon="el-icon-delete" class="bg-danger"></el-button>
+                            </el-row>
+                        </template>
+                    </el-table-column>
+                </el-table>
 
-                    <el-pagination class="float-end mt-3" background layout="prev, pager, next" :page-size="5" :total="total" v-on:current-change="pageChange"></el-pagination>
-                </div>
+                <el-pagination class="float-end mt-3" background layout="prev, pager, next" :page-size="5" :total="total" v-on:current-change="pageChange"></el-pagination>
+            </div>
 
 
-                <div v-if="showForm">
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <el-form ref="userForm" :model="user" label-width="120px" :rules="rules">
-                                <el-form-item label="Kullanıcı Tipi" prop="userType">
-                                    <el-select class="w-100" v-model="user.userType" placeholder="Kullanıcı tipi seçiniz.">
-                                        <el-option v-for="type in userTypes"
-                                                   :key="type.id"
-                                                   :label="type.name"
-                                                   :value="type.id">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                                <el-form-item label="Adı" prop="name">
-                                    <el-input v-model="user.name"></el-input>
-                                </el-form-item>
-                                <el-form-item label="Soyadı" prop="surname">
-                                    <el-input v-model="user.surname"></el-input>
-                                </el-form-item>
-                                <el-form-item label="Email Adresi" prop="email">
-                                    <el-input v-model="user.email"></el-input>
-                                </el-form-item>
-                                <el-form-item label="Telefon No" prop="phone">
-                                    <el-input v-model="user.phone"></el-input>
-                                </el-form-item>
-                                <el-form-item label="Aktif" prop="isActive">
-                                    <el-checkbox v-model="user.isActive"></el-checkbox>
-                                </el-form-item>
-                                <el-form-item class="float-end">
-                                    <el-button v-on:click="reset()" type="info">Vazgeç</el-button>
-                                    <el-button v-on:click="saveUser('userForm')" type="primary">Kaydet</el-button>
-                                </el-form-item>
-                            </el-form>
-                        </div>
-                    </div>
-                </div>
+            <div v-if="showForm">
+
+                <el-form ref="userForm" :model="user" label-position="top" :rules="rules">
+                    <el-row :gutter="20">
+                        <el-col :span="12">
+                            <el-form-item label="Kullanıcı Tipi" prop="userType">
+                                <el-select class="w-100" v-model="user.userType" placeholder="Kullanıcı tipi seçiniz.">
+                                    <el-option v-for="type in userTypes"
+                                               :key="type.id"
+                                               :label="type.name"
+                                               :value="type.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="Adı" prop="name">
+                                <el-input v-model="user.name"></el-input>
+                            </el-form-item>
+                            <el-form-item label="Soyadı" prop="surname">
+                                <el-input v-model="user.surname"></el-input>
+                            </el-form-item>
+                            <el-form-item label="Email Adresi" prop="email">
+                                <el-input v-model="user.email"></el-input>
+                            </el-form-item>
+                            <el-form-item label="Telefon No" prop="phone">
+                                <el-input v-model="user.phone"></el-input>
+                            </el-form-item>
+                            <el-form-item label="Aktif" prop="isActive">
+                                <el-checkbox v-model="user.isActive"></el-checkbox>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item class="float-end">
+                                <el-button v-on:click="reset()" type="info" class="bg-secondary">Vazgeç</el-button>
+                                <el-button v-on:click="onSubmit('userForm')" class="bg-primary" type="primary">Kaydet</el-button>
+                            </el-form-item>
+                        </el-col>
+                </el-form>
             </div>
         </div>
-    </el-card>
-
-</div>
+    </div>
+</el-card>
 @section Scripts{
     <script type="application/javascript" src="~/js/pages/admin/user.js"></script>
 }

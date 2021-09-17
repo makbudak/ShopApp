@@ -1,4 +1,4 @@
-﻿const user = {
+﻿const app = {
     data() {
         return {
             userList: [],
@@ -8,15 +8,7 @@
             title: "Kullanıcılar",
             pageNumber: 1,
             total: 0,
-            user: {
-                id: 0,
-                userType: null,
-                name: "",
-                surname: "",
-                email: "",
-                phone: "",
-                isActive: true
-            },
+            user: {},
             rules:
             {
                 userType: [
@@ -64,6 +56,7 @@
     created() {
         this.getUsers();
         this.getUserTypes();
+        this.reset();
     },
     methods: {
         getUsers() {
@@ -119,7 +112,7 @@
             this.showGrid = false;
             this.title = "Kullanıcı Ekle";
         },
-        saveUser(formName) {
+        onSubmit(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     if (this.user.id == 0) {
@@ -173,7 +166,3 @@
         }
     }
 };
-
-const userApp = Vue.createApp(user);
-userApp.use(ElementPlus);
-userApp.mount("#app");

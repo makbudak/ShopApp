@@ -15,7 +15,7 @@ namespace ShopApp.Business
                 {
                     try
                     {
-                        shopContext.Database.Migrate();
+                        //shopContext.Database.Migrate();
                     }
                     catch (System.Exception)
                     {

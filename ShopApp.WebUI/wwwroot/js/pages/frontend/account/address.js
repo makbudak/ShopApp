@@ -9,7 +9,7 @@
             showGrid: true,
             showForm: false,
             showEmpty: false,
-            address: {
+            addressData: {
                 id: 0,
                 title: "",
                 nameSurname: "",
@@ -22,20 +22,55 @@
             },
             rules:
             {
-                name: [
+                title: [
                     {
                         required: true,
-                        message: "Adı zorunludur.",
+                        message: "Adres Başlığı zorunludur.",
                         trigger: "blur",
                     },
                 ],
-                surname: [
+                nameSurname: [
                     {
                         required: true,
-                        message: "Soyadı zorunludur.",
+                        message: "Adı Soyadı zorunludur.",
                         trigger: "blur",
                     },
-                ]
+                ],
+                address: [
+                    {
+                        required: true,
+                        message: "Adres zorunludur.",
+                        trigger: "blur",
+                    },
+                ],
+                phone: [
+                    {
+                        required: true,
+                        message: "Telefon zorunludur.",
+                        trigger: "blur",
+                    },
+                ],
+                cityId: [
+                    {
+                        required: true,
+                        message: "İl seçmek zorunludur.",
+                        trigger: "blur",
+                    },
+                ],
+                districtId: [
+                    {
+                        required: true,
+                        message: "İlçe seçmek zorunludur.",
+                        trigger: "blur",
+                    },
+                ],
+                neighborhoodId: [
+                    {
+                        required: true,
+                        message: "Mahalle/Köy seçmek zorunludur.",
+                        trigger: "blur",
+                    },
+                ],
             }
         }
     },
@@ -81,17 +116,17 @@
             this.showEmpty = false;
         },
         selectCity() {
-            this.getDistricts(this.address.cityId);
+            this.getDistricts(this.addressData.cityId);
         },
         selectDistrict() {
-            this.getNeighborhoods(this.address.districtId);
+            this.getNeighborhoods(this.addressData.districtId);
         },
         addAddress() {
             this.allHideContent();
             this.showForm = true;
             this.cardTitle = "Adres Ekle";
             this.getCities();
-            this.address = {
+            this.addressData = {
                 id: 0,
                 title: "",
                 nameSurname: "",
@@ -110,7 +145,7 @@
             this.getCities();
             this.getDistricts(e.cityId);
             this.getNeighborhoods(e.districtId);
-            this.address = e;
+            this.addressData = e;
         },
         cancel() {
             this.allHideContent();
@@ -131,17 +166,19 @@
         onSubmit(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    if (this.address.id == 0) {
-                        axios.put("/customer-address", this.address)
+                    if (this.addressData.id == 0) {
+                        axios.post("/customer-address", this.addressData)
                             .then(res => {
+                                this.cancel();
                                 this.$message({
                                     type: "success",
                                     message: "Adres ekleme işlemi başarıyla gerçekleşti."
                                 });
                             });
                     } else {
-                        axios.put("/customer-address", this.address)
+                        axios.put("/customer-address", this.addressData)
                             .then(res => {
+                                this.cancel();
                                 this.$message({
                                     type: "success",
                                     message: "Adres güncelleme işlemi başarıyla gerçekleşti."

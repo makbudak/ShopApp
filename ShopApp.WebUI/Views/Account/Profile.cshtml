@@ -18,19 +18,19 @@
                     <el-form ref="profileForm" :model="customer" :rules="rules" label-position="top">
                         <el-row :gutter="20">
                             <el-col :span="12">
-                                <el-form-item label="Email Adresi">
+                                <el-form-item label="Email Adresi" class="bold">
                                     <el-input placeholder="Email Adresi" v-model="customer.emailAddress" disabled></el-input>
                                 </el-form-item>
 
-                                <el-form-item label="Adı" prop="name">
+                                <el-form-item label="Adı" prop="name" class="bold">
                                     <el-input placeholder="Adı" v-model="customer.name"></el-input>
                                 </el-form-item>
 
-                                <el-form-item label="Soyadı" prop="surname">
+                                <el-form-item label="Soyadı" prop="surname" class="bold">
                                     <el-input placeholder="Soyadı" v-model="customer.surname"></el-input>
                                 </el-form-item>
 
-                                <el-form-item label="Telefon">
+                                <el-form-item label="Telefon" class="bold">
                                     <el-input placeholder="Telefon" v-model="customer.phone"></el-input>
                                 </el-form-item>
                             </el-col>

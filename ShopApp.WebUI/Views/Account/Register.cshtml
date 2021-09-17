@@ -10,27 +10,27 @@
             <div class="row">
                 <div class="col-md-6">
                     <el-form ref="registerForm" :model="customer" :rules="rules" label-position="top">
-                        <el-form-item label="Adı" prop="name">
+                        <el-form-item label="Adı" prop="name" class="bold">
                             <el-input placeholder="Adı" v-model="customer.name"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="Soyadı" prop="surname">
+                        <el-form-item label="Soyadı" prop="surname" class="bold">
                             <el-input placeholder="Soyadı" v-model="customer.surname"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="Email Adresi" prop="email">
+                        <el-form-item label="Email Adresi" prop="email" class="bold">
                             <el-input placeholder="Email Adresi" v-model="customer.email"></el-input>
                         </el-form-item>                      
 
-                        <el-form-item label="Şifre" prop="password">
+                        <el-form-item label="Şifre" prop="password" class="bold">
                             <el-input placeholder="Şifre" v-model="customer.password" show-password></el-input>
                         </el-form-item>
 
-                        <el-form-item label="Şifre Tekrar" prop="rePassword">
+                        <el-form-item label="Şifre Tekrar" prop="rePassword" class="bold">
                             <el-input placeholder="Şifre Tekrar" v-model="customer.rePassword" show-password></el-input>
                         </el-form-item>
 
-                        <el-form-item label="Telefon" prop="phone">
+                        <el-form-item label="Telefon" prop="phone" class="bold">
                             <el-input placeholder="Telefon" v-model="customer.phone"></el-input>
                         </el-form-item>
 

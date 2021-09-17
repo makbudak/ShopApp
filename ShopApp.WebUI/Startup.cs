@@ -22,7 +22,7 @@ namespace ShopApp.WebUI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ShopContext>(options => options.UseSqlite(_configuration.GetConnectionString("AppConnectionString")));
+            services.AddDbContext<ShopContext>(options => options.UseSqlServer(_configuration.GetConnectionString("AppConnectionString")));
 
             services.AddSession(options =>
             {

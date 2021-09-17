@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ShopApp.Data.Migrations
 {
-    public partial class _initial_create : Migration
+    public partial class initial_create : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 250, nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
                     Deleted = table.Column<bool>(nullable: false)
@@ -27,7 +27,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
                     Url = table.Column<string>(nullable: true)
                 },
@@ -41,7 +41,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
                     ShortDescription = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
@@ -62,7 +62,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
                     PlaqueNo = table.Column<int>(nullable: false),
                     PhoneCode = table.Column<int>(nullable: false),
@@ -78,7 +78,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 250, nullable: true),
                     Surname = table.Column<string>(maxLength: 250, nullable: true),
                     Email = table.Column<string>(maxLength: 100, nullable: true),
@@ -101,7 +101,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ParentId = table.Column<int>(nullable: true),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     Url = table.Column<string>(nullable: true)
@@ -116,7 +116,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     Url = table.Column<string>(nullable: true),
                     Price = table.Column<double>(nullable: true),
@@ -135,7 +135,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
                     Deleted = table.Column<bool>(nullable: false)
@@ -150,7 +150,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserType = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 250, nullable: true),
                     Surname = table.Column<string>(maxLength: 250, nullable: true),
@@ -174,7 +174,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     AccessRightCategoryId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 250, nullable: true),
                     Title = table.Column<string>(maxLength: 250, nullable: true),
@@ -189,8 +189,7 @@ namespace ShopApp.Data.Migrations
                         name: "FK_AccessRights_AccessRightCategories_AccessRightCategoryId",
                         column: x => x.AccessRightCategoryId,
                         principalTable: "AccessRightCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -198,7 +197,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     BlogCategoryId = table.Column<int>(nullable: false),
                     BlogId = table.Column<int>(nullable: false)
                 },
@@ -209,14 +208,12 @@ namespace ShopApp.Data.Migrations
                         name: "FK_BlogCategoryItems_BlogCategories_BlogCategoryId",
                         column: x => x.BlogCategoryId,
                         principalTable: "BlogCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_BlogCategoryItems_Blogs_BlogId",
                         column: x => x.BlogId,
                         principalTable: "Blogs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -224,7 +221,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CityId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
@@ -235,8 +232,7 @@ namespace ShopApp.Data.Migrations
                         name: "FK_Districts_Cities_CityId",
                         column: x => x.CityId,
                         principalTable: "Cities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -244,7 +240,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -254,8 +250,7 @@ namespace ShopApp.Data.Migrations
                         name: "FK_Carts_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -263,7 +258,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     OrderNumber = table.Column<string>(nullable: true),
                     OrderDate = table.Column<DateTime>(nullable: false),
                     CustomerId = table.Column<int>(nullable: false),
@@ -286,8 +281,7 @@ namespace ShopApp.Data.Migrations
                         name: "FK_Orders_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -295,7 +289,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductCategoryId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
                     BlogCategoryId = table.Column<int>(nullable: true),
@@ -308,26 +302,22 @@ namespace ShopApp.Data.Migrations
                         name: "FK_ProductCategoryItems_BlogCategories_BlogCategoryId",
                         column: x => x.BlogCategoryId,
                         principalTable: "BlogCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ProductCategoryItems_Blogs_BlogId",
                         column: x => x.BlogId,
                         principalTable: "Blogs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ProductCategoryItems_ProductCategories_ProductCategoryId",
                         column: x => x.ProductCategoryId,
                         principalTable: "ProductCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ProductCategoryItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -335,7 +325,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(nullable: false),
                     ImageUrl = table.Column<string>(nullable: true),
                     Order = table.Column<int>(nullable: false)
@@ -347,8 +337,7 @@ namespace ShopApp.Data.Migrations
                         name: "FK_ProductImages_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -356,7 +345,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(nullable: false),
                     RoleId = table.Column<int>(nullable: false)
                 },
@@ -367,14 +356,12 @@ namespace ShopApp.Data.Migrations
                         name: "FK_UserRoles_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_UserRoles_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -382,7 +369,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(nullable: false),
                     AccessRightId = table.Column<int>(nullable: false)
                 },
@@ -393,14 +380,12 @@ namespace ShopApp.Data.Migrations
                         name: "FK_RoleAccessRights_AccessRights_AccessRightId",
                         column: x => x.AccessRightId,
                         principalTable: "AccessRights",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_RoleAccessRights_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -408,7 +393,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DistrictId = table.Column<int>(nullable: false),
                     PostCode = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true)
@@ -420,8 +405,7 @@ namespace ShopApp.Data.Migrations
                         name: "FK_Neighborhoods_Districts_DistrictId",
                         column: x => x.DistrictId,
                         principalTable: "Districts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -429,7 +413,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(nullable: false),
                     CartId = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
@@ -441,14 +425,12 @@ namespace ShopApp.Data.Migrations
                         name: "FK_CartItems_Carts_CartId",
                         column: x => x.CartId,
                         principalTable: "Carts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CartItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -456,7 +438,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
                     Price = table.Column<double>(nullable: false),
@@ -469,14 +451,12 @@ namespace ShopApp.Data.Migrations
                         name: "FK_OrderItems_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_OrderItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -484,7 +464,7 @@ namespace ShopApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(nullable: false),
                     Title = table.Column<string>(maxLength: 100, nullable: true),
                     NameSurname = table.Column<string>(maxLength: 500, nullable: true),
@@ -503,152 +483,80 @@ namespace ShopApp.Data.Migrations
                         name: "FK_CustomerAddresses_Cities_CityId",
                         column: x => x.CityId,
                         principalTable: "Cities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CustomerAddresses_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CustomerAddresses_Districts_DistrictId",
                         column: x => x.DistrictId,
                         principalTable: "Districts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CustomerAddresses_Neighborhoods_NeighborhoodId",
                         column: x => x.NeighborhoodId,
                         principalTable: "Neighborhoods",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
                 table: "ProductCategories",
                 columns: new[] { "Id", "Name", "ParentId", "Url" },
-                values: new object[] { 1, "Telefon", null, "telefon" });
-
-            migrationBuilder.InsertData(
-                table: "ProductCategories",
-                columns: new[] { "Id", "Name", "ParentId", "Url" },
-                values: new object[] { 2, "Bilgisayar", null, "bilgisayar" });
-
-            migrationBuilder.InsertData(
-                table: "ProductCategories",
-                columns: new[] { "Id", "Name", "ParentId", "Url" },
-                values: new object[] { 3, "Elektronik", null, "elektronik" });
-
-            migrationBuilder.InsertData(
-                table: "ProductCategories",
-                columns: new[] { "Id", "Name", "ParentId", "Url" },
-                values: new object[] { 4, "Beyaz Eşya", null, "beyaz-esya" });
+                values: new object[,]
+                {
+                    { 1, "Telefon", null, "telefon" },
+                    { 2, "Bilgisayar", null, "bilgisayar" },
+                    { 3, "Elektronik", null, "elektronik" },
+                    { 4, "Beyaz Eşya", null, "beyaz-esya" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "DateAdded", "Description", "IsApproved", "IsHome", "Name", "Price", "Url" },
-                values: new object[] { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "iyi telefon", true, false, "Samsung S5", 2000.0, "samsung-s5" });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "DateAdded", "Description", "IsApproved", "IsHome", "Name", "Price", "Url" },
-                values: new object[] { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "iyi telefon", false, false, "Samsung S6", 3000.0, "samsung-s6" });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "DateAdded", "Description", "IsApproved", "IsHome", "Name", "Price", "Url" },
-                values: new object[] { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "iyi telefon", true, false, "Samsung S7", 4000.0, "samsung-s7" });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "DateAdded", "Description", "IsApproved", "IsHome", "Name", "Price", "Url" },
-                values: new object[] { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "iyi telefon", false, false, "Samsung S8", 5000.0, "samsung-s8" });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "DateAdded", "Description", "IsApproved", "IsHome", "Name", "Price", "Url" },
-                values: new object[] { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "iyi telefon", true, false, "Samsung S9", 6000.0, "samsung-s9" });
+                values: new object[,]
+                {
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "iyi telefon", true, false, "Samsung S5", 2000.0, "samsung-s5" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "iyi telefon", false, false, "Samsung S6", 3000.0, "samsung-s6" },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "iyi telefon", true, false, "Samsung S7", 4000.0, "samsung-s7" },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "iyi telefon", false, false, "Samsung S8", 5000.0, "samsung-s8" },
+                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "iyi telefon", true, false, "Samsung S9", 6000.0, "samsung-s9" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Deleted", "Email", "EmailConfirmed", "InsertedDate", "IsActive", "Name", "Password", "PasswordHashCode", "Phone", "Surname", "UpdatedDate", "UserType" },
-                values: new object[] { 1, false, "akbudak.mehmet@gmail.com", true, new DateTime(2021, 9, 11, 22, 2, 51, 655, DateTimeKind.Local).AddTicks(9951), true, "Mehmet", "t76+pwqSQUMRmVxNF/xaGefCKzafxcP1QVItMrLtsGw=", null, null, "Akbudak", null, 1 });
+                values: new object[] { 1, false, "akbudak.mehmet@gmail.com", true, new DateTime(2021, 9, 14, 21, 41, 58, 55, DateTimeKind.Local).AddTicks(7783), true, "Mehmet", "t76+pwqSQUMRmVxNF/xaGefCKzafxcP1QVItMrLtsGw=", null, null, "Akbudak", null, 1 });
 
             migrationBuilder.InsertData(
                 table: "ProductCategoryItems",
                 columns: new[] { "Id", "BlogCategoryId", "BlogId", "ProductCategoryId", "ProductId" },
-                values: new object[] { 1, null, null, 1, 1 });
-
-            migrationBuilder.InsertData(
-                table: "ProductCategoryItems",
-                columns: new[] { "Id", "BlogCategoryId", "BlogId", "ProductCategoryId", "ProductId" },
-                values: new object[] { 4, null, null, 1, 2 });
-
-            migrationBuilder.InsertData(
-                table: "ProductCategoryItems",
-                columns: new[] { "Id", "BlogCategoryId", "BlogId", "ProductCategoryId", "ProductId" },
-                values: new object[] { 7, null, null, 1, 3 });
-
-            migrationBuilder.InsertData(
-                table: "ProductCategoryItems",
-                columns: new[] { "Id", "BlogCategoryId", "BlogId", "ProductCategoryId", "ProductId" },
-                values: new object[] { 8, null, null, 1, 4 });
-
-            migrationBuilder.InsertData(
-                table: "ProductCategoryItems",
-                columns: new[] { "Id", "BlogCategoryId", "BlogId", "ProductCategoryId", "ProductId" },
-                values: new object[] { 9, null, null, 1, 5 });
-
-            migrationBuilder.InsertData(
-                table: "ProductCategoryItems",
-                columns: new[] { "Id", "BlogCategoryId", "BlogId", "ProductCategoryId", "ProductId" },
-                values: new object[] { 2, null, null, 2, 1 });
-
-            migrationBuilder.InsertData(
-                table: "ProductCategoryItems",
-                columns: new[] { "Id", "BlogCategoryId", "BlogId", "ProductCategoryId", "ProductId" },
-                values: new object[] { 5, null, null, 2, 2 });
-
-            migrationBuilder.InsertData(
-                table: "ProductCategoryItems",
-                columns: new[] { "Id", "BlogCategoryId", "BlogId", "ProductCategoryId", "ProductId" },
-                values: new object[] { 10, null, null, 2, 5 });
-
-            migrationBuilder.InsertData(
-                table: "ProductCategoryItems",
-                columns: new[] { "Id", "BlogCategoryId", "BlogId", "ProductCategoryId", "ProductId" },
-                values: new object[] { 3, null, null, 3, 1 });
-
-            migrationBuilder.InsertData(
-                table: "ProductCategoryItems",
-                columns: new[] { "Id", "BlogCategoryId", "BlogId", "ProductCategoryId", "ProductId" },
-                values: new object[] { 6, null, null, 3, 2 });
+                values: new object[,]
+                {
+                    { 1, null, null, 1, 1 },
+                    { 4, null, null, 1, 2 },
+                    { 7, null, null, 1, 3 },
+                    { 8, null, null, 1, 4 },
+                    { 9, null, null, 1, 5 },
+                    { 2, null, null, 2, 1 },
+                    { 5, null, null, 2, 2 },
+                    { 10, null, null, 2, 5 },
+                    { 3, null, null, 3, 1 },
+                    { 6, null, null, 3, 2 }
+                });
 
             migrationBuilder.InsertData(
                 table: "ProductImages",
                 columns: new[] { "Id", "ImageUrl", "Order", "ProductId" },
-                values: new object[] { 1, "1.jpg", 1, 1 });
-
-            migrationBuilder.InsertData(
-                table: "ProductImages",
-                columns: new[] { "Id", "ImageUrl", "Order", "ProductId" },
-                values: new object[] { 2, "2.jpg", 1, 2 });
-
-            migrationBuilder.InsertData(
-                table: "ProductImages",
-                columns: new[] { "Id", "ImageUrl", "Order", "ProductId" },
-                values: new object[] { 3, "3.jpg", 1, 3 });
-
-            migrationBuilder.InsertData(
-                table: "ProductImages",
-                columns: new[] { "Id", "ImageUrl", "Order", "ProductId" },
-                values: new object[] { 4, "4.jpg", 1, 4 });
-
-            migrationBuilder.InsertData(
-                table: "ProductImages",
-                columns: new[] { "Id", "ImageUrl", "Order", "ProductId" },
-                values: new object[] { 5, "5.jpg", 1, 5 });
+                values: new object[,]
+                {
+                    { 1, "1.jpg", 1, 1 },
+                    { 2, "2.jpg", 1, 2 },
+                    { 3, "3.jpg", 1, 3 },
+                    { 4, "4.jpg", 1, 4 },
+                    { 5, "5.jpg", 1, 5 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccessRights_AccessRightCategoryId",

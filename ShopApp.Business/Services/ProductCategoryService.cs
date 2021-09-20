@@ -74,7 +74,11 @@ namespace ShopApp.Business.Services
 
             foreach (var item in list)
             {
-                item.Items = GetAll(item.Id);
+                var items = GetAll(item.Id);
+                if (items.Count > 0)
+                {
+                    item.Items = items;
+                }
             }
 
             productCategories.AddRange(list);

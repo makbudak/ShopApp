@@ -6,7 +6,7 @@
 
 <el-breadcrumb class="mb-3" separator-class="el-icon-arrow-right">
     <el-breadcrumb-item>
-        <a class="text-decoration-none text-secondary" href="/admin">Anasayfa</a>
+        <a class="text-decoration-none text-secondary" href="/admin/home">Anasayfa</a>
     </el-breadcrumb-item>
     <el-breadcrumb-item>Ürün Kategorileri</el-breadcrumb-item>
 </el-breadcrumb>
@@ -32,26 +32,33 @@
                     <template #default="{ node, data }">
                         <div class="m-2">
                             <el-row class="float-end me-3">
-                                <el-button v-on:click="editUser(scope.row)" type="info" circle size="small" icon="el-icon-edit-outline" class="bg-secondary"></el-button>
-                                <el-button v-on:click="deleteUser(scope.row)" type="danger" circle size="small" icon="el-icon-delete" class="bg-danger"></el-button>
+                                <el-button v-on:click="editProductCategory(data)" type="info" circle size="small" icon="el-icon-edit-outline" class="bg-secondary"></el-button>
+                                <el-button v-on:click="deleteProductCategory(data)" type="danger" circle size="small" icon="el-icon-delete" class="bg-danger"></el-button>
                                 <div class="ms-3"> {{ node.label }}</div>
                             </el-row>
                         </div>
                     </template>
                 </el-tree>
             </div>
-        </div>
-    </div>
-</el-card>
+            <div class="col-md-12" v-if="showForm">
+                <el-form ref="productCategoryForm" :model="productCategory" label-position="top" :rules="rules">                   
+                    <el-form-item label="Bağlı Menü">
+                        <el-row>
+                            <el-input v-model="selectedParentName" disabled></el-input>
+                            <el-button class="bg-primary">Değiştir</el-button>
+                        </el-row>
 
-<div class="row">
-    <div class="col-md-12" v-if="showForm">
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <el-form ref="productCategoryForm" :model="productCategory" label-position="top" :rules="rules">
-                    <el-form-item label="Bağlı Menü" prop="parentId">
-                        <el-select class="w-100" v-model="productCategory.parentId" placeholder="Kullanıcı tipi seçiniz.">
-                        </el-select>
+                        <el-cascader v-model="selectedParents"
+                                     v-if="showParentCategory"
+                                     :options="productCategories"
+                                     :props="props"
+                                     class="w-100"
+                                     placeholder="Bağlı menü seçiniz."
+                                     clearable>
+                            <template #default="{ node, data }">
+                                <span>{{ data.name }}</span>
+                            </template>
+                        </el-cascader>
                     </el-form-item>
                     <el-form-item label="Adı" prop="name">
                         <el-input v-model="productCategory.name"></el-input>
@@ -67,8 +74,7 @@
             </div>
         </div>
     </div>
-</div>
-
+</el-card>
 
 @section Scripts{
     <script type="application/javascript" src="~/js/pages/admin/product-category.js"></script>

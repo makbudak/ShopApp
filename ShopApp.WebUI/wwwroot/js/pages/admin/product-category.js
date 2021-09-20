@@ -4,9 +4,12 @@
             productCategories: [],
             showGrid: true,
             showForm: false,
+            showParentCategory: false,
             title: "Ürün Kategorileri",
             productCategory: {},
             filterText: "",
+            selectedParents: [],
+            selectedParentName: "",
             defaultProps: {
                 children: "items",
                 label: "name",
@@ -14,6 +17,11 @@
             rules:
             {
 
+            },
+            props: {
+                value: "id",
+                label: "name",
+                children: "items"
             }
         }
     },
@@ -30,9 +38,17 @@
         addProductCategory() {
             this.title = "Yeni Kategori Ekle";
             this.reset();
+            this.showForm = true;
+            this.showGrid = false;
         },
         editProductCategory(e) {
             this.title = "Kategori Düzenle";
+            this.showForm = true;
+            this.showGrid = false;
+            this.selectedParents = [];
+            this.selectedParents.push(e.parentId);
+            this.productCategory = e;
+            console.log(this.selectedParents);
         },
         deleteProductCategory(e) {
             this.$confirm(
@@ -57,15 +73,30 @@
         onSubmit(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
+                    if (this.selectedParents.length > 0) {
+                        this.productCategory.parentId = this.selectedParents[0];
+                    }
                     if (this.productCategory.id === 0) {
-                        $http.post("/admin/product-category/create", $scope.productCategory)
+                        axios.post("/admin/product-category/create", this.productCategory)
                             .then(res => {
-                                getAll();
+                                this.reset();
+                                this.getAll();
+                                this.$notify({
+                                    title: 'İşlem Başarılı',
+                                    message: 'Kaydetme işlemi başarıyla gerçekleşti.',
+                                    type: 'success',
+                                })
                             });
                     } else {
-                        $http.put("/admin/product-category/update", $scope.productCategory)
+                        axios.put("/admin/product-category/update", this.productCategory)
                             .then(res => {
-                                getAll();
+                                this.reset();
+                                this.getAll();
+                                this.$notify({
+                                    title: 'İşlem Başarılı',
+                                    message: 'Güncelleme işlemi başarıyla gerçekleşti.',
+                                    type: 'success',
+                                })
                             });
                     }
                 };
@@ -85,7 +116,7 @@
         filterNode(value, data) {
             if (!value) return true
             return data.label.indexOf(value) !== -1
-        }
+        },
     },
     watch: {
         filterText(val) {

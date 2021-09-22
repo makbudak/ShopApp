@@ -41,24 +41,34 @@
                 </el-tree>
             </div>
             <div class="col-md-12" v-if="showForm">
-                <el-form ref="productCategoryForm" :model="productCategory" label-position="top" :rules="rules">                   
-                    <el-form-item label="Bağlı Menü">
-                        <el-row>
-                            <el-input v-model="selectedParentName" disabled></el-input>
-                            <el-button class="bg-primary">Değiştir</el-button>
-                        </el-row>
+                <el-form ref="productCategoryForm" :model="productCategory" label-position="top" :rules="rules">
+                    <el-form-item label="Bağlı Menü">                      
 
-                        <el-cascader v-model="selectedParents"
-                                     v-if="showParentCategory"
-                                     :options="productCategories"
-                                     :props="props"
-                                     class="w-100"
-                                     placeholder="Bağlı menü seçiniz."
-                                     clearable>
-                            <template #default="{ node, data }">
-                                <span>{{ data.name }}</span>
+                        <el-popover placement="bottom" trigger="manual" :width="300" v-model:visible="showParentCategory">
+                            <template #reference>
+                                <el-button class="w-100" v-on:click="showParentCategory = !showParentCategory">Bağlı Menü Seçiniz!</el-button>
                             </template>
-                        </el-cascader>
+                            <el-tree class="mt-3 w-100 text-start"
+                                     :data="productCategories"
+                                     :props="defaultProps"
+                                     default-expand-all
+                                     :filter-node-method="filterNode"
+                                     ref="tree">
+                                <template #default="{ node, data }">
+                                    <div class="m-2">
+                                        <el-row class="float-end me-3">
+                                            <el-button type="info" 
+                                                       circle size="small" 
+                                                       class="bg-secondary" 
+                                                       v-on:click="selectParentCategory(data)">
+                                                <span class="">Seç</span>
+                                            </el-button>                                           
+                                            <div class="ms-3"> {{ node.label }}</div>
+                                        </el-row>
+                                    </div>
+                                </template>
+                            </el-tree>
+                        </el-popover>                        
                     </el-form-item>
                     <el-form-item label="Adı" prop="name">
                         <el-input v-model="productCategory.name"></el-input>

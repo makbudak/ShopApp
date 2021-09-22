@@ -117,6 +117,10 @@
             if (!value) return true
             return data.label.indexOf(value) !== -1
         },
+        selectParentCategory(e) {
+            this.showParentCategory = false;
+            console.log(e);
+        }
     },
     watch: {
         filterText(val) {

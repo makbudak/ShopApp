@@ -62,14 +62,20 @@ namespace ShopApp.Business.Services
         public List<TreeProductCategoryModel> GetAll(int? parentId = null)
         {
             var productCategories = new List<TreeProductCategoryModel>();
-            var list = _unitOfWork.Repository<ProductCategory>()
+            List<TreeProductCategoryModel> list = _unitOfWork.Repository<ProductCategory>()
                 .GetAll(x => x.ParentId == parentId)
-                .Select(x => new TreeProductCategoryModel
+                .AsEnumerable()
+                .Select(x => 
                 {
-                    Id = x.Id,
-                    Name = x.Name,
-                    ParentId = x.ParentId,
-                    Url = x.Url
+                    var parents = new List<int?>();
+                    var model = new TreeProductCategoryModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        ParentId = parents,
+                        Url = x.Url
+                    };
+                    return model;
                 }).ToList();
 
             foreach (var item in list)
@@ -78,6 +84,7 @@ namespace ShopApp.Business.Services
                 if (items.Count > 0)
                 {
                     item.Items = items;
+                    item.ParentId.Add(item.Id);
                 }
             }
 

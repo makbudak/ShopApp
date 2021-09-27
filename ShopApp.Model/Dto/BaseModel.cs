@@ -24,6 +24,7 @@ namespace ShopApp.Model.Dto
         public PageNumberModel()
         {
             PageSize = 5;
+            PageNumber = 1;
         }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }

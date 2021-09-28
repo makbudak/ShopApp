@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNetCore.Http;
+
+<div class="navbar navbar-expand-lg navbar-light bg-light border-bottom fixed-top" id="navbar">
+    <div class="container">
+        <a href="/" class="navbar-brand text-dark">Shop App</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto my-2 my-lg-0">
+                <li class="nav-item">
+
+                </li>
+            </ul>
+
+            <div class="d-flex">
+                @if (Context.Session.GetInt32("CustomerId") != null)
+                {
+                    <el-row>
+                        <el-dropdown>
+                            <div class="el-dropdown-link me-2">
+                                <el-button round size="small">
+                                    <i class="el-icon-user"></i>
+                                    @Context.Session.GetString("CustomerName")
+                                    <i class="el-icon-arrow-down"></i>
+                                </el-button>
+                            </div>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item>
+                                        <a class="text-decoration-none text-dark" href="/account/profile">Hesabım</a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a class="text-decoration-none text-dark" href="/account/orders">Siparişlerim</a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a class="text-decoration-none text-dark" href="/account/logout">Çıkış Yap</a>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                        <el-button v-on:click="goCart()" class="border ms-2" icon="el-icon-shopping-cart-1" round size="small">
+                            Sepetim
+                        </el-button>
+                    </el-row>
+                }
+                else
+                {
+                    <el-row>
+                        <el-dropdown>
+                            <span class="el-dropdown-link">
+                                <el-button icon="el-icon-user" round size="small">Giriş Yap</el-button>
+                            </span>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item>
+                                        <a class="text-decoration-none text-dark" href="/account/login">Giriş Yap</a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a class="text-decoration-none text-dark" href="/admin/login">Yönetici Girişi</a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a class="text-decoration-none text-dark" href="/account/register">Üye Ol</a>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                        <el-button v-on:click="goCart()" class="border ms-2" icon="el-icon-shopping-cart-1" round size="small">
+                            Sepetim
+                        </el-button>
+                    </el-row>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

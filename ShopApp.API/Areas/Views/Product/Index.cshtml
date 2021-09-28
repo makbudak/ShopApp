@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewData["Title"] = "Ürünler";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a class="text-decoration-none text-secondary" href="/admin">Anasayfa</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Ürünler</li>
+    </ol>
+</nav>
+
+<div class="card" ng-controller="productController">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6"><h5 class="card-title mb-3">Ürünler</h5></div>
+            <div class="col-6"><a href="/admin/product/add" class="btn btn-primary btn-sm float-end"><i class="k-icon k-i-plus"></i>Ekle</a></div>
+        </div>
+
+        <table ng-cloak class="table table-striped" kendo-grid k-data-source="dataSource" k-pageable="{'pageSize': 5, 'messages': { 'display': 'Toplam : {2}'}}" k-reorderable="true" k-sortable="true">
+            <thead>
+                <tr>
+                    <th width="100"></th>
+                    <th>Adı</th>
+                    <th>Fiyatı</th>
+                    <th>Onaylı</th>
+                    <th>Anasayfa</th>
+                    <th>Url</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr k-row-template>
+                    <td width="100">
+                        <a class="btn btn-secondary text-white btn-sm" href="/admin/product/edit/{{dataItem.id}}"><i class="k-icon k-i-edit"></i></a>
+                        <a class="btn btn-danger text-white btn-sm" ng-click="deleteProduct(dataItem)"><i class="k-icon k-i-delete"></i></a>
+                    </td>
+                    <td>
+                        {{dataItem.name}}
+                    </td>
+                    <td>
+                        {{dataItem.price}}
+                    </td>
+                    <td>
+                        <input ng-if="dataItem.isApproved" type="checkbox" class="k-checkbox" checked="checked">
+                        <input ng-if="!dataItem.isApproved" type="checkbox" class="k-checkbox">
+                    </td>
+                    <td>
+                        <input ng-if="dataItem.isHome" type="checkbox" class="k-checkbox" checked="checked">
+                        <input ng-if="!dataItem.isHome" type="checkbox" class="k-checkbox">
+                    </td>
+                    <td>
+                        {{dataItem.url}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/pages/admin/product/productList.js"></script>
+}

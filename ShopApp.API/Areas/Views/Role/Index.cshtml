@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "Roller";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a class="text-decoration-none text-secondary" href="/admin">Anasayfa</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Roller</li>
+    </ol>
+</nav>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6"><h5 class="card-title mb-3">Roller</h5></div>
+            <div class="col-6"><a class="btn btn-primary btn-sm float-end"><i class="k-icon k-i-plus"></i>Ekle</a></div>
+        </div>
+        <div id="grid"></div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/pages/admin/role.js"></script>
+}
+

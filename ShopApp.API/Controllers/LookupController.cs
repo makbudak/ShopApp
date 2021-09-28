@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopApp.Business.Services;
 
-namespace ShopApp.WebUI.API
+namespace ShopApp.API.API
 {
     [Route("lookup")]
     public class LookupController : Controller

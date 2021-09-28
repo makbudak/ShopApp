@@ -13,7 +13,7 @@ using ShopApp.Model.Dto;
 using ShopApp.Model.Dto.User;
 using ShopApp.Business.Services;
 
-namespace ShopApp.WebUI.Controllers
+namespace ShopApp.API.Controllers
 {
     [Authorize]
     public class CartController : Controller

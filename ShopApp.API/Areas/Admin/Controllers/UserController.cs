@@ -2,7 +2,7 @@
 using ShopApp.Business.Services;
 using ShopApp.Model.Dto.User;
 
-namespace ShopApp.WebUI.Areas.Admin.Controllers
+namespace ShopApp.API.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin/user")]

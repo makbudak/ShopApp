@@ -1,10 +1,15 @@
-import ElementPlus from "element-plus";
-import "element-plus/theme-chalk/index.css";
 import { createApp } from "vue";
 import App from "./App.vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
+import Antd from 'ant-design-vue';
+import "bootstrap/dist/css/bootstrap.min.css"
+import "ant-design-vue/dist/antd.css";
+import router from "./router";
+import "bootstrap";
 
-var app = createApp(App);
+
+const app = createApp(App).use(Antd);
 app.use(VueAxios, axios);
-app.use(ElementPlus).mount("#app");
+app.use(router);
+app.mount("#app");

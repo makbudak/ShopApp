@@ -1,43 +1,27 @@
 <template>
-  <img class="logo" alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld :msg="msg" />
-  <div class="btn">
-    <el-button type="primary" @click="startHacking">
-      Get Started
-    </el-button>
+  <div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
-
 export default {
   name: "App",
-  components: {
-    HelloWorld,
+  data() {
+    return {
+    };
   },
   created() {
     this.getUsers();
   },
   methods: {
     getUsers() {
-      this.axios.get("https://mehmetakbudak.site/admin/user/list").then((res) => {
-        console.log(res.data);
-      });
+      this.axios
+        .get("https://mehmetakbudak.site/admin/user/list")
+        .then((res) => {
+          console.log(res.data);
+        });
     },
-  },
-  setup() {
-    const msg = ref(
-      "Welcome to Element Plus, a Vue 3.0 based component library"
-    );
-    const startHacking = () => {
-      msg.value = "Start coding with Element Plus with 💖";
-    };
-    return {
-      msg,
-      startHacking,
-    };
   },
 };
 </script>
@@ -45,18 +29,17 @@ export default {
 <style>
 body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 #app {
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 .logo {
   width: 50%;
 }
 .btn {
   margin-top: 100px;
+}
+.ant-layout {
+  background-color: white !important;
 }
 </style>

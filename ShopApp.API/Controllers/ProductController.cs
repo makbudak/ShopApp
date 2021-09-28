@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace ShopApp.WebUI.Controllers
+namespace ShopApp.API.Controllers
 {
     [Route("product")]
     public class ProductController : Controller

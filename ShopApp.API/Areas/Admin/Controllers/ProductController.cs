@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopApp.Business.Services;
 
-namespace ShopApp.WebUI.Areas.Admin.Controllers
+namespace ShopApp.API.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin/product")]

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopApp.Business.Services;
 
-namespace ShopApp.WebUI.Controllers
+namespace ShopApp.API.Controllers
 {
     [Route("product-category")]
     public class ProductCategoryController : Controller

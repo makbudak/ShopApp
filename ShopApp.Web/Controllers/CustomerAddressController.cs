@@ -3,7 +3,7 @@ using ShopApp.Business.Attributes;
 using ShopApp.Business.Services;
 using ShopApp.Model.Dto.Customer;
 
-namespace ShopApp.WebUI.API
+namespace ShopApp.API.API
 {
     [Route("customer-address")]
     public class CustomerAddressController : Controller

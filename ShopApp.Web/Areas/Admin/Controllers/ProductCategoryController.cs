@@ -4,7 +4,7 @@ using ShopApp.Model.Dto;
 using ShopApp.Model.Entity;
 using System.Linq;
 
-namespace ShopApp.WebUI.Areas.Admin.Controllers
+namespace ShopApp.API.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin/product-category")]

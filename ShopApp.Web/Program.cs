@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using ShopApp.Business;
 
-namespace ShopApp.WebUI
+namespace ShopApp.API
 {
     public class Program
     {

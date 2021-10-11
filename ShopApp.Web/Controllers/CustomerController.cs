@@ -7,7 +7,7 @@ using ShopApp.Model.Dto.Customer;
 using ShopApp.Model.Entity;
 using System.Net;
 
-namespace ShopApp.WebUI.API
+namespace ShopApp.API.API
 {
     [Route("customer")]
     public class CustomerController : Controller

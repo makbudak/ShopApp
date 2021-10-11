@@ -11,7 +11,7 @@
     <div class="col-md-9">
         <el-card class="box-card">
             <template #header>
-                <div class="row" v-cloak>
+                <div class="row">
                     <div class="col-9">
                         <h5><i class="el-icon-location"></i> {{cardTitle}}</h5>
                     </div>
@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" v-if="showGrid" v-cloak>
+            <div class="row" v-if="showGrid">
                 <div class="col-md-6 mb-3" v-for="item in addresses" :key="item.id">
                     <div class="card">
                         <div class="card-header">

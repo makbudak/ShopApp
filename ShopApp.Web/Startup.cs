@@ -10,7 +10,7 @@ using ShopApp.Data;
 using ShopApp.Data.GenericRepository;
 using System;
 
-namespace ShopApp.WebUI
+namespace ShopApp.API
 {
     public class Startup
     {

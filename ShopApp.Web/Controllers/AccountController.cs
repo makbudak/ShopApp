@@ -6,7 +6,7 @@ using ShopApp.Model.Dto;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ShopApp.WebUI.Controllers
+namespace ShopApp.API.Controllers
 {
     [Route("account")]
     [AutoValidateAntiforgeryToken]

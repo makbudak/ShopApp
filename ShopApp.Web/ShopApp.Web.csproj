@@ -1,0 +1,94 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <Compile Remove="Areas\Admin\Views\**" />
+    <Content Remove="Areas\Admin\Views\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\**" />
+    <None Remove="Areas\Admin\Views\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Views\Account\Address.cshtml" />
+    <None Include="Views\Account\ChangePassword.cshtml" />
+    <None Include="Views\Account\ConfirmEmail.cshtml" />
+    <None Include="Views\Account\ForgotPassword.cshtml" />
+    <None Include="Views\Account\Login.cshtml" />
+    <None Include="Views\Account\Orders.cshtml" />
+    <None Include="Views\Account\Profile.cshtml" />
+    <None Include="Views\Account\Register.cshtml" />
+    <None Include="Views\Account\ResetPassword.cshtml" />
+    <None Include="Views\Account\_profileMenu.cshtml" />
+    <None Include="Views\Blog\CategoryBlogs.cshtml" />
+    <None Include="Views\Blog\Detail.cshtml" />
+    <None Include="Views\Blog\Index.cshtml" />
+    <None Include="Views\Cart\Checkout.cshtml" />
+    <None Include="Views\Cart\Index.cshtml" />
+    <None Include="Views\Cart\Success.cshtml" />
+    <None Include="Views\Contact\Index.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Product\CategoryProducts.cshtml" />
+    <None Include="Views\Product\Detail.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_navbar.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+    <None Include="wwwroot\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\js\lib\axios.min.js" />
+    <None Include="wwwroot\js\lib\axios.min.map" />
+    <None Include="wwwroot\js\lib\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\js\lib\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\js\lib\element-ui.js" />
+    <None Include="wwwroot\js\lib\jquery-3.6.0.min.js" />
+    <None Include="wwwroot\js\lib\vue-3.js" />
+    <None Include="wwwroot\js\pages\admin\global.js" />
+    <None Include="wwwroot\js\pages\admin\login.js" />
+    <None Include="wwwroot\js\pages\admin\product-category.js" />
+    <None Include="wwwroot\js\pages\admin\product\productAdd.js" />
+    <None Include="wwwroot\js\pages\admin\product\productEdit.js" />
+    <None Include="wwwroot\js\pages\admin\product\productList.js" />
+    <None Include="wwwroot\js\pages\admin\role.js" />
+    <None Include="wwwroot\js\pages\admin\user.js" />
+    <None Include="wwwroot\js\pages\frontend\account\address.js" />
+    <None Include="wwwroot\js\pages\frontend\account\change-password.js" />
+    <None Include="wwwroot\js\pages\frontend\account\login.js" />
+    <None Include="wwwroot\js\pages\frontend\account\profile.js" />
+    <None Include="wwwroot\js\pages\frontend\account\register.js" />
+    <None Include="wwwroot\js\pages\frontend\global.js" />
+    <None Include="wwwroot\js\pages\frontend\home.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ShopApp.Business\ShopApp.Business.csproj" />
+    <ProjectReference Include="..\ShopApp.Extensions\ShopApp.Extensions.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.16" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.19" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>    
+    <PackageReference Include="Microsoft.EntityFrameworkcore.SqlServer" Version="3.1.3" />    
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>    
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Iyzipay" Version="2.1.37" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+</Project>

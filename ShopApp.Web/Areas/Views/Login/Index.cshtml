@@ -1,0 +1,60 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/element-ui.css">
+    <link rel="stylesheet" href="~/css/font-awesome.min.css">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <title>Shop App - Admin Paneli</title>
+</head>
+<body>
+    <div class="container" id="app">
+        <div class="row mt-5">
+            <div class="col-md-4 offset-md-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary">
+                        <div class="row">
+                            <div class="col-9">
+                                <div class="h5 text-white py-2">
+                                    <i class="el-icon-setting"></i>
+                                    Admin Paneline Giriş
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <a class="text-white float-end text-decoration-none pt-1" href="/">
+                                    <i class="el-icon-s-home h3"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <el-form ref="loginForm" :model="login" label-width="120px" :rules="rules" label-position="top">
+                            <el-form-item label="Email Adresi" prop="email">
+                                <el-input placeholder="Email Adresi" v-model="login.email"></el-input>
+                            </el-form-item>
+                            <el-form-item label="Şifre" prop="password">
+                                <el-input placeholder="Şifre" v-model="login.password" show-password></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <a href="/account/forgotpassword" class="btn btn-link text-dark float-start">Şifremi Unuttum</a>
+                                <el-button type="primary" v-on:click="onSubmit('loginForm')" class="float-end bg-primary">Giriş Yap</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/lib/bootstrap.bundle.min.js"></script>
+    <script src="~/js/lib/vue-3.js"></script>
+    <script src="~/js/lib/element-ui.js"></script>
+    <script src="~/js/lib/axios.min.js"></script>
+    <script src="~/js/pages/admin/login.js"></script>
+</body>
+</html>
+

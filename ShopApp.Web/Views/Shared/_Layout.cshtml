@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/element-ui.css">
+    <link rel="stylesheet" href="~/css/style.css" />
+    <script src="~/js/lib/vue-3.js"></script>
+    @RenderSection("Css", false)
+    <title>Shop App - @ViewData["Title"]</title>
+</head>
+<body>
+    @await Html.PartialAsync("_navbar")
+
+    <main class="position-relative" style="top: 70px;">
+        <div class="container" id="app" style="padding-bottom: 50px;" v-cloak>
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="navbar bg-light fixed-bottom border-top">
+        <div class="container">
+            Shop App @DateTime.Now.Year
+        </div>
+    </footer>
+
+    <script type="application/javascript" src="~/js/lib/bootstrap.bundle.min.js"></script>
+    <script type="application/javascript" src="~/js/lib/element-ui.js"></script>
+    <script type="application/javascript" src="~/js/lib/axios.min.js"></script>
+    @RenderSection("Scripts", false)
+    <script type="application/javascript" src="~/js/pages/frontend/global.js"></script>
+</body>
+</html>

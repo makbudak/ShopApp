@@ -1,10 +1,13 @@
 ﻿const navbar = {
     data() {
         return {
-
+            leftMenuDrawer: false
         }
     },
     methods: {
+        leftMenuShow() {
+            this.leftMenuDrawer = true;
+        },
         goCart() {
             location.href = "/cart";
         }

@@ -6,6 +6,17 @@
     <None Remove="Areas\Admin\Views\**" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Login\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCategory\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Role\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Views\Account\Address.cshtml" />
     <None Include="Views\Account\ChangePassword.cshtml" />
     <None Include="Views\Account\ConfirmEmail.cshtml" />

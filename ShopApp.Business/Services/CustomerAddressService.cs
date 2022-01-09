@@ -11,7 +11,8 @@ namespace ShopApp.Business.Services
 {
     public interface ICustomerAddressService
     {
-        List<CustomerAddressModel> GetByCustomerId(int customerId);
+        List<CustomerAddressModel> Get();
+        CustomerAddressModel Get(int Id);
         ServiceResult Post(CustomerAddressModel model);
         ServiceResult Put(CustomerAddressModel model);
         ServiceResult Delete(int id);
@@ -26,10 +27,11 @@ namespace ShopApp.Business.Services
             _unitOfWork = unitOfWork;
         }
 
-        public List<CustomerAddressModel> GetByCustomerId(int customerId)
+        public List<CustomerAddressModel> Get()
         {
             return _unitOfWork.Repository<CustomerAddress>()
-                .GetAll(x => x.CustomerId == customerId && !x.Deleted)
+                .GetAll(x => x.CustomerId == CustomerAuthContent.Current.CustomerId &&
+                !x.Deleted)
                 .Include(x => x.City)
                 .Include(x => x.District)
                 .Include(x => x.Neighborhood)
@@ -48,6 +50,37 @@ namespace ShopApp.Business.Services
                     PostCode = x.PostCode,
                     Title = x.Title
                 }).ToList();
+        }
+
+        public CustomerAddressModel Get(int id)
+        {
+            var address = _unitOfWork.Repository<CustomerAddress>()
+                 .GetAll(x => x.CustomerId == CustomerAuthContent.Current.CustomerId &&
+                 !x.Deleted && x.Id == id)
+                 .Include(x => x.City)
+                 .Include(x => x.District)
+                 .Include(x => x.Neighborhood).FirstOrDefault();
+
+            if (address != null)
+            {
+                var model = new CustomerAddressModel
+                {
+                    Id = address.Id,
+                    Address = address.Address,
+                    CityId = address.CityId,
+                    CityName = address.City.Name,
+                    DistrictId = address.DistrictId,
+                    DistrictName = address.District.Name,
+                    NameSurname = address.NameSurname,
+                    NeighborhoodId = address.NeighborhoodId,
+                    NeighborhoodName = address.Neighborhood.Name,
+                    Phone = address.Phone,
+                    PostCode = address.PostCode,
+                    Title = address.Title
+                };
+                return model;
+            }
+            return null;
         }
 
         public ServiceResult Post(CustomerAddressModel model)

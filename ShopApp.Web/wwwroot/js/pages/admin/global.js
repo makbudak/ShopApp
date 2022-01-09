@@ -1,62 +1,89 @@
-﻿const navbar = {
-    data() {
-        return {
-            showDrawer: false,
-            direction: "ltr",
-            filterText: "",
-            menuItems: [{
-                label: "İçerik Yönetimi",
-                children: [
-                    {
-                        label: "Ürün Kategorileri",
-                        url: "/admin/product-category"
-                    },
-                    {
-                        label: "Ürünler",
-                        url: "/admin/product"
-                    }
-                ]
+﻿var menuItems = new kendo.data.HierarchicalDataSource({
+    data: [{
+        text: "İçerik Yönetimi",
+        items: [
+            {
+                text: "Ürün Kategorileri",
+                url: "/admin/product-category"
             },
             {
-                label: "Ayarlar",
-                children: [
-                    {
-                        label: "Kullanıcılar",
-                        url: "/admin/user"
-                    },
-                    {
-                        label: "Roller",
-                        url: "/admin/role"
-                    }
-                ]
-            }],
-            defaultProps: {
-                children: "children",
-                label: "label",
+                text: "Ürünler",
+                url: "/admin/product"
+            }
+        ]
+    },
+    {
+        text: "Ayarlar",
+        items: [
+            {
+                text: "Kullanıcılar",
+                url: "/admin/user"
             },
-        }
-    },
-    watch: {
-        filterText(val) {
-            this.$refs.tree.filter(val)
-        },
-    },
-    methods: {
-        menuShow() {
-            this.showDrawer = true;
-        },
-        filterNode(value, data) {
-            if (!value) return true
-            return data.label.indexOf(value) !== -1
-        }
+            {
+                text: "Roller",
+                url: "/admin/role"
+            }
+        ]
+    }]
+
+});
+
+function adjustSize() {
+    if (screen.width < 800 || screen.height < 600) {
+        this.maximize();
     }
 }
-var navbarApp = Vue.createApp(navbar);
-navbarApp.use(ElementPlus);
-navbarApp.mount("#navbar");
 
-if (app) {
-    const _app = Vue.createApp(app);
-    _app.use(ElementPlus);
-    _app.mount("#app");
+var notification = $("#notification").kendoNotification({
+    position: {
+        pinned: true,
+        top: 30,
+        right: 30
+    },
+    autoHideAfter: 5000,
+    stacking: "down",
+    templates: [{
+        type: "error",
+        template: $("#errorTemplate").html()
+    },
+    {
+        type: "success",
+        template: $("#successTemplate").html()
+    }]
+}).data("kendoNotification");
+
+function successNotification(title, message) {
+    notification.show({
+        title: title,
+        message: message
+    }, "success");
 }
+
+function errorNotification(title, message) {
+    notification.show({
+        title: title,
+        message: message
+    }, "error");
+}
+
+var leftMenu = $("#drawer-left-menu").kendoDrawer({
+    template: "<div style='width:350px;' class='p-2'><div class='row w-100'><h4 class='col-10'>Menü</h4><div class='col-2 float-end'><span id='btnDrawerClose'><i class='k-icon k-i-close pt-2'></i><span></div></div><div class='pt-2' id='tree-left-menu'></div>",
+    position: "left",
+    mode: "overlay",
+    width: 400,
+    swipeToOpen: false,
+    navigatable: true,
+}).data().kendoDrawer;
+
+$("#btnMenu").click((e) => {
+    e.preventDefault();
+    leftMenu.show();
+});
+
+$("#tree-left-menu").kendoTreeView({
+    dataSource: menuItems
+});
+
+$("#btnDrawerClose").click((e) => {
+    leftMenu.hide();
+});

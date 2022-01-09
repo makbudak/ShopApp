@@ -39,6 +39,7 @@ namespace ShopApp.API
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICustomerAddressService, CustomerAddressService>();
             services.AddScoped<ILookupService, LookupService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             services.AddScoped<IEmailSenderService, SmtpEmailSenderService>(i =>
                  new SmtpEmailSenderService(

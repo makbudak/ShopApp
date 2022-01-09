@@ -19,7 +19,15 @@ namespace ShopApp.API.API
         [CustomerAuthorize]
         public IActionResult Get()
         {
-            var list = _customerAddressService.GetByCustomerId(CustomerAuthContent.Current.CustomerId);
+            var list = _customerAddressService.Get();
+            return Ok(list);
+        }
+
+        [HttpGet("{id:int}")]
+        [CustomerAuthorize]
+        public IActionResult Get(int id)
+        {
+            var list = _customerAddressService.Get(id);
             return Ok(list);
         }
 

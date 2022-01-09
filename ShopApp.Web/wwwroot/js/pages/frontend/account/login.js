@@ -1,46 +1,27 @@
-﻿const app = {
-    data() {
-        return {
-            login: {
-                email: "",
-                password: ""
-            },
-            rules:
-            {
-                email: [
-                    {
-                        required: true,
-                        message: "Email adresi zorunludur.",
-                        trigger: "blur",
-                    },
-                    {
-                        type: "email",
-                        message: "Lütfen geçerli email adresi giriniz.",
-                        trigger: ["blur", "change"]
-                    }
-                ],
-                password: [
-                    {
-                        required: true,
-                        message: "Şifre zorunludur.",
-                        trigger: "blur",
-                    },
-                ]
-            }
-        }
-    },
-    methods: {
-        onSubmit(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    axios.post("/customer/login", this.login)
-                        .then(res => {
-                            if (res.status == 200) {
-                                location.href = "/";
-                            }
-                        });
-                }
+﻿$(function () {
+    $("#txtEmailAddress").kendoTextBox();
+    $("#txtPassword").kendoTextBox();
+
+    var txtEmailAddress = $("#txtEmailAddress").data("kendoTextBox");
+    var txtPassword = $("#txtPassword").data("kendoTextBox");
+
+    var validator = $("#loginForm").kendoValidator().data("kendoValidator");
+
+    $("#btnLogin").click((event) => {
+        event.preventDefault();
+
+        if (validator.validate()) {
+
+            var data = {
+                email: txtEmailAddress.value(),
+                password: txtPassword.value()
+            };
+
+            axios.post("/customer/login", data).then((res) => {
+                location.href = "/";
+            }, (err) => {
+                errorNotification("İşlem Başarısız", err.response.data.message);
             });
-        },
-    }
-}
+        }
+    });
+});

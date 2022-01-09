@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ShopApp.Model.Entity;
 using System;
 
@@ -29,8 +30,8 @@ namespace ShopApp.Data.GenericRepository
         public UnitOfWork(ShopContext context)
         {
             _context = context;
+            //_context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
-
 
         public void Dispose()
         {

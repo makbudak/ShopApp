@@ -33,8 +33,13 @@ namespace ShopApp.API.Areas.Admin.Controllers
                 var user = (User)result.Data;
                 HttpContext.Session.SetInt32("UserId", user.Id);
                 HttpContext.Session.SetString("UserName", $"{user.Name} {user.Surname}");
+                result.Data = new
+                {
+                    ReturnUrl = !string.IsNullOrEmpty(model.ReturnUrl) ? model.ReturnUrl : "/Admin/Home",
+                    NameSurname = $"{user.Name} {user.Surname}"
+                };
             }
-            return StatusCode((int)result.StatusCode);
+            return StatusCode((int)result.StatusCode, result);
         }
     }
 }

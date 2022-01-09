@@ -2,18 +2,16 @@
     font-weight: 500 !important;
 }
 
-.el-tree-node {
-    padding: 5px;
+.k-expander-title {
+    color: unset !important;
+    text-transform: unset !important;
+    font-size: 20px !important;
 }
 
-.el-form--label-top .el-form-item__label {
-    padding: 0px !important;
+.k-menu:not(.k-context-menu) > .k-item {
+    color: black !important;
 }
 
-.el-collapse {
-    border-radius: 4px !important;
-}
-
-.box-card {
-    min-height: 300px;
+.k-icon {
+    bottom: 2px !important;
 }

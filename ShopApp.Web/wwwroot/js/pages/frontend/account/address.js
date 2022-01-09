@@ -1,192 +1,201 @@
-﻿const app = {
-    data() {
-        return {
-            addresses: [],
-            cities: [],
-            districts: [],
-            neighborhoods: [],
-            cardTitle: "Adreslerim",
-            showGrid: true,
-            showForm: false,
-            showEmpty: false,
-            addressData: {
-                id: 0,
-                title: "",
-                nameSurname: "",
-                postCode: "",
-                address: "",
-                phone: "",
-                cityId: null,
-                districtId: null,
-                neighborhoodId: null
-            },
-            rules:
-            {
-                title: [
-                    {
-                        required: true,
-                        message: "Adres Başlığı zorunludur.",
-                        trigger: "blur",
-                    },
-                ],
-                nameSurname: [
-                    {
-                        required: true,
-                        message: "Adı Soyadı zorunludur.",
-                        trigger: "blur",
-                    },
-                ],
-                address: [
-                    {
-                        required: true,
-                        message: "Adres zorunludur.",
-                        trigger: "blur",
-                    },
-                ],
-                phone: [
-                    {
-                        required: true,
-                        message: "Telefon zorunludur.",
-                        trigger: "blur",
-                    },
-                ],
-                cityId: [
-                    {
-                        required: true,
-                        message: "İl seçmek zorunludur.",
-                        trigger: "blur",
-                    },
-                ],
-                districtId: [
-                    {
-                        required: true,
-                        message: "İlçe seçmek zorunludur.",
-                        trigger: "blur",
-                    },
-                ],
-                neighborhoodId: [
-                    {
-                        required: true,
-                        message: "Mahalle/Köy seçmek zorunludur.",
-                        trigger: "blur",
-                    },
-                ],
+﻿$(function () {
+    var id = 0;
+
+    var template = kendo.template($("#template").html());
+
+    var customerAddressDataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: "/customer-address",
+                dataType: "json"
+            }
+        },
+        change: function (e) {
+            if (this.data().length > 0) {
+                $("#grid").addClass("d-block").removeClass("d-none");
+                $("#noData").addClass("d-none").removeClass("d-block");
+                $("#gridAddress").html(kendo.render(template, this.view()));
+            } else {
+                $("#grid").addClass("d-none").removeClass("d-block");
+                $("#noData").addClass("d-block").removeClass("d-none");
             }
         }
-    },
-    created() {
-        this.getAll();
-    },
-    methods: {
-        getAll() {
-            axios.get("/customer-address")
-                .then((res) => {
-                    if (res.data.length > 0) {
-                        this.allHideContent();
-                        this.showGrid = true;
-                    } else {
-                        this.allHideContent();
-                        this.showEmpty = true;
-                    }
-                    this.cardTitle = "Adreslerim";
-                    this.addresses = res.data;
-                });
-        },
-        getCities() {
-            axios.get(`/lookup/cities`)
+    });
+
+    customerAddressDataSource.read();
+
+
+    var cityDataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: "/lookup/cities",
+                dataType: "json"
+            }
+        }
+    });
+
+    var txtTitle = $("#txtTitle").kendoTextBox({
+        placeholder: "Adres başlığı giriniz."
+    }).data("kendoTextBox");
+
+    var txtNameSurname = $("#txtNameSurname").kendoTextBox({
+        placeholder: "Adı Soyadı giriniz."
+    }).data("kendoTextBox");
+
+    var txtPhone = $("#txtPhone").kendoMaskedTextBox({
+        placeholder: "Telefon giriniz.",
+        mask: "(999) 000-0000"
+    }).data("kendoMaskedTextBox");
+
+    var cmbCity = $("#cmbCity").kendoComboBox({
+        filter: "contains",
+        placeholder: "İl seçiniz.",
+        dataTextField: "name",
+        dataValueField: "id",
+        dataSource: cityDataSource,
+        select: selectCity,
+    }).data("kendoComboBox");
+
+    var cmbDistrict = $("#cmbDistrict").kendoComboBox({
+        filter: "contains",
+        placeholder: "İlçe seçiniz.",
+        dataTextField: "name",
+        dataValueField: "id",
+        select: selectDistrict,
+        autoBind: false,
+    }).data("kendoComboBox");
+
+    var cmbNeighborhood = $("#cmbNeighborhood").kendoComboBox({
+        filter: "contains",
+        placeholder: "Mahalle/Köy seçiniz.",
+        dataTextField: "name",
+        dataValueField: "id",
+    }).data("kendoComboBox");
+
+    var txtPostCode = $("#txtPostCode").kendoTextBox({
+        placeholder: "Posta kodu giriniz."
+    }).data("kendoTextBox");
+
+    var txtAddress = $("#txtAddress").kendoTextArea({
+        rows: 5,
+        maxLength: 500,
+        placeholder: "Adres giriniz."
+    }).data("kendoTextArea");
+
+    var windowAddress = $("#windowAddress").kendoWindow({
+        width: "600px",
+        height: "95%",
+        modal: true,
+        visible: false,
+        animation: false,
+        open: adjustSize,
+        scrollable: true
+    }).data("kendoWindow");
+
+    function selectCity(e) {
+        var districtDataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: `/lookup/districts/${cmbCity.value()}`,
+                    dataType: "json"
+                }
+            }
+        });
+        cmbDistrict.setDataSource(districtDataSource);
+    };
+
+    function selectDistrict(e) {
+        var neighborhoodDataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: `/lookup/neighborhoods/${cmbDistrict.value()}`,
+                    dataType: "json"
+                }
+            }
+        });
+        cmbNeighborhood.setDataSource(neighborhoodDataSource);
+    };
+
+    $("#btnAddAddress").click((event) => {
+        $("#addressForm").trigger("reset");
+        id = 0;
+        event.preventDefault();
+        windowAddress.center().open();
+        $(".k-window-title").text("Adres Ekle");
+    });
+
+    $("#btnClose").click(() => {
+        windowAddress.close();
+    })
+
+    $(document).on('click', ".btnEditAddress", function () {
+        id = $(this).attr('data-id');
+        axios.get(`/customer-address/${id}`)
+            .then(res => {
+                windowAddress.center().open();
+                $(".k-window-title").text("Adres Düzenle");
+                txtTitle.value(res.data.title);
+                txtNameSurname.value(res.data.nameSurname);
+                txtPostCode.value(res.data.postCode);
+                txtAddress.value(res.data.address);
+                txtPhone.value(res.data.phone);
+                cmbCity.value(res.data.cityId);
+                selectCity(res.data.cityId);
+                cmbDistrict.value(res.data.districtId);
+                selectDistrict(res.data.districtId);
+                cmbNeighborhood.value(res.data.neighborhoodId);
+            });
+    });
+
+    $(document).on('click', ".btnDeleteAddress", function () {
+        id = $(this).attr('data-id');
+        if (confirm("Silmek istediğinize emin misiniz?")) {
+            axios.delete(`/customer-address/${id}`)
                 .then(res => {
-                    this.cities = res.data;
+                    customerAddressDataSource.read();
+                    successNotification("İşlem Başarılı!", "Silme işlemi başarıyla gerçekleşti.");
+                }, (err) => {
+                    errorNotification("İşlem Başarısız", err.response.data.message);
                 });
-        },
-        getDistricts(cityId) {
-            axios.get(`/lookup/districts/${cityId}`)
-                .then(res => {
-                    this.districts = res.data;
-                });
-        },
-        getNeighborhoods(districtId) {
-            axios.get(`/lookup/neighborhoods/${districtId}`)
-                .then(res => {
-                    this.neighborhoods = res.data;
-                });
-        },
-        allHideContent() {
-            this.showForm = false;
-            this.showGrid = false;
-            this.showEmpty = false;
-        },
-        selectCity() {
-            this.getDistricts(this.addressData.cityId);
-        },
-        selectDistrict() {
-            this.getNeighborhoods(this.addressData.districtId);
-        },
-        addAddress() {
-            this.allHideContent();
-            this.showForm = true;
-            this.cardTitle = "Adres Ekle";
-            this.getCities();
-            this.addressData = {
-                id: 0,
-                title: "",
-                nameSurname: "",
-                postCode: "",
-                address: "",
-                phone: "",
-                cityId: null,
-                districtId: null,
-                neighborhoodId: null
+        }
+    });
+
+    var validator = $("#addressForm").kendoValidator().data("kendoValidator");
+
+    $("#btnSave").click((event) => {
+        event.preventDefault();
+        if (validator.validate()) {
+            var data = {
+                id: id,
+                title: txtTitle.value(),
+                nameSurname: txtNameSurname.value(),
+                postCode: txtPostCode.value(),
+                address: txtAddress.value(),
+                phone: txtPhone.value(),
+                cityId: cmbCity.value(),
+                districtId: cmbDistrict.value(),
+                neighborhoodId: cmbNeighborhood.value()
             };
-        },
-        editAddress(e) {
-            this.allHideContent();
-            this.showForm = true;
-            this.cardTitle = "Adres Düzenle";
-            this.getCities();
-            this.getDistricts(e.cityId);
-            this.getNeighborhoods(e.districtId);
-            this.addressData = e;
-        },
-        cancel() {
-            this.allHideContent();
-            this.getAll();
-        },
-        deleteAddress(e) {
-            if (confirm("Adresi silmek istediğinize emin misiniz?")) {
-                axios.delete(`/customer-address/${e.id}`)
-                    .then((res) => {
-                        this.getAll();
-                        this.$message({
-                            type: "success",
-                            message: "Adres silme işlemi başarıyla gerçekleşti."
-                        });
+
+            if (id == 0) {
+                axios.post("/customer-address", data)
+                    .then(res => {
+                        customerAddressDataSource.read();
+                        windowAddress.close();
+                        successNotification("İşlem Başarılı!", "Kaydetme işlemi başarıyla gerçekleşti.");
+                    }, (err) => {
+                        errorNotification("İşlem Başarısız", err.response.data.message);
+                    });
+            } else {
+                axios.put("/customer-address", data)
+                    .then(res => {
+                        customerAddressDataSource.read();
+                        windowAddress.close();
+                        successNotification("İşlem Başarılı!", "Güncelleme işlemi başarıyla gerçekleşti.");
+                    }, (err) => {
+                        errorNotification("İşlem Başarısız", err.response.data.message);
                     });
             }
-        },
-        onSubmit(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    if (this.addressData.id == 0) {
-                        axios.post("/customer-address", this.addressData)
-                            .then(res => {
-                                this.cancel();
-                                this.$message({
-                                    type: "success",
-                                    message: "Adres ekleme işlemi başarıyla gerçekleşti."
-                                });
-                            });
-                    } else {
-                        axios.put("/customer-address", this.addressData)
-                            .then(res => {
-                                this.cancel();
-                                this.$message({
-                                    type: "success",
-                                    message: "Adres güncelleme işlemi başarıyla gerçekleşti."
-                                });
-                            });
-                    }
-                }
-            });
-        },
-    }
-}
+        }
+    });
+});

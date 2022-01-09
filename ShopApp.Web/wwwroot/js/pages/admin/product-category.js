@@ -7,6 +7,7 @@
             title: "Ürün Kategorileri",
             productCategory: {},
             filterText: "",
+            querySearch: "",
             defaultProps: {
                 children: "items",
                 label: "name",
@@ -108,6 +109,10 @@
         filterNode(value, data) {
             if (!value) return true
             return data.label.indexOf(value) !== -1
+        },
+        handleSelect(item) {
+            console.log(item);
+            console.log(this.querySearch);
         }
     },
     watch: {

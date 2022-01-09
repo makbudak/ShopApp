@@ -1,55 +1,32 @@
-﻿const app = {
-    data() {
-        return {
-            customer: {
-                oldPassword: "",
-                newPassword: "",
-                reNewPassword: ""
-            },
-            rules:
-            {
-                oldPassword: [
-                    {
-                        required: true,
-                        message: "Eski şifre zorunludur.",
-                        trigger: "blur",
-                    },
-                ],
-                newPassword: [
-                    {
-                        required: true,
-                        message: "Yeni şifre zorunludur.",
-                        trigger: "blur",
-                    },
-                ],
-                reNewPassword: [
-                    {
-                        required: true,
-                        message: "Yeni Şifre Tekrar zorunludur.",
-                        trigger: "blur",
-                    },
-                ],
-            }
+﻿$(function () {
+    $("#txtOldPassword").kendoTextBox();
+    $("#txtNewPassword").kendoTextBox();
+    $("#txtReNewPassword").kendoTextBox();
+
+    var txtOldPassword = $("#txtOldPassword").data("kendoTextBox");
+    var txtNewPassword = $("#txtNewPassword").data("kendoTextBox");
+    var txtReNewPassword = $("#txtReNewPassword").data("kendoTextBox");
+
+    var validator = $("#changePasswordForm").kendoValidator().data("kendoValidator");
+
+    $("#btnChangePassword").click((event) => {
+        event.preventDefault();
+
+        if (validator.validate()) {
+            var data = {
+                oldPassword: txtOldPassword.value(),
+                newPassword: txtNewPassword.value(),
+                reNewPassword: txtReNewPassword.value()
+            };
+
+            axios.put("/customer/change-password", data)
+                .then(res => {
+                    successNotification("İşlem Başarılı!", "Şifre güncelleme işlemi başarıyla gerçekleşti.");
+                    $("#changePasswordForm").trigger("reset");
+                }, (err) => {
+                    errorNotification("İşlem Başarısız", err.response.data.message);
+                });
         }
-    },   
-    methods: {      
-        onSubmit(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    axios.put("/customer/change-password", this.customer)
-                        .then(res => {
-                            this.customer = {
-                                oldPassword: "",
-                                newPassword: "",
-                                reNewPassword: ""
-                            };
-                            this.$message({
-                                type: "success",
-                                message: "Şifre güncelleme işlemi başarıyla gerçekleşti."
-                            });
-                        });
-                }
-            });
-        },
-    }
-}
+    });
+});
+

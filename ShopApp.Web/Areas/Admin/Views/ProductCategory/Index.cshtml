@@ -43,10 +43,9 @@
             <div class="col-md-12" v-if="showForm">
                 <el-form ref="productCategoryForm" :model="productCategory" label-position="top" :rules="rules">
                     <el-form-item label="Bağlı Menü">
-                        <el-cascader :options="productCategories" v-model="productCategory.parentId" class="w-100"
-                                     :props="{ checkStrictly: true, label: 'name', value: 'id', children: 'items' }"
-                                     placeholder="Bağlı Menü Seçiniz"
-                                     clearable></el-cascader>
+                        <el-autocomplete v-model="productCategory.parentId"
+                                         placeholder="Please Input"
+                                         v-on:change="handleSelect" />
                     </el-form-item>
                     <el-form-item label="Adı" prop="name">
                         <el-input v-model="productCategory.name"></el-input>

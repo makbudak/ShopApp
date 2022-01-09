@@ -28,6 +28,7 @@ namespace ShopApp.API.API
                 var customer = (Customer)result.Data;
                 HttpContext.Session.SetInt32("CustomerId", customer.Id);
                 HttpContext.Session.SetString("CustomerName", $"{customer.Name} {customer.Surname}");
+                result.Data = null;
             }
             return StatusCode((int)result.StatusCode, result);
         }

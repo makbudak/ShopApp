@@ -5,14 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/element-ui.css">
+    <link rel="stylesheet" href="~/css/kendo.bootstrap-main.min.css">
     <link rel="stylesheet" href="~/css/style.css" />
-    <script src="~/js/lib/vue-3.js"></script>
     @RenderSection("Css", false)
     <title>Shop App - @ViewData["Title"]</title>
 </head>
-<body>
+<body style="background-color: #eee;">
     @await Html.PartialAsync("_navbar")
+    <span id="notification" class="d-none"></span>
+    <script id="errorTemplate" type="text/x-kendo-template">
+        <div class="wrong-pass">
+            <h5>
+               <i class="k-icon k-i-warning k-icon-md"></i>
+               #= title #
+            </h5>
+            <p>#= message #</p>
+        </div>
+    </script>
+    <script id="successTemplate" type="text/x-kendo-template">
+        <div class="upload-success">
+            <h5>
+                <i class="k-icon k-i-success k-icon-md"></i>
+                 #= title #
+            </h5>
+            <p>#= message #</p>
+        </div>
+    </script>
 
     <main class="position-relative" style="top: 70px;">
         <div class="container" id="app" style="padding-bottom: 50px;">
@@ -20,16 +38,17 @@
         </div>
     </main>
 
-    <footer class="navbar bg-light fixed-bottom border-top">
+    <footer class="navbar bg-white fixed-bottom border-top">
         <div class="container">
             Shop App @DateTime.Now.Year
         </div>
     </footer>
 
-    <script type="application/javascript" src="~/js/lib/bootstrap.bundle.min.js"></script>
-    <script type="application/javascript" src="~/js/lib/element-ui.js"></script>
-    <script type="application/javascript" src="~/js/lib/axios.min.js"></script>
+    <script src="~/js/lib/jquery-3.6.0.min.js"></script>
+    <script src="~/js/lib/bootstrap.bundle.min.js"></script>
+    <script src="~/js/lib/kendo.all.min.js"></script>
+    <script src="~/js/pages/frontend/global.js"></script>
+    <script src="~/js/lib/axios.min.js"></script>
     @RenderSection("Scripts", false)
-    <script type="application/javascript" src="~/js/pages/frontend/global.js"></script>
 </body>
 </html>

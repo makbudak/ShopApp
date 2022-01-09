@@ -47,9 +47,7 @@
     <None Include="wwwroot\js\lib\axios.min.map" />
     <None Include="wwwroot\js\lib\bootstrap.bundle.min.js" />
     <None Include="wwwroot\js\lib\bootstrap.bundle.min.js.map" />
-    <None Include="wwwroot\js\lib\element-ui.js" />
     <None Include="wwwroot\js\lib\jquery-3.6.0.min.js" />
-    <None Include="wwwroot\js\lib\vue-3.js" />
     <None Include="wwwroot\js\pages\admin\global.js" />
     <None Include="wwwroot\js\pages\admin\login.js" />
     <None Include="wwwroot\js\pages\admin\product-category.js" />

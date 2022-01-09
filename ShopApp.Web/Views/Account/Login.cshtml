@@ -5,29 +5,63 @@
 
 <div class="row mt-3">
     <div class="col-md-4 offset-md-4">
-        <el-card class="pb-3">
-            <template #header>
-                <h5>
-                    <i class="el-icon-unlock"></i>
-                    &nbsp;Giriş Yap
-                </h5>
-            </template>
-            <el-form ref="loginForm" :model="login" label-width="120px" :rules="rules" label-position="top">
-                <el-form-item label="Email Adresi" prop="email">
-                    <el-input placeholder="Email Adresi" v-model="login.email"></el-input>
-                </el-form-item>
-                <el-form-item label="Şifre" prop="password">
-                    <el-input placeholder="Şifre" v-model="login.password" show-password></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <a href="/account/forgotpassword" class="btn btn-link text-dark float-start">Şifremi Unuttum</a>
-                    <el-button type="success" v-on:click="onSubmit('loginForm')" class="float-end bg-success">Giriş Yap</el-button>
-                </el-form-item>
-            </el-form>
-        </el-card>
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="h4 py-2 border-bottom">
+                    <i class="k-icon k-i-user k-icon-md"></i>
+                    Giriş Yap
+                </div>
+                <div class="mb-5">
+                    <form id="loginForm">
+                        <div class="mb-3 mt-3">
+                            <label class="form-label">Email Adresi</label>
+                            <input type="email"
+                                   id="txtEmailAddress"
+                                   name="txtEmailAddress"
+                                   class="w-100"
+                                   required
+                                   data-required-msg="Email adresi giriniz."
+                                   data-email-msg="Email formatı uygun değil." />
+                            <span class="k-invalid-msg" data-for="txtEmailAddress"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Şifre</label>
+                            <input type="password"
+                                   id="txtPassword"
+                                   class="w-100"
+                                   required
+                                   data-required-msg="Şifre giriniz." />
+                            <span class="k-invalid-msg" data-for="txtPassword"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <a href="/account/forgot-password"
+                               class="btn btn-link text-dark float-start ps-0">
+                                Şifremi Unuttum
+                            </a>
+                            <button id="btnLogin"
+                                    type="submit"
+                                    class="btn btn-success float-end">
+                                Giriş Yap
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+                <div class="my-4 text-center">
+                    Üye değil misiniz?
+                    <a href="/account/register">
+                        Üye Ol
+                    </a>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
+
 @section Scripts
 {
-    <script src="~/js/pages/frontend/account/login.js"></script>
+<script src="~/js/pages/frontend/account/login.js"></script>
 }

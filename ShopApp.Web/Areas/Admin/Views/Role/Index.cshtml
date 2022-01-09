@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Roller";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
@@ -15,13 +14,49 @@
     <div class="card-body">
         <div class="row">
             <div class="col-6"><h5 class="card-title mb-3">Roller</h5></div>
-            <div class="col-6"><a class="btn btn-primary btn-sm float-end"><i class="k-icon k-i-plus"></i>Ekle</a></div>
+            <div class="col-6">
+                <a id="btnAdd" class="btn btn-primary btn-sm float-end"><i class="k-icon k-i-plus"></i>Ekle</a>
+            </div>
         </div>
+        <script id="isActive-template" type="text/x-kendo-template">
+            <div>#: isActive ? 'Evet': 'Hayır' #</div>
+        </script>
         <div id="grid"></div>
     </div>
 </div>
 
+<div id="windowRole">
+    <form id="roleForm">
+        <div class="mb-3">
+            <label class="form-label">Role Adı</label>
+            <input type="text"
+                   id="txtRoleName"
+                   name="txtRoleName"
+                   class="w-100"
+                   required
+                   data-required-msg="Rol adı giriniz." />
+            <span class="k-invalid-msg" data-for="txtRoleName"></span>
+        </div>
+        <div class="mb-3">
+            <input type="checkbox" id="chckIsActive" class="k-checkbox" checked="checked">
+            <label class="k-checkbox-label" for="chckIsActive">Aktif</label>
+        </div>
+        <div class="mb-5">
+            <button id="btnSave"
+                    type="submit"
+                    class="btn btn-primary float-end ms-2">
+                Kaydet
+            </button>
+            <button id="btnClose"
+                    type="button"
+                    class="btn btn-secondary float-end">
+                Kapat
+            </button>
+        </div>
+    </form>
+</div>
+
 @section Scripts{
-    <script src="~/js/pages/admin/role.js"></script>
+<script src="~/js/pages/admin/role.js"></script>
 }
 

@@ -1,50 +1,50 @@
-﻿const App = {
-    data() {
-        return {
-            login: {
-                email: '',
-                password: ''
-            },
-            rules:
-            {
-                email: [
-                    {
-                        required: true,
-                        message: 'Email adresi zorunludur.',
-                        trigger: 'blur',
-                    },
-                    {
-                        type: 'email',
-                        message: 'Lütfen geçerli email adresi giriniz.',
-                        trigger: ['blur', 'change']
-                    }
-                ],
-                password: [
-                    {
-                        required: true,
-                        message: 'Şifre zorunludur.',
-                        trigger: 'blur',
-                    },
-                ]
-            }
-        }
-    },
-    methods: {
-        onSubmit(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    axios.post("/admin/login", this.login)
-                        .then(res => {
-                            if (res.status == 200) {
-                                location.href = "/admin/home";
-                            }
-                        });
-                }
-            });
-        },
-    },
-}
+﻿$(function () {
+    $("#txtEmailAddress").kendoTextBox();
+    $("#txtPassword").kendoTextBox();
 
-const app = Vue.createApp(App);
-app.use(ElementPlus);
-app.mount("#app");
+    var txtEmailAddress = $("#txtEmailAddress").data("kendoTextBox");
+    var txtPassword = $("#txtPassword").data("kendoTextBox");
+
+    var notification = $("#notification").kendoNotification({
+        position: {
+            pinned: true,
+            top: 30,
+            right: 30
+        },
+        autoHideAfter: 5000,
+        stacking: "down",
+        templates: [{
+            type: "error",
+            template: $("#errorTemplate").html()
+        },
+        {
+            type: "success",
+            template: $("#successTemplate").html()
+        }]
+    }).data("kendoNotification");
+
+    var validator = $("#loginForm").kendoValidator().data("kendoValidator");
+
+    $("#btnLogin").click((event) => {
+        event.preventDefault();
+
+        if (validator.validate()) {
+
+            var data = {
+                email: txtEmailAddress.value(),
+                password: txtPassword.value()
+            };
+
+            axios.post("/admin/login", data).then((res) => {
+                notification.show({
+                    title: "Hoşgeldiniz!",
+                    message: res.data.data.nameSurname
+                }, "success");
+
+                setTimeout(() => {
+                    location.href = res.data.data.returnUrl;
+                }, 500);
+            });           
+        }
+    });
+});

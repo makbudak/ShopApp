@@ -1,72 +1,46 @@
-﻿const app = {
-    data() {
-        return {
-            customer: {
-                name: "",
-                surname: "",
-                email: "",
-                phone: "",
-                password: "",
-                rePassword: ""
-            },
-            rules:
-            {
-                name: [
-                    {
-                        required: true,
-                        message: "Adı zorunludur.",
-                        trigger: "blur",
-                    }
-                ],
-                surname: [
-                    {
-                        required: true,
-                        message: "Soyadı zorunludur.",
-                        trigger: "blur",
-                    }
-                ],
-                email: [
-                    {
-                        required: true,
-                        message: "Email adresi zorunludur.",
-                        trigger: "blur",
-                    },
-                    {
-                        type: "email",
-                        message: "Lütfen geçerli email adresi giriniz.",
-                        trigger: ["blur", "change"]
-                    }
-                ],
-                password: [
-                    {
-                        required: true,
-                        message: "Şifre zorunludur.",
-                        trigger: "blur",
-                    },
-                ],
-                rePassword: [
-                    {
-                        required: true,
-                        message: "Şifre Tekrar zorunludur.",
-                        trigger: "blur",
-                    },
-                ],
-            }
+﻿$(function () {
+    $("#txtName").kendoTextBox();
+    $("#txtSurname").kendoTextBox();
+    $("#txtEmailAddress").kendoTextBox();
+    $("#txtPhone").kendoMaskedTextBox({
+        mask: "(999) 000-0000"
+    });
+    $("#txtPassword").kendoTextBox();
+    $("#txtRePassword").kendoTextBox();
+
+    var txtName = $("#txtName").data("kendoTextBox");
+    var txtSurname = $("#txtSurname").data("kendoTextBox");
+    var txtEmailAddress = $("#txtEmailAddress").data("kendoTextBox");
+    var txtPhone = $("#txtPhone").data("kendoMaskedTextBox");
+    var txtPassword = $("#txtPassword").data("kendoTextBox");
+    var txtRePassword = $("#txtRePassword").data("kendoTextBox");
+
+    var validator = $("#registerForm").kendoValidator().data("kendoValidator");
+
+    $("#btnRegister").click((event) => {
+        event.preventDefault();
+
+        if (validator.validate()) {
+
+            var data = {
+                name: txtName.value(),
+                surname: txtSurname.value(),
+                email: txtEmailAddress.value(),
+                phone: txtPhone.value(),
+                password: txtPassword.value(),
+                rePassword: txtRePassword.value()
+            };
+
+            axios.post("/customer/register", data)
+                .then((res) => {
+                    successNotification("İşlem Başarılı", "Kaydetme işlemi başarılıyla gerçekleşti.");
+
+                    setTimeout(() => {
+                        location.href = "/account/login";
+                    }, 1000);
+                }, (err) => {
+                    errorNotification("İşlem Başarısız", err.response.data.message);
+                });
         }
-    },
-    methods: {
-        onSubmit(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    axios.post("/customer/register", this.customer)
-                        .then(res => {
-                            this.$message({
-                                type: "success",
-                                message: "Kaydetme işlemi başarıyla gerçekleşti."
-                            });
-                        });
-                }
-            });
-        },
-    }
-}
+    });
+});

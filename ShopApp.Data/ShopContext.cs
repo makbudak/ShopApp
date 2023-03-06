@@ -6,10 +6,8 @@ namespace ShopApp.Data
 {
     public class ShopContext : DbContext
     {
-        public ShopContext(DbContextOptions options) : base(options)
-        {            
+        public ShopContext(DbContextOptions options) : base(options) { }
 
-        }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Cart> Carts { get; set; }
@@ -24,14 +22,15 @@ namespace ShopApp.Data
         public DbSet<RoleAccessRight> RoleAccessRights { get; set; }
         public DbSet<AccessRight> AccessRights { get; set; }
         public DbSet<AccessRightCategory> AccessRightCategories { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<CustomerAddress> CustomerAddresses { get; set; }
+        public DbSet<UserAddress> UserAddresses { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<District> Districts { get; set; }
         public DbSet<Neighborhood> Neighborhoods { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<BlogCategory> BlogCategories { get; set; }
-        public DbSet<BlogCategoryItem> BlogCategoryItems { get; set; }
+        public DbSet<TodoCategory> TodoCategories { get; set; }
+        public DbSet<TodoStatus> TodoStatuses { get; set; }
+        public DbSet<Todo> Todos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,7 +40,5 @@ namespace ShopApp.Data
 
             modelBuilder.Seed();
         }
-
-
     }
 }

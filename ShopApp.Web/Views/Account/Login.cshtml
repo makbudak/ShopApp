@@ -3,65 +3,67 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row mt-3">
-    <div class="col-md-4 offset-md-4">
-        <div class="card shadow">
-            <div class="card-body">
-                <div class="h4 py-2 border-bottom">
-                    <i class="k-icon k-i-user k-icon-md"></i>
-                    Giriş Yap
-                </div>
-                <div class="mb-5">
-                    <form id="loginForm">
-                        <div class="mb-3 mt-3">
-                            <label class="form-label">Email Adresi</label>
-                            <input type="email"
-                                   id="txtEmailAddress"
-                                   name="txtEmailAddress"
-                                   class="w-100"
-                                   required
-                                   data-required-msg="Email adresi giriniz."
-                                   data-email-msg="Email formatı uygun değil." />
-                            <span class="k-invalid-msg" data-for="txtEmailAddress"></span>
-                        </div>
+<div class="card shadow py-5">
+    <div class="card-body">
+        <div class="row py-5">
+            <div class="col-md-4 offset-md-4">
+                <div class="card shadow">
+                    <div class="card-header bg-white py-3">
+                        <h4> <i class="k-icon k-i-user k-icon-md"></i> Giriş Yap</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-5">
+                            <form id="loginForm">
+                                <div class="mb-3 mt-3">
+                                    <label class="form-label">Email Adresi</label>
+                                    <input type="email"
+                                           id="txtEmailAddress"
+                                           name="txtEmailAddress"
+                                           class="w-100"
+                                           required
+                                           data-required-msg="Email adresi giriniz."
+                                           data-email-msg="Email formatı uygun değil." />
+                                    <span class="k-invalid-msg" data-for="txtEmailAddress"></span>
+                                </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Şifre</label>
-                            <input type="password"
-                                   id="txtPassword"
-                                   class="w-100"
-                                   required
-                                   data-required-msg="Şifre giriniz." />
-                            <span class="k-invalid-msg" data-for="txtPassword"></span>
-                        </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Şifre</label>
+                                    <input type="password"
+                                           id="txtPassword"
+                                           class="w-100"
+                                           required
+                                           data-required-msg="Şifre giriniz." />
+                                    <span class="k-invalid-msg" data-for="txtPassword"></span>
+                                </div>
 
-                        <div class="mb-3">
-                            <a href="/account/forgot-password"
-                               class="btn btn-link text-dark float-start ps-0">
-                                Şifremi Unuttum
+                                <div class="mb-3">
+                                    <a href="/account/forgot-password"
+                                       class="btn btn-link float-start ps-0 text-decoration-none">
+                                        Şifremi Unuttum
+                                    </a>
+                                    <button id="btnLogin"
+                                            type="submit"
+                                            class="btn btn-primary float-end">
+                                        Giriş Yap
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="my-4 text-center">
+                            Üye değil misiniz?
+                            <a class="text-decoration-none" href="/account/register">
+                                Üye Ol
                             </a>
-                            <button id="btnLogin"
-                                    type="submit"
-                                    class="btn btn-success float-end">
-                                Giriş Yap
-                            </button>
                         </div>
-                    </form>
-                </div>
-                <div class="clearfix"></div>
-                <div class="my-4 text-center">
-                    Üye değil misiniz?
-                    <a href="/account/register">
-                        Üye Ol
-                    </a>
+                    </div>
+
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
-@section Scripts
-{
-<script src="~/js/pages/frontend/account/login.js"></script>
+@section Scripts {
+    <script src="~/js/pages/frontend/account/login.js"></script>
 }

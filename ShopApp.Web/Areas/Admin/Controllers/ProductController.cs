@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopApp.Business.Services;
 
-namespace ShopApp.API.Areas.Admin.Controllers
+namespace ShopApp.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("admin/product")]
+    [Route("Admin/Product")]
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
@@ -38,7 +38,7 @@ namespace ShopApp.API.Areas.Admin.Controllers
 
         #region API
 
-        [HttpGet("list")]        
+        [HttpGet("List")]        
         public IActionResult Get()
         {
             var list = _productService.Get();

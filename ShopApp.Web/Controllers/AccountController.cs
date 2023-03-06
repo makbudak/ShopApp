@@ -6,22 +6,22 @@ using ShopApp.Model.Dto;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ShopApp.API.Controllers
+namespace ShopApp.Web.Controllers
 {
     [Route("account")]
     [AutoValidateAntiforgeryToken]
     public class AccountController : Controller
     {
-        private ICustomerService _customerService;
+        private IUserService _userService;
         private IEmailSenderService _emailSender;
         private IOrderService _orderService;
 
         public AccountController(
-            ICustomerService customerService,
+            IUserService userService,
             IEmailSenderService emailSender,
             IOrderService orderService)
         {
-            _customerService = customerService;
+            _userService = userService;
             _emailSender = emailSender;
             _orderService = orderService;
         }
@@ -50,10 +50,10 @@ namespace ShopApp.API.Controllers
         }
 
         [Route("confirm-email")]
-        public IActionResult ConfirmEmail(int customerId, string token)
+        public IActionResult ConfirmEmail(int userId, string token)
         {
-            var customer = _customerService.GetById(1);
-            if (customer != null)
+            var user = _userService.GetById(1);
+            if (user != null)
             {
                 //var result = await _userManager.ConfirmEmailAsync(user, token);
                 //if (result.Succeeded)
@@ -84,24 +84,24 @@ namespace ShopApp.API.Controllers
         }
 
         [Route("profile")]
-        [CustomerAuthorize]
+        [UserAuthorize]
         public IActionResult Profile()
         {
             return View();
         }
 
         [Route("change-password")]
-        [CustomerAuthorize]
+        [UserAuthorize]
         public IActionResult ChangePassword()
         {
             return View();
         }
 
         [Route("orders")]
-        [CustomerAuthorize]
+        [UserAuthorize]
         public IActionResult Orders()
         {
-            var user = _customerService.GetById(1);
+            var user = _userService.GetById(1);
             var orders = _orderService.GetOrders(user.Id);
 
             var orderListModel = new List<OrderListModel>();
@@ -139,7 +139,7 @@ namespace ShopApp.API.Controllers
         }
 
         [Route("address")]
-        [CustomerAuthorize]
+        [UserAuthorize]
         public IActionResult Address()
         {
             return View();

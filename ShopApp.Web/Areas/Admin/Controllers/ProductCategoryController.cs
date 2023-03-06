@@ -4,10 +4,10 @@ using ShopApp.Model.Dto;
 using ShopApp.Model.Entity;
 using System.Linq;
 
-namespace ShopApp.API.Areas.Admin.Controllers
+namespace ShopApp.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("admin/product-category")]
+    [Route("admin/ProductCategory")]
     public class ProductCategoryController : Controller
     {
         private readonly IProductCategoryService _productCategoryService;
@@ -28,7 +28,7 @@ namespace ShopApp.API.Areas.Admin.Controllers
 
         #region API
 
-        [HttpGet("list")]
+        [HttpGet("List")]
         public IActionResult Get()
         {
             var list = _productCategoryService.GetAll();
@@ -36,7 +36,7 @@ namespace ShopApp.API.Areas.Admin.Controllers
         }
 
 
-        [HttpGet("list/{id}")]
+        [HttpGet("List/{id}")]
         public IActionResult GetById(int id)
         {
             var product = _productCategoryService.GetById(id);

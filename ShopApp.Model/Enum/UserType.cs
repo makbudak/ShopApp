@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace ShopApp.Model.Enum
 {
@@ -9,7 +8,7 @@ namespace ShopApp.Model.Enum
         SuperAdmin = 1,
         [Description("Admin")]
         Admin,
-        [Description("Blog")]
-        Blog
+        [Description("Müşteri")]
+        Customer
     }
 }

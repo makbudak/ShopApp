@@ -1,28 +1,25 @@
-﻿$(function () {
-    $("#txtEmailAddress").kendoTextBox({
+﻿$(() => {
+    var txtEmailAddress = $("#txtEmailAddress").kendoTextBox({
         enable: false
-    });
-    $("#txtName").kendoTextBox();
-    $("#txtSurname").kendoTextBox();
-    $("#txtPhone").kendoMaskedTextBox({
-        mask: "(999) 000-0000"
-    });
+    }).data("kendoTextBox");
 
-    var txtEmailAddress = $("#txtEmailAddress").data("kendoTextBox");
-    var txtName = $("#txtName").data("kendoTextBox");
-    var txtSurname = $("#txtSurname").data("kendoTextBox");
-    var txtPhone = $("#txtPhone").data("kendoMaskedTextBox");
+    var txtName = $("#txtName").kendoTextBox().data("kendoTextBox");
+
+    var txtSurname = $("#txtSurname").kendoTextBox().data("kendoTextBox");
+
+    var txtPhone = $("#txtPhone").kendoMaskedTextBox({
+        mask: "(999) 000-0000"
+    }).data("kendoMaskedTextBox");
 
     getProfile();
 
     function getProfile() {
-        axios.get("/customer/profile")
-            .then(res => {
-                txtEmailAddress.value(res.data.emailAddress);
-                txtName.value(res.data.name);
-                txtSurname.value(res.data.surname);
-                txtPhone.value(res.data.phone);
-            });
+        $.get("/user/profile", (res => {
+            txtEmailAddress.value(res.emailAddress);
+            txtName.value(res.name);
+            txtSurname.value(res.surname);
+            txtPhone.value(res.phone);
+        }));
     }
 
     var validator = $("#loginForm").kendoValidator().data("kendoValidator");
@@ -37,7 +34,7 @@
                 surname: txtSurname.value(),
                 phone: txtPhone.value()
             };
-            axios.put("/customer/update-profile", data)
+            axios.put("/user/update-profile", data)
                 .then(res => {
                     successNotification("İşlem Başarılı!", "Kaydetme işlemi başarıyla gerçekleşti.");
                 }, (err) => {
@@ -45,5 +42,4 @@
                 });
         }
     });
-
 });

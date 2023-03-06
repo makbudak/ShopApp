@@ -1,15 +1,20 @@
 ﻿
-$("#loginMenu").kendoMenu({
-    direction: "bottom right"
-});
+$(() => {
+    $("#loginMenu").kendoMenu({
+        direction: "bottom right"
+    });
 
-$("#customerMenu").kendoMenu({
-    direction: "bottom right"
-});
+    $("#userMenu").kendoMenu({
+        direction: "bottom right"
+    });
 
-$("#profileMenu").kendoExpansionPanel({
-    title: 'Hesabım',
-    expanded: true
+    $("#profileMenu").kendoExpansionPanel({
+        title: 'Hesabım',
+        expanded: true
+    });
+
+    $("#loginMenu").removeClass("d-none");
+    $("#userMenu").removeClass("d-none");
 });
 
 function adjustSize() {

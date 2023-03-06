@@ -14,6 +14,7 @@ namespace ShopApp.Business.Services
         List<District> GetDistrictsByCityId(int cityId);
         List<Neighborhood> GetNeighborhoodsByDistrictId(int districtId);
         List<LookupModel> GetUserTypes();
+        List<LookupModel> GetAdmins();
     }
 
     public class LookupService : ILookupService
@@ -24,23 +25,33 @@ namespace ShopApp.Business.Services
             _unitOfWork = unitOfWork;
         }
 
+        public List<LookupModel> GetAdmins()
+        {
+            return _unitOfWork.Repository<User>()
+               .Where(x => !x.Deleted && x.UserType != UserType.Customer).Select(x => new LookupModel
+               {
+                   Id = x.Id,
+                   Name = $"{x.Name} {x.Surname}"
+               }).ToList();
+        }
+
         public List<City> GetCities()
         {
             return _unitOfWork.Repository<City>()
-                .GetAll()
-                .OrderBy(x => x.RowNumber).ToList();            
+                .Where()
+                .OrderBy(x => x.RowNumber).ToList();
         }
 
         public List<District> GetDistrictsByCityId(int cityId)
         {
             return _unitOfWork.Repository<District>()
-                .GetAll(x => x.CityId == cityId).ToList();
+                .Where(x => x.CityId == cityId).ToList();
         }
 
         public List<Neighborhood> GetNeighborhoodsByDistrictId(int districtId)
         {
             return _unitOfWork.Repository<Neighborhood>()
-                .GetAll(x => x.DistrictId == districtId).ToList();
+                .Where(x => x.DistrictId == districtId).ToList();
         }
 
         public List<LookupModel> GetUserTypes()

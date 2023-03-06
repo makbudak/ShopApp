@@ -1,0 +1,197 @@
+﻿@{
+    ViewData["Title"] = "Yapılacak Tanımları";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="card shadow">
+    <div class="card-header py-3 bg-white">
+        <div class="row">
+            <div class="col-6">
+                <h5>Yapılacak Tanımları</h5>
+            </div>
+            <div class="col-6">
+                <a id="btnAdd" class="btn btn-outline-dark btn-sm float-end">
+                    <i class="fas fa-plus"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div id="tabTodo" class="d-none">
+            <ul id="todoTab">
+                <li data-id="1" class="k-state-active">
+                    Yapılacak Kategorileri
+                </li>
+                <li data-id="2">
+                    Yapılacak Durumları
+                </li>
+            </ul>
+            <div class="py-5">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="todoCategoryGrid">
+                        <thead>
+                            <tr class="fw-bold">
+                                <th class="grid-buttons"></th>
+                                <th width="300">
+                                    Adı
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <script id="todoCategoryTemplate" type="text/x-kendo-template">
+                    <tr data-uid="#= uid #">
+                        <td class='grid-buttons'>
+                            <button class="btn btn-secondary btn-sm todoCategoryEdit" data-id="#= id #">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm todoCategoryDelete" data-id="#= id #">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                        <td width="300">
+                            <div>#: name #</div>
+                        </td>
+                    </tr>
+                </script>
+            </div>
+            <div class="py-5">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="todoStatusGrid">
+                        <thead>
+                            <tr class="fw-bold">
+                                <th class="grid-buttons"></th>
+                                <th width="200">
+                                    Kategori Adı
+                                </th>
+                                <th width="200">
+                                    Durum Adı
+                                </th>
+                                <th width="100">
+                                    Sırası
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <script id="todoStatusTemplate" type="text/x-kendo-template">
+                    <tr data-uid="#= uid #">
+                        <td class='grid-buttons'>
+                            <button class="btn btn-secondary btn-sm todoStatusEdit" data-id="#= id #">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm todoStatusDelete" data-id="#= id #">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                        <td width="200">
+                            <div>#: todoCategory.name #</div>
+                        </td>
+                        <td width="200">
+                            <div>#: name #</div>
+                        </td>
+                        <td width="100">
+                            <div>#: displayOrder #</div>
+                        </td>
+                    </tr>
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTodoCategory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalTodoCategoryLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTodoCategoryLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formTodoCategory">
+                    <div class="mb-3">
+                        <label class="form-label">Kategori Adı</label>
+                        <input type="text"
+                               id="txtTodoCategoryName"
+                               name="txtTodoCategoryName"
+                               class="w-100"
+                               required
+                               data-required-msg="Kategori adı giriniz." />
+                        <span class="k-invalid-msg" data-for="txtTodoCategoryName"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        data-bs-dismiss="modal"
+                        class="btn btn-secondary float-end">
+                    Kapat
+                </button>
+                <button id="btnTodoCategorySave"
+                        type="submit"
+                        class="btn btn-primary float-end">
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTodoStatus" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalTodoStatusLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTodoStatusLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formTodoStatus">
+                    <div class="mb-3">
+                        <label class="form-label">Kategori Adı</label>
+                        <input id="cmbTodoCategories"
+                               name="cmbTodoCategories"
+                               class="w-100"
+                               required
+                               data-required-msg="Kategori seçiniz." />
+                        <span class="k-invalid-msg" data-for="cmbTodoCategories"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Durum Adı</label>
+                        <input type="text"
+                               id="txtTodoStatusName"
+                               name="txtTodoStatusName"
+                               class="w-100"
+                               required
+                               data-required-msg="Durum adı giriniz." />
+                        <span class="k-invalid-msg" data-for="txtTodoStatusName"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Sırası</label>
+                        <input id="txtDisplayOrder" type="number" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        data-bs-dismiss="modal"
+                        class="btn btn-secondary float-end">
+                    Kapat
+                </button>
+                <button id="btnTodoStatusSave"
+                        type="submit"
+                        class="btn btn-primary float-end">
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/pages/admin/todo-definition.js"></script>
+            }

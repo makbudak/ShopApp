@@ -7,10 +7,10 @@ namespace ShopApp.Business.Services
 {
     public interface ICartService
     {
-        void InitializeCart(int customerId);
-        Cart GetCartByCustomerId(int customerId);
-        void AddToCart(int customerId, int productId, int quantity);
-        void DeleteFromCart(int customerId, int productId);
+        void InitializeCart(int userId);
+        Cart GetCartByUserId(int userId);
+        void AddToCart(int userId, int productId, int quantity);
+        void DeleteFromCart(int userId, int productId);
         void ClearCart(int cartId);
     }
 
@@ -22,9 +22,9 @@ namespace ShopApp.Business.Services
             _unitofwork = unitofwork;
         }
 
-        public void AddToCart(int customerId, int productId, int quantity)
+        public void AddToCart(int userId, int productId, int quantity)
         {
-            var cart = GetCartByCustomerId(customerId);
+            var cart = GetCartByUserId(userId);
 
             if (cart != null)
             {
@@ -54,7 +54,7 @@ namespace ShopApp.Business.Services
         public void ClearCart(int cartId)
         {
             var cartItems = _unitofwork.Repository<CartItem>()
-                .GetAll(x => x.CartId == cartId).ToList();
+                .Where(x => x.CartId == cartId).ToList();
             if (cartItems != null && cartItems.Any())
             {
                 _unitofwork.Repository<CartItem>().DeleteRange(cartItems);
@@ -62,13 +62,13 @@ namespace ShopApp.Business.Services
             }
         }
 
-        public void DeleteFromCart(int customerId, int productId)
+        public void DeleteFromCart(int userId, int productId)
         {
-            var cart = GetCartByCustomerId(customerId);
+            var cart = GetCartByUserId(userId);
             if (cart != null)
             {
                 var cartItems = _unitofwork.Repository<CartItem>()
-                    .GetAll(x => x.CartId == cart.Id && x.ProductId == productId)
+                    .Where(x => x.CartId == cart.Id && x.ProductId == productId)
                     .ToList();
                 if (cartItems != null && cartItems.Any())
                 {
@@ -78,19 +78,19 @@ namespace ShopApp.Business.Services
             }
         }
 
-        public Cart GetCartByCustomerId(int customerId)
+        public Cart GetCartByUserId(int userId)
         {
             return _unitofwork.Repository<Cart>()
-                .Get(x => x.CustomerId == customerId,
+                .FirstOrDefault(x => x.UserId == userId,
                  a => a.Include(o => o.CartItems)
                        .ThenInclude(o => o.Product));
         }
 
-        public void InitializeCart(int customerId)
+        public void InitializeCart(int userId)
         {
             var model = new Cart()
             {
-                CustomerId = customerId
+                UserId = userId
             };
             _unitofwork.Repository<Cart>().Add(model);
             _unitofwork.Save();

@@ -2,10 +2,10 @@
 using ShopApp.Business.Services;
 using ShopApp.Model.Dto.User;
 
-namespace ShopApp.API.Areas.Admin.Controllers
+namespace ShopApp.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("admin/user")]
+    [Route("Admin/User")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -20,12 +20,12 @@ namespace ShopApp.API.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpGet("list")]
-        public IActionResult Get([FromQuery] UserFilterModel model)
+        [HttpGet("List")]
+        public IActionResult Get()
         {
-            var list = _userService.Get(model);
+            var list = _userService.Get();
             return Ok(list);
-        }
+        }        
 
         [HttpPost]
         public IActionResult Post([FromBody] UserModel model)

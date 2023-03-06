@@ -10,62 +10,65 @@
         @await Html.PartialAsync("_ProfileMenu")
     </div>
     <div class="col-md-9">
-        <el-card class="box-card">
-            <template #header>
-                <h5><i class="el-icon-s-order"></i> Siparişlerim</h5>
-            </template>
-            @foreach (var order in Model)
-            {
-                <table class="table table-bordered table-sm mb-3">
-                    <thead class="bg-primary">
-                        <tr>
-                            <td colspan="2">Order Id: #@order.OrderNumber</td>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var orderItem in order.OrderItems)
-                        {
+        <div class="card">
+            <div class="h4 py-3 card-header bg-white">
+                <i class=""></i>
+                Siparişlerim
+            </div>
+            <div class="card-body">
+                @foreach (var order in Model)
+                {
+                    <table class="table table-bordered table-sm mb-3">
+                        <thead class="bg-primary">
                             <tr>
-                                <td><img src="~/img/@orderItem.ImageUrl" alt="" width="50"></td>
-                                <td>
-                                    @orderItem.Name
-                                </td>
-                                <td>@orderItem.Price</td>
-                                <td>@orderItem.Quantity</td>
+                                <td colspan="2">Order Id: #@order.OrderNumber</td>
+                                <th>Price</th>
+                                <th>Quantity</th>
                             </tr>
-                        }
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="2">Customer Name</td>
-                            <td>@order.FirstName @order.LastName</td>
-                            <td rowspan="6">Total: @order.TotalPrice().ToString("c")</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Address: </td>
-                            <td>@order.Address</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Email: </td>
-                            <td>@order.Email</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Phone: </td>
-                            <td>@order.Phone</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Order Status: </td>
-                            <td>@order.OrderState</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Payment Type </td>
-                            <td>@order.PaymentType</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            }
-        </el-card>
+                        </thead>
+                        <tbody>
+                            @foreach (var orderItem in order.OrderItems)
+                            {
+                                <tr>
+                                    <td><img src="~/img/@orderItem.ImageUrl" alt="" width="50"></td>
+                                    <td>
+                                        @orderItem.Name
+                                    </td>
+                                    <td>@orderItem.Price</td>
+                                    <td>@orderItem.Quantity</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2">User Name</td>
+                                <td>@order.FirstName @order.LastName</td>
+                                <td rowspan="6">Total: @order.TotalPrice().ToString("c")</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Address: </td>
+                                <td>@order.Address</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Email: </td>
+                                <td>@order.Email</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Phone: </td>
+                                <td>@order.Phone</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Order Status: </td>
+                                <td>@order.OrderState</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Payment Type </td>
+                                <td>@order.PaymentType</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                }
+            </div>
+        </div>
     </div>
 </div>

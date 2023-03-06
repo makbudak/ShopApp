@@ -9,7 +9,7 @@ namespace ShopApp.Business.Services
     public interface IOrderService
     {
         void Create(Order entity);
-        List<Order> GetOrders(int customerId);
+        List<Order> GetOrders(int userId);
     }
 
     public class OrderService : IOrderService
@@ -25,13 +25,13 @@ namespace ShopApp.Business.Services
             _unitOfWork.Save();
         }
 
-        public List<Order> GetOrders(int customerId)
+        public List<Order> GetOrders(int userId)
         {
             return _unitOfWork.Repository<Order>()
-                .GetAll(i => i.CustomerId == customerId)
+                .Where(i => i.UserId == userId)
                 .Include(i => i.OrderItems)
                 .ThenInclude(i => i.Product)
-                .ToList();
+                .OrderByDescending(x => x.Id).ToList();
         }
     }
 }

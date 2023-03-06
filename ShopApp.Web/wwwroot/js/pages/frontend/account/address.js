@@ -3,10 +3,10 @@
 
     var template = kendo.template($("#template").html());
 
-    var customerAddressDataSource = new kendo.data.DataSource({
+    var userAddressDataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: "/customer-address",
+                url: "/user-address",
                 dataType: "json"
             }
         },
@@ -22,7 +22,7 @@
         }
     });
 
-    customerAddressDataSource.read();
+    userAddressDataSource.read();
 
 
     var cityDataSource = new kendo.data.DataSource({
@@ -82,15 +82,6 @@
         placeholder: "Adres giriniz."
     }).data("kendoTextArea");
 
-    var windowAddress = $("#windowAddress").kendoWindow({
-        width: "600px",
-        height: "95%",
-        modal: true,
-        visible: false,
-        animation: false,
-        open: adjustSize,
-        scrollable: true
-    }).data("kendoWindow");
 
     function selectCity(e) {
         var districtDataSource = new kendo.data.DataSource({
@@ -120,20 +111,16 @@
         $("#addressForm").trigger("reset");
         id = 0;
         event.preventDefault();
-        windowAddress.center().open();
-        $(".k-window-title").text("Adres Ekle");
+        $("#addressModal").modal("show");
+        $("#addressModalLabel").text("Adres Ekle");
     });
-
-    $("#btnClose").click(() => {
-        windowAddress.close();
-    })
 
     $(document).on('click', ".btnEditAddress", function () {
         id = $(this).attr('data-id');
-        axios.get(`/customer-address/${id}`)
+        axios.get(`/user-address/${id}`)
             .then(res => {
-                windowAddress.center().open();
-                $(".k-window-title").text("Adres Düzenle");
+                $("#addressModal").modal("show");
+                $("#addressModalLabel").text("Adres Düzenle");
                 txtTitle.value(res.data.title);
                 txtNameSurname.value(res.data.nameSurname);
                 txtPostCode.value(res.data.postCode);
@@ -150,9 +137,9 @@
     $(document).on('click', ".btnDeleteAddress", function () {
         id = $(this).attr('data-id');
         if (confirm("Silmek istediğinize emin misiniz?")) {
-            axios.delete(`/customer-address/${id}`)
+            axios.delete(`/user-address/${id}`)
                 .then(res => {
-                    customerAddressDataSource.read();
+                    userAddressDataSource.read();
                     successNotification("İşlem Başarılı!", "Silme işlemi başarıyla gerçekleşti.");
                 }, (err) => {
                     errorNotification("İşlem Başarısız", err.response.data.message);
@@ -178,19 +165,19 @@
             };
 
             if (id == 0) {
-                axios.post("/customer-address", data)
+                axios.post("/user-address", data)
                     .then(res => {
-                        customerAddressDataSource.read();
-                        windowAddress.close();
+                        userAddressDataSource.read();
+                        $("#addressModal").modal("hide");
                         successNotification("İşlem Başarılı!", "Kaydetme işlemi başarıyla gerçekleşti.");
                     }, (err) => {
                         errorNotification("İşlem Başarısız", err.response.data.message);
                     });
             } else {
-                axios.put("/customer-address", data)
+                axios.put("/user-address", data)
                     .then(res => {
-                        customerAddressDataSource.read();
-                        windowAddress.close();
+                        userAddressDataSource.read();
+                        $("#addressModal").modal("show");
                         successNotification("İşlem Başarılı!", "Güncelleme işlemi başarıyla gerçekleşti.");
                     }, (err) => {
                         errorNotification("İşlem Başarısız", err.response.data.message);

@@ -3,14 +3,23 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/kendo.bootstrap-main.min.css">
-    <link rel="stylesheet" href="~/css/style.css" />
-    @RenderSection("Css", false)
-    <title>Shop App - @ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Shop App</title>
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/kendo.bootstrap-main.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/style.css" />
+    @RenderSection("Styles", false)
+    <script src="~/js/lib/jquery-3.6.0.min.js"></script>
+    <script src="~/js/lib/bootstrap.bundle.min.js"></script>
+    <script src="~/js/lib/kendo.all.min.js"></script>
+    <script src="~/js/lib/sweetalert.min.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/pages/frontend/global.js"></script>
+    @RenderSection("Scripts", false)
 </head>
-<body style="background-color: #eee;">
+<body>
     @await Html.PartialAsync("_navbar")
     <span id="notification" class="d-none"></span>
     <script id="errorTemplate" type="text/x-kendo-template">
@@ -38,17 +47,16 @@
         </div>
     </main>
 
-    <footer class="navbar bg-white fixed-bottom border-top">
+    <footer class="navbar bg-white fixed-bottom border-top shadow">
         <div class="container">
             Shop App @DateTime.Now.Year
         </div>
     </footer>
 
-    <script src="~/js/lib/jquery-3.6.0.min.js"></script>
-    <script src="~/js/lib/bootstrap.bundle.min.js"></script>
-    <script src="~/js/lib/kendo.all.min.js"></script>
-    <script src="~/js/pages/frontend/global.js"></script>
-    <script src="~/js/lib/axios.min.js"></script>
-    @RenderSection("Scripts", false)
+    <div class="btn-back-to-top" id="myBtn">
+        <span class="symbol-btn-back-to-top">
+            <i class="zmdi zmdi-chevron-up"></i>
+        </span>
+    </div>
 </body>
 </html>

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace ShopApp.WebUI.Controllers
+namespace ShopApp.Web.Controllers
 {
     public class HomeController : Controller
     {

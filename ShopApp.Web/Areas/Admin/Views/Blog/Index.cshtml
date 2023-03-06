@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = "Bloglar";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow">
+    <div class="card-header py-3 bg-white">
+        <div class="row">
+            <div class="col-6">
+                <h5>Bloglar</h5>
+            </div>
+            <div class="col-6">
+                <a id="btnAdd" class="btn btn-outline-dark btn-sm float-end">
+                    <i class="fas fa-plus"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+    </div>
+</div>
+
+<div class="modal fade" id="modalBlog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="modalBlogLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalBlogLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="form-label">Başlık</label>
+                            <input type="text"
+                                   id="txtTitle"
+                                   name="txtTitle"
+                                   class="w-100"
+                                   required
+                                   data-required-msg="Başlık giriniz." />
+                            <span class="k-invalid-msg" data-for="txtTitle"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="form-label">Kısa Açıklama</label>
+                            <textarea id="txtShortDescription"
+                                      class="w-100"
+                                      rows="2">
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="form-label">Açıklama</label>
+                            <textarea id="editorDescription"
+                                      class="w-100"
+                                      rows="10"
+                                      cols="10"
+                                      aria-label="editor">
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Kategori</label>
+                            <input id="cmbTodoCategories"
+                                   name="cmbTodoCategories"
+                                   class="w-100"
+                                   required
+                                   data-required-msg="Kategori seçiniz." />
+                            <span class="k-invalid-msg" data-for="cmbTodoCategories"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label w-100">Sıra</label>
+                            <input id="txtDisplayOrder"
+                                   type="number"
+                                   min="1"
+                                   style="width: 100px !important;"
+                                   required
+                                   data-required-msg="Sıra giriniz." />
+                            <span class="k-invalid-msg" data-for="txtDisplayOrder"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="form-label">Url</label>
+                            <input id="txtUrl"
+                                   disabled
+                                   class="w-100" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <input type="checkbox"
+                                   id="chckPublished"
+                                   class="k-checkbox"
+                                   checked="checked" />
+
+                            <input type="checkbox"
+                                   id="chckIsActive"
+                                   class="k-checkbox ms-3"
+                                   checked="checked">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        data-bs-dismiss="modal"
+                        class="btn btn-secondary float-end">
+                    Kapat
+                </button>
+                <button id="btnSave"
+                        type="submit"
+                        class="btn btn-primary float-end">
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="application/javascript" src="~/js/pages/admin/blog.js"></script>
+}

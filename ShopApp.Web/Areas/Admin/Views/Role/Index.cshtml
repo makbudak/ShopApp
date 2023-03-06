@@ -3,21 +3,20 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a class="text-decoration-none text-secondary" href="/admin">Anasayfa</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Roller</li>
-    </ol>
-</nav>
-
-<div class="card">
-    <div class="card-body">
+<div class="card shadow">
+    <div class="card-header py-3 bg-white">
         <div class="row">
-            <div class="col-6"><h5 class="card-title mb-3">Roller</h5></div>
             <div class="col-6">
-                <a id="btnAdd" class="btn btn-primary btn-sm float-end"><i class="k-icon k-i-plus"></i>Ekle</a>
+                <h5>Roller</h5>
+            </div>
+            <div class="col-6">
+                <a id="btnAdd" class="btn btn-outline-dark btn-sm float-end">
+                    <i class="fas fa-plus"></i>
+                </a>
             </div>
         </div>
+    </div>
+    <div class="card-body">
         <script id="isActive-template" type="text/x-kendo-template">
             <div>#: isActive ? 'Evet': 'Hayır' #</div>
         </script>
@@ -25,38 +24,47 @@
     </div>
 </div>
 
-<div id="windowRole">
-    <form id="roleForm">
-        <div class="mb-3">
-            <label class="form-label">Role Adı</label>
-            <input type="text"
-                   id="txtRoleName"
-                   name="txtRoleName"
-                   class="w-100"
-                   required
-                   data-required-msg="Rol adı giriniz." />
-            <span class="k-invalid-msg" data-for="txtRoleName"></span>
+<div class="modal fade" id="roleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="roleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="roleModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formRole">
+                    <div class="mb-3">
+                        <label class="form-label">Role Adı</label>
+                        <input type="text"
+                               id="txtRoleName"
+                               name="txtRoleName"
+                               class="w-100"
+                               required
+                               data-required-msg="Rol adı giriniz." />
+                        <span class="k-invalid-msg" data-for="txtRoleName"></span>
+                    </div>
+                    <div class="mb-3">
+                        <input type="checkbox" id="chckIsActive" class="k-checkbox" checked="checked">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        data-bs-dismiss="modal"
+                        class="btn btn-secondary float-end">
+                    Kapat
+                </button>
+                <button id="btnSave"
+                        type="submit"
+                        class="btn btn-primary float-end">
+                    Kaydet
+                </button>
+            </div>
         </div>
-        <div class="mb-3">
-            <input type="checkbox" id="chckIsActive" class="k-checkbox" checked="checked">
-            <label class="k-checkbox-label" for="chckIsActive">Aktif</label>
-        </div>
-        <div class="mb-5">
-            <button id="btnSave"
-                    type="submit"
-                    class="btn btn-primary float-end ms-2">
-                Kaydet
-            </button>
-            <button id="btnClose"
-                    type="button"
-                    class="btn btn-secondary float-end">
-                Kapat
-            </button>
-        </div>
-    </form>
+    </div>
 </div>
 
 @section Scripts{
-<script src="~/js/pages/admin/role.js"></script>
+    <script src="~/js/pages/admin/role.js"></script>
 }
 

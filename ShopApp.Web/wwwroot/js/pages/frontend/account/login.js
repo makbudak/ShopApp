@@ -1,9 +1,6 @@
-﻿$(function () {
-    $("#txtEmailAddress").kendoTextBox();
-    $("#txtPassword").kendoTextBox();
-
-    var txtEmailAddress = $("#txtEmailAddress").data("kendoTextBox");
-    var txtPassword = $("#txtPassword").data("kendoTextBox");
+﻿$(() => {
+    var txtEmailAddress = $("#txtEmailAddress").kendoTextBox().data("kendoTextBox");
+    var txtPassword = $("#txtPassword").kendoTextBox().data("kendoTextBox");
 
     var validator = $("#loginForm").kendoValidator().data("kendoValidator");
 
@@ -17,10 +14,16 @@
                 password: txtPassword.value()
             };
 
-            axios.post("/customer/login", data).then((res) => {
+            $.ajax({
+                url: "/user/login",
+                dataType: "json",
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8"
+            }).done((res) => {
                 location.href = "/";
-            }, (err) => {
-                errorNotification("İşlem Başarısız", err.response.data.message);
+            }).fail((err) => {
+                errorNotification("İşlem Başarısız", err.responseJSON.message);
             });
         }
     });

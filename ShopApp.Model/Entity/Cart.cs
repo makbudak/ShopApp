@@ -4,9 +4,9 @@ namespace ShopApp.Model.Entity
 {
     public class Cart : BaseEntity
     {
-        public int CustomerId { get; set; }
+        public int UserId { get; set; }
 
-        public Customer Customer { get; set; }
+        public User User { get; set; }
 
         public List<CartItem> CartItems { get; set; }
     }

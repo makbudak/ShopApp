@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http;
+@using ShopApp.Model.Enum
 
-<div class="navbar navbar-expand-md navbar-light bg-white border-bottom fixed-top" id="navbar">
+<div class="navbar navbar-expand-md navbar-light bg-white border-bottom fixed-top shadow" id="navbar">
     <div class="container">
         <a href="/" class="navbar-brand text-dark">Shop App</a>
         <button class="navbar-toggler" type="button" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" v-on:click="leftMenuShow()">
@@ -13,12 +14,18 @@
                 </li>
             </ul>
 
-            @if (Context.Session.GetInt32("CustomerId") != null)
+            @if (Context.Session.GetInt32("UserId") != null)
             {
-                <ul id="customerMenu" class="bg-white py-0">
+                <ul id="userMenu" class="bg-white py-0 d-none">
                     <li class="text-dark">
-                        @Context.Session.GetString("CustomerName")
+                        @Context.Session.GetString("UserName")
                         <ul>
+                            @if (Context.Session.GetInt32("Userype") != (int)UserType.Customer)
+                            {
+                                <li>
+                                    <a class="text-decoration-none text-dark" href="/admin/home">Yönetim Paneli</a>
+                                </li>
+                            }
                             <li>
                                 <a class="text-decoration-none text-dark" href="/account/profile">Hesabım</a>
                             </li>
@@ -30,11 +37,11 @@
                             </li>
                         </ul>
                     </li>
-                </ul>               
+                </ul>
             }
             else
             {
-                <ul id="loginMenu" class="bg-white py-0">
+                <ul id="loginMenu" class="bg-white py-0 d-none">
                     <li class="text-dark">
                         Giriş Yap
                         <ul>
@@ -42,48 +49,12 @@
                                 <a class="text-decoration-none text-dark" href="/account/login">Giriş Yap</a>
                             </li>
                             <li>
-                                <a class="text-decoration-none text-dark" href="/admin/login">Yönetici Girişi</a>
-                            </li>
-                            <li>
                                 <a class="text-decoration-none text-dark" href="/account/register">Üye Ol</a>
                             </li>
                         </ul>
                     </li>
-                </ul>              
+                </ul>
             }
         </div>
     </div>
-    @* <el-drawer v-model="leftMenuDrawer"
-        title="Menü"
-        direction="ltr"
-        size="95%">
-        <div class="p-3 border-top">
-
-        @if (Context.Session.GetInt32("CustomerId") != null)
-        {
-        <p>
-        <el-link href="/account/profile">Hesabım</el-link>
-        </p>
-        <p>
-        <el-link href="/account/orders">Siparişlerim</el-link>
-        </p>
-        <p>
-        <el-link href="/account/logout">Çıkış Yap</el-link>
-        </p>
-        }
-        else
-        {
-        <p>
-        <el-link href="/account/login">Giriş Yap</el-link>
-        </p>
-        <p>
-        <el-link href="/admin/login">Yönetici Girişi</el-link>
-        </p>
-        <p>
-        <el-link href="/account/register">Üye Ol</el-link>
-        </p>
-        }
-        </div>
-        </el-drawer>*@
-
 </div>

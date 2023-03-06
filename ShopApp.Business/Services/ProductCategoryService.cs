@@ -50,7 +50,7 @@ namespace ShopApp.Business.Services
         {
             var productCategoryItems = _unitOfWork
                 .Repository<ProductCategoryItem>()
-                .Get(x => x.ProductCategoryId == categoryId && x.ProductId == productId);
+                .FirstOrDefault(x => x.ProductCategoryId == categoryId && x.ProductId == productId);
 
             if (productCategoryItems != null)
             {
@@ -63,7 +63,7 @@ namespace ShopApp.Business.Services
         {
             var productCategories = new List<TreeProductCategoryModel>();
             List<TreeProductCategoryModel> list = _unitOfWork.Repository<ProductCategory>()
-                .GetAll(x => x.ParentId == parentId)
+                .Where(x => x.ParentId == parentId)
                 .AsEnumerable()
                 .Select(x => 
                 {
@@ -95,13 +95,13 @@ namespace ShopApp.Business.Services
 
         public ProductCategory GetById(int id)
         {
-            return _unitOfWork.Repository<ProductCategory>().Get(x => x.Id == id);
+            return _unitOfWork.Repository<ProductCategory>().FirstOrDefault(x => x.Id == id);
         }
 
         public ProductCategory GetByIdWithProducts(int categoryId)
         {
             var category = _unitOfWork.Repository<ProductCategory>()
-                .GetAll(i => i.Id == categoryId)
+                .Where(i => i.Id == categoryId)
                 .Include(i => i.ProductCategoryItems)
                 .ThenInclude(i => i.Product)
                 .FirstOrDefault();

@@ -77,7 +77,7 @@ namespace ShopApp.Data.GenericRepository
         /// <param name="entity"></param>
         public async virtual Task DeleteAsync(TEntity entity)
         {
-            entity = await GetAsync(x => x.Id == entity.Id);
+            entity = await FirstOrDefaultAsync(x => x.Id == entity.Id);
 
             if (entity != null)
                 _dbSet.Remove(entity);
@@ -86,7 +86,7 @@ namespace ShopApp.Data.GenericRepository
 
         public virtual void Delete(TEntity entity)
         {
-            entity = Get(x => x.Id == entity.Id);
+            entity = FirstOrDefault(x => x.Id == entity.Id);
 
             if (entity != null)
                 _dbSet.Remove(entity);
@@ -98,7 +98,7 @@ namespace ShopApp.Data.GenericRepository
         /// <param name="id"></param>
         public virtual void Delete(int id)
         {
-            var entity = Get(x => x.Id == id);
+            var entity = FirstOrDefault(x => x.Id == id);
 
             if (entity != null)
                 _dbSet.Remove(entity);
@@ -109,7 +109,7 @@ namespace ShopApp.Data.GenericRepository
 
         public async virtual Task DeleteAsync(int id)
         {
-            var entity = await GetAsync(x => x.Id == id);
+            var entity = await FirstOrDefaultAsync(x => x.Id == id);
 
             if (entity != null)
                 _dbSet.Remove(entity);
@@ -118,7 +118,7 @@ namespace ShopApp.Data.GenericRepository
                 throw new Exception("Data bulunamadı");
         }
 
-        public virtual IQueryable<TEntity> GetAll()
+        public virtual IQueryable<TEntity> Where()
         {
             return _dbSet.AsQueryable();/*.Where(x=> !x.IsDeleted)*/
         }
@@ -142,7 +142,7 @@ namespace ShopApp.Data.GenericRepository
             return query;
         }
 
-        public virtual TEntity Get(Expression<Func<TEntity, bool>> predicate = null,
+        public virtual TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
             IQueryable<TEntity> query = _dbSet;
@@ -157,7 +157,7 @@ namespace ShopApp.Data.GenericRepository
         }
 
 
-        public async virtual Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate = null,
+        public async virtual Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
             IQueryable<TEntity> query = _dbSet;
@@ -178,7 +178,7 @@ namespace ShopApp.Data.GenericRepository
             return query.Include(expression);
         }
 
-        public virtual TEntity Get(Expression<Func<TEntity, bool>> predicate = null)
+        public virtual TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate = null)
         {
             IQueryable<TEntity> query = _dbSet;
 
@@ -189,7 +189,7 @@ namespace ShopApp.Data.GenericRepository
         }
 
 
-        public async virtual Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate = null)
+        public async virtual Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate = null)
         {
 
             IQueryable<TEntity> query = _dbSet;
@@ -224,7 +224,7 @@ namespace ShopApp.Data.GenericRepository
 
         }
 
-        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate = null,
+        public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> predicate = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
             IQueryable<TEntity> query = _dbSet;
@@ -239,7 +239,7 @@ namespace ShopApp.Data.GenericRepository
         }
 
 
-        public virtual bool IsExist(Expression<Func<TEntity, bool>> predicate)
+        public virtual bool Any(Expression<Func<TEntity, bool>> predicate)
         {
             if (predicate == null)
                 throw new ArgumentNullException("entity is null");
@@ -248,7 +248,7 @@ namespace ShopApp.Data.GenericRepository
 
         }
 
-        public async virtual Task<bool> IsExistAsync(Expression<Func<TEntity, bool>> predicate)
+        public async virtual Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
         {
             if (predicate == null)
                 throw new ArgumentNullException("entity is null");

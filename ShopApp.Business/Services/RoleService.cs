@@ -26,7 +26,9 @@ namespace ShopApp.Business.Services
 
         public List<Role> GetAll()
         {
-            return _unitOfWork.Repository<Role>().GetAll(x => !x.Deleted).OrderByDescending(x => x.Id).ToList();
+            return _unitOfWork.Repository<Role>()
+                .Where(x => !x.Deleted)
+                .OrderByDescending(x => x.Id).ToList();
         }
 
         public ServiceResult Post(Role model)
@@ -51,11 +53,11 @@ namespace ShopApp.Business.Services
             var result = new ServiceResult { StatusCode = HttpStatusCode.OK };
             try
             {
-                var role = _unitOfWork.Repository<Role>().Get(x => x.Id == model.Id && !x.Deleted);
+                var role = _unitOfWork.Repository<Role>().FirstOrDefault(x => x.Id == model.Id && !x.Deleted);
                 if (role != null)
                 {
                     role.IsActive = model.IsActive;
-                    role.Name = model.Name;                    
+                    role.Name = model.Name;
                     _unitOfWork.Save();
                 }
                 else
@@ -78,7 +80,7 @@ namespace ShopApp.Business.Services
             var result = new ServiceResult { StatusCode = HttpStatusCode.OK };
             try
             {
-                var role = _unitOfWork.Repository<Role>().Get(x => x.Id == id && !x.Deleted);
+                var role = _unitOfWork.Repository<Role>().FirstOrDefault(x => x.Id == id && !x.Deleted);
                 if (role != null)
                 {
                     role.Deleted = true;

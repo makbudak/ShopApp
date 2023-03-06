@@ -1,168 +1,151 @@
-﻿const app = {
-    data() {
-        return {
-            userList: [],
-            userTypes: [],
-            showGrid: true,
-            showForm: false,
-            title: "Kullanıcılar",
-            pageNumber: 1,
-            total: 0,
-            user: {},
-            rules:
-            {
-                userType: [
-                    {
-                        required: true,
-                        message: 'Kullanıcı tipi seçiniz.',
-                        trigger: ['blur', 'change']
-                    },
-                ],
-                name: [
-                    {
-                        required: true,
-                        message: 'Adı zorunludur.',
-                        trigger: 'blur',
-                    },
-                ],
-                surname: [
-                    {
-                        required: true,
-                        message: 'Soyadı zorunludur.',
-                        trigger: 'blur',
-                    },
-                ],
-                email: [
-                    {
-                        required: true,
-                        message: 'Email adresi zorunludur.',
-                        trigger: 'blur',
-                    },
-                    {
-                        type: 'email',
-                        message: 'Lütfen geçerli email adresi giriniz.',
-                        trigger: ['blur', 'change']
-                    }
-
-                ],
+﻿$(() => {
+    var id = 0;
+    var dataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: "/Admin/User/List",
+                dataType: "json"
             },
-            filterModel: {
-                name: "",
-                surname: "",
-                email: ""
+        },
+        pageSize: 5
+    });
+
+    $("#grid").kendoGrid({
+        columns: [
+            {
+                command: [
+                    { text: "", name: "edit", className: "bg-secondary text-white", iconClass: "k-icon k-i-edit", click: editUser },
+                    { text: "", name: "remove", className: "bg-danger text-white", iconClass: "k-icon k-i-trash", click: deleteUser }
+                ],
+                title: " ",
+                width: "120px"
+            },
+            {
+                field: "name",
+                title: "Adı",
+            },
+            {
+                field: "surname",
+                title: "Soyadı",
+            },
+            {
+                field: "email",
+                title: "Email Adresi",
+            },
+            {
+                field: "phone",
+                title: "Telefon No",
+            },
+            {
+                template: kendo.template($("#isEmailConfirmed-template").html()),
+                title: "Email Adresi Onaylandı mı?",
+                width: "240px"
+            },
+            {
+                template: kendo.template($("#isActive-template").html()),
+                title: "Aktif"
             }
+        ],
+        dataSource: dataSource,
+        loaderType: "loadingPanel",
+        pageable: {
+            pageSize: 5,
+            alwaysVisible: true
         }
-    },
-    created() {
-        this.getUsers();
-        this.getUserTypes();
-        this.reset();
-    },
-    methods: {
-        getUsers() {
-            var query = `/admin/user/list?pageNumber=${this.pageNumber}`;
-            if (this.filterModel.name) {
-                query = `${query}&name=${this.filterModel.name}`;
-            }
-            if (this.filterModel.surname) {
-                query = `${query}&surname=${this.filterModel.surname}`;
-            }
-            if (this.filterModel.email) {
-                query = `${query}&email=${this.filterModel.email}`;
-            }
-            axios.get(query).then(res => {
-                this.userList = res.data.list;
-                this.total = res.data.total;
-            })
-        },
-        getUserTypes() {
-            axios.get("/admin/lookup/user-types").then(res => {
-                this.userTypes = res.data;
-            });
-        },
-        editUser(e) {
-            this.showForm = true;
-            this.showGrid = false;
-            this.title = "Kullanıcı Düzenle";
-            this.user = e;
-        },
-        deleteUser(e) {
-            this.$confirm(
-                'Silmek istediğinize emin misiniz?',
-                'Silme Onayı',
-                {
-                    confirmButtonText: 'Evet',
-                    cancelButtonText: 'Hayır',
-                    type: 'danger',
-                }
-            ).then(() => {
-                axios.delete(`/admin/user/${e.id}`)
-                    .then(res => {
-                        this.getUsers();
-                        this.$message({
-                            type: 'success',
-                            message: 'Silme işlemi başarıyla gerçekleşti.',
-                        });
-                    });
-            });
-        },
-        addUser() {
-            this.reset();
-            this.showForm = true;
-            this.showGrid = false;
-            this.title = "Kullanıcı Ekle";
-        },
-        onSubmit(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    if (this.user.id == 0) {
-                        axios.post("/admin/user", this.user)
-                            .then(res => {
-                                this.reset();
-                                this.getUsers();
-                            });
-                    } else {
-                        axios.put("/admin/user", this.user)
-                            .then(res => {
-                                this.reset();
-                                this.getUsers();
-                            });
-                    }
-                } else {
-                    return false;
-                }
-            })
-        },
-        reset() {
-            this.title = "Kullanıcılar";
-            this.showForm = false;
-            this.showGrid = true;
-            this.pageNumber = 1;
-            this.user = {
-                id: 0,
-                userType: null,
-                name: "",
-                surname: "",
-                email: "",
-                phone: "",
-                isActive: true
-            };
-        },
-        pageChange(val) {
-            this.pageNumber = val;
-            this.getUsers();
-        },
-        filter() {
-            this.getUsers();
-        },
-        filterReset() {
-            this.pageNumber = 1;
-            this.filterModel = {
-                name: "",
-                surname: "",
-                email: ""
-            };
-            this.getUsers();
-        }
+    });
+
+    var txtName = $("#txtName").kendoTextBox({
+        placeholder: "Adı giriniz."
+    }).data("kendoTextBox");
+
+    var txtSurname = $("#txtSurname").kendoTextBox({
+        placeholder: "Soyadı giriniz."
+    }).data("kendoTextBox");
+
+    var txtEmailAddress = $("#txtEmailAddress").kendoTextBox({
+        placeholder: "Email adresi giriniz."
+    }).data("kendoTextBox");
+
+    var txtPhone = $("#txtPhone").kendoMaskedTextBox({
+        mask: "(999) 000-0000"
+    }).data("kendoMaskedTextBox");
+
+    var chckIsActive = $("#chckIsActive").kendoCheckBox({
+        checked: true,
+        label: "Aktif"
+    }).data("kendoCheckBox");
+
+    $("#btnAdd").click((e) => {
+        event.preventDefault();
+        $("#userModal").modal("show");
+        $("#userForm").trigger("reset");
+        $("#userModalLabel").text("Kullanıcı Ekle");
+        id = 0;
+    });
+
+    function editUser(e) {
+        $("#userModal").modal("show");
+        $("#userModalLabel").text("Kullanıcı Düzenle");
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        txtName.value(dataItem.name);
+        txtSurname.value(dataItem.surname);
+        txtEmailAddress.value(dataItem.email);
+        txtPhone.value(dataItem.phone);
+        chckIsActive.value(dataItem.isActive);
+        id = dataItem.id;
     }
-};
+
+    function deleteUser(e) {
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+    }
+
+    var validator = $("#userForm").kendoValidator().data("kendoValidator");
+
+    $("#btnSave").click((event) => {
+        event.preventDefault();
+        if (validator.validate()) {
+            var data = {
+                id: id,
+                name: txtName.value(),
+                surname: txtSurname.value(),
+                email: txtEmailAddress.value(),
+                phone: txtPhone.value(),
+                isActive: chckIsActive.value()
+            };
+
+            if (id == 0) {
+                $.ajax({
+                    url: "/admin/user",
+                    dataType: "json",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=utf-8"
+                }).done((res) => {
+                    dataSource.read();
+                    $("#userModal").modal("hide");
+                    successNotification("İşlem Başarılı!", "Kaydetme işlemi başarıyla gerçekleşti.");
+                }).fail((err) => {
+                    console.log(err);
+                    //errorNotification("İşlem Başarısız", err.response.data.message);
+                });
+            } else {
+                $.ajax({
+                    url: "/admin/user",
+                    dataType: "json",
+                    type: "PUT",
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=utf-8"
+                }).done((res) => {
+                    dataSource.read();
+                    $("#userModal").modal("hide");
+                    successNotification("İşlem Başarılı!", "Güncelleme işlemi başarıyla gerçekleşti.");
+                }).fail((err) => {
+                    console.log(err);
+                    //errorNotification("İşlem Başarısız", err.response.message);
+                });
+            }
+        }
+    });
+});

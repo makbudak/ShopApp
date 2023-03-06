@@ -13,24 +13,25 @@ using ShopApp.Model.Dto;
 using ShopApp.Model.Dto.User;
 using ShopApp.Business.Services;
 
-namespace ShopApp.API.Controllers
+namespace ShopApp.Web.Controllers
 {
     [Authorize]
     public class CartController : Controller
     {
         private ICartService _cartService;
         private IOrderService _orderService;
-        private ICustomerService _customerService;
 
-        public CartController(IOrderService orderService, ICartService cartService, ICustomerService customerService)
+        public CartController(
+            IOrderService orderService,
+            ICartService cartService)
         {
             _cartService = cartService;
             _orderService = orderService;
-            _customerService = customerService;
         }
+
         public IActionResult Index()
         {
-            var cart = _cartService.GetCartByCustomerId(1);
+            var cart = _cartService.GetCartByUserId(1);
             var model = new CartModel();
             if (cart != null)
             {
@@ -63,7 +64,7 @@ namespace ShopApp.API.Controllers
 
         public IActionResult Checkout()
         {
-            var cart = _cartService.GetCartByCustomerId(1);
+            var cart = _cartService.GetCartByUserId(1);
 
             var orderModel = new OrderModel();
 
@@ -90,7 +91,7 @@ namespace ShopApp.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var cart = _cartService.GetCartByCustomerId(1);
+                var cart = _cartService.GetCartByUserId(1);
                 model.CartModel = new CartModel()
                 {
                     CartId = cart.Id,
@@ -109,19 +110,9 @@ namespace ShopApp.API.Controllers
 
                 if (payment.Status == "success")
                 {
-                    SaveOrder(model, payment, 1);
+                    SaveOrder(model, payment);
                     ClearCart(model.CartModel.CartId);
                     return View("Success");
-                }
-                else
-                {
-                    var msg = new AlertMessage()
-                    {
-                        Message = $"{payment.ErrorMessage}",
-                        AlertType = "danger"
-                    };
-
-                    TempData["message"] = JsonConvert.SerializeObject(msg);
                 }
             }
             return View(model);
@@ -133,7 +124,7 @@ namespace ShopApp.API.Controllers
             _cartService.ClearCart(cartId);
         }
 
-        private void SaveOrder(OrderModel model, Payment payment, int customerId)
+        private void SaveOrder(OrderModel model, Payment payment)
         {
             var order = new Order();
 
@@ -145,7 +136,7 @@ namespace ShopApp.API.Controllers
             order.OrderDate = new DateTime();
             order.FirstName = model.FirstName;
             order.LastName = model.LastName;
-            order.CustomerId = 1;
+            order.UserId = 1;
             order.Address = model.Address;
             order.Phone = model.Phone;
             order.Email = model.Email;

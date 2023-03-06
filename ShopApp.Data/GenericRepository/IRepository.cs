@@ -17,23 +17,23 @@ namespace ShopApp.Data.GenericRepository
         void AddRange(List<TEntity> entity);
 
         Task AddRangeAsync(List<TEntity> entity);
-        IQueryable<TEntity> GetAll();
+        IQueryable<TEntity> Where();
 
-        IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
+        IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
 
         IQueryable<TEntity> GetAllNoTracking();
 
         IQueryable<TEntity> GetAllNoTracking(Expression<Func<TEntity, bool>> predicate = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
 
-        TEntity Get(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
+        TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
 
-        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate = null,
+        Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
 
-        TEntity Get(Expression<Func<TEntity, bool>> predicate = null);
+        TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate = null);
 
-        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate = null);
+        Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate = null);
 
         IIncludableQueryable<TEntity, object> Include(Expression<Func<TEntity, object>> expression);
 
@@ -54,10 +54,9 @@ namespace ShopApp.Data.GenericRepository
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        bool IsExist(Expression<Func<TEntity, bool>> predicate);
+        bool Any(Expression<Func<TEntity, bool>> predicate);
 
-        Task<bool> IsExistAsync(Expression<Func<TEntity, bool>> predicate);
-
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
 
         Task<List<TEntity>> TakeAsync(int count);
     }

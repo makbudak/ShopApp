@@ -49,18 +49,18 @@ namespace ShopApp.Business.Services
 
         public List<Product> Get()
         {
-            return _unitOfWork.Repository<Product>().GetAll().ToList();
+            return _unitOfWork.Repository<Product>().Where().ToList();
         }
 
         public Product GetById(int id)
         {
-            return _unitOfWork.Repository<Product>().Get(x => x.Id == id);
+            return _unitOfWork.Repository<Product>().FirstOrDefault(x => x.Id == id);
         }
 
         public Product GetByIdWithCategories(int id)
         {
             return _unitOfWork.Repository<Product>()
-                            .GetAll()
+                            .Where()
                             .Include(x => x.ProductCategoryItems)
                             .FirstOrDefault(i => i.Id == id);
         }
@@ -68,7 +68,7 @@ namespace ShopApp.Business.Services
         public int GetCountByCategory(string category)
         {
             var products = _unitOfWork.Repository<Product>()
-                .GetAll(i => i.IsApproved)
+                .Where(i => i.IsApproved)
                 .Include(x => x.ProductCategoryItems)
                 .AsQueryable();
 
@@ -84,13 +84,13 @@ namespace ShopApp.Business.Services
         public List<Product> GetHomePageProducts()
         {
             return _unitOfWork.Repository<Product>()
-                           .GetAll(i => i.IsApproved && i.IsHome).ToList();
+                           .Where(i => i.IsApproved && i.IsHome).ToList();
         }
 
         public Product GetProductDetails(string url)
         {
             return _unitOfWork.Repository<Product>()
-                 .GetAll()
+                 .Where()
                  .Include(i => i.ProductCategoryItems)
                  .FirstOrDefault(i => i.Url == url);
         }
@@ -98,7 +98,7 @@ namespace ShopApp.Business.Services
         public List<Product> GetProductsByCategory(string name, int page, int pageSize)
         {
             var products = _unitOfWork.Repository<Product>()
-                 .GetAll(i => i.IsApproved);
+                 .Where(i => i.IsApproved);
 
             if (!string.IsNullOrEmpty(name))
             {
@@ -113,7 +113,7 @@ namespace ShopApp.Business.Services
         public List<Product> GetSearchResult(string searchString)
         {
             var products = _unitOfWork.Repository<Product>()
-                            .GetAll(i => i.IsApproved && (i.Name.ToLower().Contains(searchString.ToLower()) || i.Description.ToLower().Contains(searchString.ToLower()))).ToList();
+                            .Where(i => i.IsApproved && (i.Name.ToLower().Contains(searchString.ToLower()) || i.Description.ToLower().Contains(searchString.ToLower()))).ToList();
 
             return products;
         }

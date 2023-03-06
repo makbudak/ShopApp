@@ -2,10 +2,10 @@
 using ShopApp.Business.Services;
 using ShopApp.Model.Entity;
 
-namespace ShopApp.API.Areas.Admin.Controllers
+namespace ShopApp.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("admin/role")]
+    [Route("Admin/Role")]
     public class RoleController : Controller
     {
         private readonly IRoleService _roleService;
@@ -19,7 +19,7 @@ namespace ShopApp.API.Areas.Admin.Controllers
             return View();
         }
 
-        [Route("list")]
+        [Route("List")]
         public IActionResult Get()
         {
             var list = _roleService.GetAll();

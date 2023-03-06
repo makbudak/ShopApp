@@ -1,11 +1,9 @@
-﻿$(function () {
-    $("#txtOldPassword").kendoTextBox();
-    $("#txtNewPassword").kendoTextBox();
-    $("#txtReNewPassword").kendoTextBox();
+﻿$(() => {
+    var txtOldPassword = $("#txtOldPassword").kendoTextBox().data("kendoTextBox");
 
-    var txtOldPassword = $("#txtOldPassword").data("kendoTextBox");
-    var txtNewPassword = $("#txtNewPassword").data("kendoTextBox");
-    var txtReNewPassword = $("#txtReNewPassword").data("kendoTextBox");
+    var txtNewPassword = $("#txtNewPassword").kendoTextBox().data("kendoTextBox");
+
+    var txtReNewPassword = $("#txtReNewPassword").kendoTextBox().data("kendoTextBox");
 
     var validator = $("#changePasswordForm").kendoValidator().data("kendoValidator");
 
@@ -19,7 +17,7 @@
                 reNewPassword: txtReNewPassword.value()
             };
 
-            axios.put("/customer/change-password", data)
+            axios.put("/user/change-password", data)
                 .then(res => {
                     successNotification("İşlem Başarılı!", "Şifre güncelleme işlemi başarıyla gerçekleşti.");
                     $("#changePasswordForm").trigger("reset");
@@ -29,4 +27,3 @@
         }
     });
 });
-

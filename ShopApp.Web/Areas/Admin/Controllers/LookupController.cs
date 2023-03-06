@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopApp.API.Areas.Admin.Controllers
+namespace ShopApp.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("admin/lookup")]
+    [Route("Admin/Lookup")]
     public class LookupController : Controller
     {
         private readonly ILookupService _lookupService;
@@ -17,11 +17,18 @@ namespace ShopApp.API.Areas.Admin.Controllers
             _lookupService = lookupService;
         }
 
-        [HttpGet("user-types")]
+        [HttpGet("UserTypes")]
         public IActionResult UserTypes()
         {
-            var list = _lookupService.GetUserTypes();
-            return Ok(list);
+            var result = _lookupService.GetUserTypes();
+            return Ok(result);
+        }
+
+        [HttpGet("GetAdmins")]
+        public IActionResult GetAdmins()
+        {
+            var result = _lookupService.GetAdmins();
+            return Ok(result);
         }
     }
 }
